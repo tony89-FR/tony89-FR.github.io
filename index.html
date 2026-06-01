@@ -8,7 +8,122 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* NAVBAR */
 
+.navbar{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 8%;
+background:rgba(15,15,25,0.65);
+backdrop-filter:blur(15px);
+z-index:1000;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.logo-nav{
+font-size:1.4rem;
+font-weight:700;
+background:linear-gradient(90deg,#00d9ff,#ff00c8);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+display:flex;
+list-style:none;
+gap:30px;
+align-items:center;
+}
+
+.nav-links a{
+color:white;
+text-decoration:none;
+font-weight:500;
+transition:0.3s;
+}
+
+.nav-links a:hover{
+color:#00d9ff;
+}
+
+.dropdown{
+position:relative;
+}
+
+.dropdown-menu{
+position:absolute;
+top:40px;
+left:0;
+background:rgba(20,20,35,0.95);
+backdrop-filter:blur(10px);
+list-style:none;
+min-width:220px;
+border-radius:15px;
+padding:10px;
+opacity:0;
+visibility:hidden;
+transform:translateY(10px);
+transition:0.3s;
+}
+
+.dropdown:hover .dropdown-menu{
+opacity:1;
+visibility:visible;
+transform:translateY(0);
+}
+
+.dropdown-menu li{
+padding:10px;
+}
+
+.dropdown-menu a{
+display:block;
+}
+
+.hamburger{
+display:none;
+font-size:2rem;
+cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+.hamburger{
+display:block;
+}
+
+.nav-links{
+position:absolute;
+top:80px;
+left:0;
+width:100%;
+background:#09090f;
+flex-direction:column;
+padding:25px;
+display:none;
+}
+
+.nav-links.active{
+display:flex;
+}
+
+.dropdown-menu{
+position:static;
+opacity:1;
+visibility:visible;
+transform:none;
+background:transparent;
+padding-left:15px;
+}
+
+}
 *{
 margin:0;
 padding:0;
@@ -138,9 +253,46 @@ width:180px;
 }
 
 </style>
+  
 </head>
 <body>
+<nav class="navbar">
 
+    <div class="logo-nav">
+        La communauté live
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+        ☰
+    </div>
+
+    <ul class="nav-links" id="navLinks">
+
+        <li><a href="index.html">Accueil</a></li>
+
+        <li class="dropdown">
+
+            <a href="#">
+                Informations ▾
+            </a>
+
+            <ul class="dropdown-menu">
+                <li><a href="regles.html">📜 Règles</a></li>
+                <li><a href="staff.html">🛡️ Staff</a></li>
+                <li><a href="evenements.html">🎉 Événements</a></li>
+            </ul>
+
+        </li>
+
+        <li>
+            <a href="https://discord.gg/HkcC9Kj29Z" target="_blank">
+                Discord
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
 <header>
 
 <img src="logo.png" alt="Logo La communauté live" class="logo">
@@ -209,4 +361,13 @@ Entrer sur le serveur
 </footer>
 
 </body>
+  <script>
+
+function toggleMenu(){
+document
+.getElementById("navLinks")
+.classList.toggle("active");
+}
+
+</script>
 </html>
