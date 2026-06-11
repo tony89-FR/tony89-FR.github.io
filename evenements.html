@@ -7,7 +7,12 @@
 <title>Événements - La communauté live</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
+.countdown{
+    margin-top:15px;
+    font-size:1.2rem;
+    font-weight:bold;
+    color:#00ffff;
+}
 <style>
 
 *{
@@ -124,6 +129,10 @@ async function chargerEvents() {
         const date = new Date(event.startTime);
 
         container.innerHTML += `
+        startCountdown(
+    event.startTime,
+    `countdown-${event.startTime}`
+);
         <div class="event-card">
             <h2>${event.name}</h2>
 
@@ -131,15 +140,47 @@ async function chargerEvents() {
                 ${event.description || "Aucune description"}
             </p>
 
-            <p class="date">
-                📅 ${date.toLocaleString("fr-FR")}
+           <p class="date">
+📅 ${date.toLocaleString("fr-FR")}
+</p>
+
+<p class="countdown" id="countdown-${event.startTime}">
+⏳ Chargement...
+</p>
             </p>
         </div>
         `;
     });
 
 }
+function startCountdown(timestamp, elementId) {
 
+    function update() {
+
+        const now = new Date().getTime();
+        const distance = timestamp - now;
+
+        const element = document.getElementById(elementId);
+
+        if (!element) return;
+
+        if (distance <= 0) {
+            element.innerHTML = "🔴 Événement en cours ou terminé";
+            return;
+        }
+
+        const jours = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const heures = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const secondes = Math.floor((distance % (1000 * 60)) / 1000);
+
+        element.innerHTML =
+            `⏳ ${jours}j ${heures}h ${minutes}m ${secondes}s`;
+    }
+
+    update();
+    setInterval(update, 1000);
+}
 chargerEvents();
 
 </script>
