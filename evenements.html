@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,7 @@
 <title>Événements - La communauté live</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-.countdown{
-    margin-top:15px;
-    font-size:1.2rem;
-    font-weight:bold;
-    color:#00ffff;
-}
+
 <style>
 
 *{
@@ -41,14 +37,14 @@ h1{
 }
 
 .event-card{
-    background:rgba(255,255,255,0.05);
+    background:rgba(255,255,255,.05);
     backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,.1);
     border-radius:25px;
     padding:30px;
     margin:25px 0;
-    transition:.3s;
     box-shadow:0 0 25px rgba(0,255,255,.15);
+    transition:.3s;
 }
 
 .event-card:hover{
@@ -63,8 +59,15 @@ h1{
 
 .date{
     color:#00ffff;
-    font-weight:bold;
     margin-top:15px;
+    font-weight:bold;
+}
+
+.countdown{
+    margin-top:20px;
+    font-size:1.5rem;
+    font-weight:bold;
+    color:#00ffcc;
 }
 
 .discord-btn{
@@ -72,9 +75,10 @@ h1{
     margin-top:40px;
     padding:15px 35px;
     border-radius:50px;
-    text-decoration:none;
-    color:white;
     background:#5865F2;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
     transition:.3s;
 }
 
@@ -86,17 +90,22 @@ h1{
     display:block;
     margin-top:30px;
     color:#8ea1ff;
+    text-decoration:none;
 }
 
 </style>
+
 </head>
+
 <body>
 
 <h1>🎉 Événements</h1>
 
 <div id="events"></div>
 
-<a class="discord-btn" href="https://discord.gg/HkcC9Kj29Z" target="_blank">
+<a class="discord-btn"
+href="https://discord.gg/HkcC9Kj29Z"
+target="_blank">
 🚀 Rejoindre le Discord
 </a>
 
@@ -106,84 +115,111 @@ h1{
 
 <script>
 
-async function chargerEvents() {
+function startCountdown(timestamp, elementId){
 
-    const response = await fetch(
-        "https://la-communaute-live-bot.onrender.com/events"
-    );
+    function update(){
 
-    const events = await response.json();
-
-    const container = document.getElementById("events");
-
-    if(events.length === 0){
-        container.innerHTML =
-        "<div class='event-card'><h2>Aucun événement prévu</h2></div>";
-        return;
-    }
-
-    container.innerHTML = "";
-
-    events.forEach(event => {
-
-        const date = new Date(event.startTime);
-
-        container.innerHTML += `
-        startCountdown(
-    event.startTime,
-    `countdown-${event.startTime}`
-);
-        <div class="event-card">
-            <h2>${event.name}</h2>
-
-            <p>
-                ${event.description || "Aucune description"}
-            </p>
-
-           <p class="date">
-📅 ${date.toLocaleString("fr-FR")}
-</p>
-
-<p class="countdown" id="countdown-${event.startTime}">
-⏳ Chargement...
-</p>
-            </p>
-        </div>
-        `;
-    });
-
-}
-function startCountdown(timestamp, elementId) {
-
-    function update() {
-
-        const now = new Date().getTime();
+        const now = Date.now();
         const distance = timestamp - now;
 
         const element = document.getElementById(elementId);
 
-        if (!element) return;
+        if(!element) return;
 
-        if (distance <= 0) {
-            element.innerHTML = "🔴 Événement en cours ou terminé";
+        if(distance <= 0){
+            element.innerHTML = "🔴 Événement en cours !";
             return;
         }
 
-        const jours = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const heures = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const secondes = Math.floor((distance % (1000 * 60)) / 1000);
+        const jours = Math.floor(distance/(1000*60*60*24));
+        const heures = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+        const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+        const secondes = Math.floor((distance%(1000*60))/1000);
 
         element.innerHTML =
-            `⏳ ${jours}j ${heures}h ${minutes}m ${secondes}s`;
+        `⏳ ${jours}j ${heures}h ${minutes}m ${secondes}s`;
     }
 
     update();
-    setInterval(update, 1000);
+    setInterval(update,1000);
 }
+
+async function chargerEvents(){
+
+    try{
+
+        const response = await fetch("https://la-communaute-live-bot.onrender.com/events");
+
+        const events = await response.json();
+
+        const container = document.getElementById("events");
+
+        if(events.length===0){
+
+            container.innerHTML=`
+            <div class="event-card">
+                <h2>Aucun événement prévu</h2>
+            </div>
+            `;
+
+            return;
+        }
+
+        container.innerHTML="";
+
+        events.forEach(event=>{
+
+            const date = new Date(event.startTime);
+
+            container.innerHTML += `
+            <div class="event-card">
+
+                <h2>${event.name}</h2>
+
+                <p>${event.description || "Aucune description"}</p>
+
+                <p class="date">
+                    📅 ${date.toLocaleDateString("fr-FR")} à
+                    ${date.toLocaleTimeString("fr-FR",{
+                        hour:"2-digit",
+                        minute:"2-digit"
+                    })}
+                </p>
+
+                <p class="countdown" id="countdown-${event.startTime}">
+                    ⏳ Chargement...
+                </p>
+
+            </div>
+            `;
+
+            startCountdown(
+                event.startTime,
+                `countdown-${event.startTime}`
+            );
+
+        });
+
+    }catch(err){
+
+        console.error(err);
+
+        document.getElementById("events").innerHTML=`
+        <div class="event-card">
+            <h2>❌ Impossible de charger les événements</h2>
+        </div>
+        `;
+
+    }
+
+}
+
 chargerEvents();
+
+setInterval(chargerEvents,60000);
 
 </script>
 
 </body>
+
 </html>
