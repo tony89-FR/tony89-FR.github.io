@@ -2,18 +2,231 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Staff</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Staff - La communauté live</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0b1020,#111827,#1e1b4b);
+    color:white;
+    min-height:100vh;
+    padding:40px;
+}
+
+h1{
+    text-align:center;
+    font-size:3rem;
+    margin-bottom:15px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#bfc8ff;
+    margin-bottom:50px;
+}
+
+.role{
+    margin-bottom:60px;
+}
+
+.role-title{
+    font-size:2rem;
+    font-weight:bold;
+    margin-bottom:25px;
+    padding-left:15px;
+    border-left:8px solid white;
+}
+
+.members{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:rgba(255,255,255,.06);
+    backdrop-filter:blur(12px);
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    transition:.3s;
+    border:2px solid rgba(255,255,255,.08);
+    box-shadow:0 0 20px rgba(0,255,255,.12);
+}
+
+.card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 0 30px rgba(0,255,255,.35);
+}
+
+.avatar{
+    width:120px;
+    height:120px;
+    border-radius:50%;
+    border:5px solid white;
+    object-fit:cover;
+    margin-bottom:20px;
+}
+
+.username{
+    font-size:1.4rem;
+    font-weight:bold;
+}
+
+.display{
+    color:#c8d0ff;
+    margin-top:8px;
+    word-break:break-word;
+}
+
+.profile{
+    display:inline-block;
+    margin-top:18px;
+    text-decoration:none;
+    color:white;
+    background:#5865F2;
+    padding:10px 20px;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.profile:hover{
+    transform:scale(1.05);
+}
+
+.empty{
+    color:#999;
+    font-style:italic;
+}
+
+.back{
+    display:block;
+    width:max-content;
+    margin:60px auto 0;
+    color:#8ea1ff;
+    text-decoration:none;
+}
+
+</style>
+
 </head>
 
-<body style="background:#0b1020;color:white;font-family:Arial;text-align:center;padding:50px;">
+<body>
 
-<h1>🛡️ Staff</h1>
+<h1>👑 Notre Staff</h1>
 
-<p>Fondateur : Tony</p>
+<p class="subtitle">
+Les informations sont synchronisées automatiquement avec Discord.
+</p>
 
-<p>Modérateurs : À compléter</p>
+<div id="staff"></div>
 
-<a href="index.html">⬅ Retour</a>
+<a class="back" href="index.html">
+⬅ Retour à l'accueil
+</a>
+
+<script>
+
+async function chargerStaff(){
+
+const response=await fetch("https://la-communaute-live-bot.onrender.com/staff");
+
+const roles=await response.json();
+
+const container=document.getElementById("staff");
+
+container.innerHTML="";
+
+roles.forEach(role=>{
+
+let html=`
+
+<div class="role">
+
+<h2 class="role-title"
+style="border-color:${role.color};color:${role.color};">
+
+${role.role}
+
+</h2>
+
+<div class="members">
+
+`;
+
+if(role.members.length===0){
+
+html+=`<p class="empty">Aucun membre.</p>`;
+
+}else{
+
+role.members.forEach(member=>{
+
+html+=`
+
+<div class="card">
+
+<img
+class="avatar"
+src="${member.avatar}"
+alt="${member.username}"
+>
+
+<div class="username">
+${member.username}
+</div>
+
+<div class="display">
+${member.displayName}
+</div>
+
+<a
+class="profile"
+href="${member.profile}"
+target="_blank">
+
+Voir le profil
+
+</a>
+
+</div>
+
+`;
+
+});
+
+}
+
+html+=`
+
+</div>
+
+</div>
+
+`;
+
+container.innerHTML+=html;
+
+});
+
+}
+
+chargerStaff();
+
+setInterval(chargerStaff,60000);
+
+</script>
 
 </body>
 </html>
