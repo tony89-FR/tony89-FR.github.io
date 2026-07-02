@@ -341,5 +341,25 @@ footer{
     text-decoration:none;
     font-weight:600;
 }
+/* ===== Animations ===== */
+
+.hidden{
+
+    opacity:0;
+    transform:translateY(60px);
+    transition:all .8s ease;
+
+}
+
+.show{
+
+    opacity:1;
+    transform:translateY(0);
+
+}
+
+.hero-logo{
+
+    transition:transform .1s linear;
 
 }
