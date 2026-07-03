@@ -1,45 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Apparition progressive des sections
-    const observer = new IntersectionObserver((entries) => {
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
 
-        entries.forEach(entry => {
+    function resize() {
 
-            if (entry.isIntersecting) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-                entry.target.classList.add("show");
+    }
 
-            }
+    resize();
+
+    window.addEventListener("resize", resize);
+
+    const particles = [];
+
+    for(let i=0;i<80;i++){
+
+        particles.push({
+
+            x:Math.random()*canvas.width,
+            y:Math.random()*canvas.height,
+
+            vx:(Math.random()-0.5)*0.4,
+            vy:(Math.random()-0.5)*0.4,
+
+            r:Math.random()*2+1
 
         });
 
-    }, {
-        threshold: 0.15
-    });
+    }
 
-    document.querySelectorAll("section").forEach(section => {
+    function animate(){
 
-        section.classList.add("hidden");
-        observer.observe(section);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    });
+        particles.forEach(p=>{
 
-    // Animation du logo
-    const logo = document.querySelector(".hero-logo");
+            p.x+=p.vx;
+            p.y+=p.vy;
 
-    if (logo) {
+            if(p.x<0||p.x>canvas.width)p.vx*=-1;
+            if(p.y<0||p.y>canvas.height)p.vy*=-1;
 
-        let angle = 0;
+            ctx.beginPath();
 
-        setInterval(() => {
+            ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
 
-            angle += 0.02;
+            ctx.fillStyle="#00d9ff";
 
-            logo.style.transform =
-                `translateY(${Math.sin(angle) * 8}px)`;
+            ctx.fill();
 
-        }, 20);
+        });
+
+        requestAnimationFrame(animate);
 
     }
+
+    animate();
 
 });
