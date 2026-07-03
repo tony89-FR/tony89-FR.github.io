@@ -1,10 +1,10 @@
-const API_URL = "https://la-communaute-live-bot.onrender.com";
+const STATS_API = "https://la-communaute-live-bot.onrender.com";
 
 async function loadStats() {
 
     try {
 
-        const response = await fetch(`${API_URL}/stats`);
+        const response = await fetch(`${STATS_API}/stats`);
         const stats = await response.json();
 
     document.getElementById("members").textContent = stats.members;
