@@ -7,10 +7,10 @@ async function loadStats() {
         const response = await fetch(`${API_URL}/stats`);
         const stats = await response.json();
 
-        document.getElementById("memberCount").textContent = stats.members;
-        document.getElementById("channelCount").textContent = stats.channels;
-        document.getElementById("voiceCount").textContent = stats.voiceChannels;
-        document.getElementById("eventCount").textContent = stats.events;
+    document.getElementById("members").textContent = stats.members;
+    document.getElementById("channels").textContent = stats.channels;
+    document.getElementById("voice").textContent = stats.voiceChannels;
+    document.getElementById("events").textContent = stats.events;
 
     } catch (err) {
 
