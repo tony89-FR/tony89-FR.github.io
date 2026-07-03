@@ -1,4 +1,4 @@
-const API = "https://la-communaute-live-bot.onrender.com";
+const API_URL = "https://la-communaute-live-bot.onrender.com";
 
 async function loadEvents() {
 
@@ -6,7 +6,7 @@ async function loadEvents() {
 
     try {
 
-        const response = await fetch(`${API}/events`);
+        const response = await fetch(`${API_URL}/events`);
         const events = await response.json();
 
         if (events.length === 0) {
