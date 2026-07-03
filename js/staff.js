@@ -6,7 +6,7 @@ async function loadStaff() {
 
     try {
 
-        const response = await fetchfetch(`${STAFF_API}/staff`);
+        const response = await fetch(`${STAFF_API}/staff`);
         const staff = await response.json();
 
         container.innerHTML = "";
