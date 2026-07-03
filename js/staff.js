@@ -1,4 +1,4 @@
-const API = "https://la-communaute-live-bot.onrender.com";
+const API_URL = "https://la-communaute-live-bot.onrender.com";
 
 async function loadStaff() {
 
@@ -6,7 +6,7 @@ async function loadStaff() {
 
     try {
 
-        const response = await fetch(`${API}/staff`);
+        const response = await fetch(`${API_URL}/staff`);
         const staff = await response.json();
 
         container.innerHTML = "";
