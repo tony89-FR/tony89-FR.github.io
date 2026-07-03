@@ -260,3 +260,10 @@ footer {
     border-radius: 50%;
     object-fit: cover;
 }
+.feature, .stat-card, .staff-member {
+    transition: transform 0.3s ease;
+}
+
+.feature:hover, .stat-card:hover, .staff-member:hover {
+    transform: translateY(-6px);
+}
