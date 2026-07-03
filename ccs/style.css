@@ -248,22 +248,25 @@ footer {
     .hero-logo {
         width: 170px;
     }
-}
 .staff-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
+   
 .staff-member img {
     width: 90px;
     height: 90px;
     border-radius: 50%;
     object-fit: cover;
 }
+   
 .feature, .stat-card, .staff-member {
     transition: transform 0.3s ease;
 }
+   
 
 .feature:hover, .stat-card:hover, .staff-member:hover {
     transform: translateY(-6px);
 }
+   
