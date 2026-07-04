@@ -13,7 +13,7 @@ html {
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     color: #fff;
     background: linear-gradient(135deg, #081421, #13041f);
     min-height: 100vh;
@@ -21,15 +21,14 @@ body {
 }
 
 /* =========================
-   PARTICULES BACKGROUND
+   PARTICULES
 ========================= */
 
 #particles {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: -1;
     pointer-events: none;
 }
@@ -60,8 +59,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    font-weight: 700;
     font-size: 1.3rem;
+    font-weight: 700;
 }
 
 .logo-nav img {
@@ -71,15 +70,15 @@ body {
 
 .nav-links {
     display: flex;
-    list-style: none;
-    gap: 30px;
     align-items: center;
+    gap: 30px;
+    list-style: none;
 }
 
 .nav-links a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    transition: 0.3s;
+    transition: .3s;
 }
 
 .nav-links a:hover {
@@ -93,18 +92,18 @@ body {
 .discord-btn-nav,
 .btn-primary,
 .btn-secondary {
+    display: inline-block;
     padding: 14px 28px;
     border-radius: 12px;
     text-decoration: none;
     font-weight: 600;
-    transition: 0.3s;
-    display: inline-block;
+    transition: .3s ease;
 }
 
 .discord-btn-nav,
 .btn-primary {
     background: linear-gradient(90deg, #5865F2, #8b5cf6);
-    color: white;
+    color: #fff;
 }
 
 .btn-secondary {
@@ -123,11 +122,14 @@ body {
 
 .hero {
     min-height: 100vh;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     text-align: center;
+
     padding: 30px;
 }
 
@@ -145,8 +147,8 @@ body {
 
 .hero p {
     max-width: 700px;
-    opacity: 0.9;
     margin-bottom: 35px;
+    opacity: .9;
 }
 
 .hero-buttons {
@@ -180,12 +182,12 @@ section h2 {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,.05);
     backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.08);
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .stat-card span {
@@ -202,17 +204,82 @@ section h2 {
 
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
     gap: 25px;
 }
 
 .feature {
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255,255,255,.05);
     backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.08);
     border-radius: 20px;
     padding: 30px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* =========================
+   STAFF
+========================= */
+
+.staff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.staff-role {
+    margin-bottom: 70px;
+}
+
+.staff-member {
+    background: rgba(255,255,255,.05);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    padding: 25px;
+    text-align: center;
+    transition: transform .3s ease;
+}
+
+.staff-member:hover {
+    transform: translateY(-6px);
+}
+
+.staff-member img {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #5865F2;
+}
+
+.staff-member h4 {
+    margin-bottom: 10px;
+}
+
+.staff-member a {
+    color: #00d9ff;
+    text-decoration: none;
+}
+
+.staff-member a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+.feature,
+.stat-card {
+    transition: transform .3s ease;
+}
+
+.feature:hover,
+.stat-card:hover {
+    transform: translateY(-6px);
 }
 
 /* =========================
@@ -220,9 +287,9 @@ section h2 {
 ========================= */
 
 footer {
+    background: #05060d;
     padding: 35px;
     text-align: center;
-    background: #05060d;
 }
 
 /* =========================
@@ -248,25 +315,8 @@ footer {
     .hero-logo {
         width: 170px;
     }
-.staff-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-}
-   
-.staff-member img {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-   
-.feature, .stat-card, .staff-member {
-    transition: transform 0.3s ease;
-}
-   
 
-.feature:hover, .stat-card:hover, .staff-member:hover {
-    transform: translateY(-6px);
+    section {
+        padding: 80px 6%;
+    }
 }
-   
