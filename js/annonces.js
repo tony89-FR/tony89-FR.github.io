@@ -28,6 +28,12 @@ async function loadAnnouncements() {
 
             const date = new Date(announcement.createdAt);
 
+            let content = announcement.content || "";
+
+            content = content
+                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+                .replace(/\n/g, "<br>");
+
             let attachmentsHTML = "";
 
             announcement.attachments.forEach(file => {
@@ -72,10 +78,7 @@ async function loadAnnouncements() {
 
                     <div class="announcement-content">
 
-                        ${announcement.content
-                            ? announcement.content.replace(/\n/g, "<br>")
-                            : ""
-                        }
+                        ${content}
 
                     </div>
 
