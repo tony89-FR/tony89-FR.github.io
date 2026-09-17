@@ -30,21 +30,52 @@ async function loadAnnouncements() {
 
             let content = announcement.content || "";
 
-            content = content
-                .replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
-                .replace(/\n/g, "<br>");
+            // Liens cliquables
+            content = content.replace(
+                /(https?:\/\/[^\s]+)/g,
+                '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+            );
+
+            // Texte en gras Discord
+            content = content.replace(
+                /\*\*(.*?)\*\*/g,
+                "<strong>$1</strong>"
+            );
+
+            // Sauts de ligne
+            content = content.replace(/\n/g, "<br>");
 
             let attachmentsHTML = "";
 
             announcement.attachments.forEach(file => {
 
-                attachmentsHTML += `
-                    <img
-                        src="${file}"
-                        class="announcement-attachment"
-                        alt="Pièce jointe"
-                    >
-                `;
+                const isImage = /\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(file);
+
+                if (isImage) {
+
+                    attachmentsHTML += `
+                        <img
+                            src="${file}"
+                            class="announcement-attachment"
+                            alt="Image de l'annonce"
+                            loading="lazy"
+                        >
+                    `;
+
+                } else {
+
+                    attachmentsHTML += `
+                        <a
+                            href="${file}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="announcement-file"
+                        >
+                            📎 Ouvrir la pièce jointe
+                        </a>
+                    `;
+
+                }
 
             });
 
@@ -64,12 +95,14 @@ async function loadAnnouncements() {
                             <strong>${announcement.author}</strong>
 
                             <div class="announcement-date">
+
                                 ${date.toLocaleDateString("fr-FR")}
                                 à
                                 ${date.toLocaleTimeString("fr-FR", {
                                     hour: "2-digit",
                                     minute: "2-digit"
                                 })}
+
                             </div>
 
                         </div>
