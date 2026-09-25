@@ -20,6 +20,7 @@ body {
     overflow-x: hidden;
 }
 
+
 /* =========================
    PARTICULES BACKGROUND
 ========================= */
@@ -34,6 +35,7 @@ body {
     pointer-events: none;
 }
 
+
 /* =========================
    NAVBAR
 ========================= */
@@ -46,7 +48,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 8%;
+    padding: 18px 5%;
     background: rgba(10, 15, 25, 0.65);
     backdrop-filter: blur(18px);
     z-index: 1000;
@@ -62,6 +64,7 @@ body {
 
 .logo-nav img {
     width: 45px;
+    height: 45px;
     border-radius: 50%;
 }
 
@@ -81,6 +84,22 @@ body {
 .nav-links a:hover {
     color: #00d9ff;
 }
+
+
+/* =========================
+   BOUTON MENU MOBILE
+========================= */
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
 
 /* =========================
    BOUTONS
@@ -109,9 +128,11 @@ body {
 }
 
 .btn-primary:hover,
-.btn-secondary:hover {
+.btn-secondary:hover,
+.discord-btn-nav:hover {
     transform: translateY(-4px);
 }
+
 
 /* =========================
    HERO
@@ -151,6 +172,7 @@ body {
     flex-wrap: wrap;
 }
 
+
 /* =========================
    SECTIONS
 ========================= */
@@ -164,6 +186,7 @@ section h2 {
     margin-bottom: 50px;
     font-size: 2.3rem;
 }
+
 
 /* =========================
    STATISTIQUES
@@ -192,6 +215,7 @@ section h2 {
     color: #00d9ff;
 }
 
+
 /* =========================
    FEATURES
 ========================= */
@@ -210,6 +234,7 @@ section h2 {
     text-align: center;
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
+
 
 /* =========================
    ANNONCES DISCORD
@@ -278,6 +303,20 @@ section h2 {
     object-fit: contain;
 }
 
+.announcement-file {
+    color: #00d9ff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: rgba(0, 217, 255, 0.08);
+    transition: 0.3s;
+}
+
+.announcement-file:hover {
+    background: rgba(0, 217, 255, 0.18);
+}
+
+
 /* =========================
    STAFF
 ========================= */
@@ -303,6 +342,7 @@ section h2 {
     transform: translateY(-6px);
 }
 
+
 /* =========================
    FOOTER
 ========================= */
@@ -313,20 +353,83 @@ footer {
     background: #05060d;
 }
 
+
 /* =========================
-   RESPONSIVE
+   TABLETTE
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
 
     .navbar {
-        flex-direction: column;
-        gap: 20px;
+        padding: 15px 4%;
     }
 
     .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 0.9rem;
+    }
+
+}
+
+
+/* =========================
+   MENU MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        padding: 14px 5%;
         flex-wrap: wrap;
-        justify-content: center;
+    }
+
+    .logo-nav {
+        font-size: 1.1rem;
+    }
+
+    .logo-nav img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 0 10px;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: block;
+        width: 100%;
+        padding: 8px;
+    }
+
+    .discord-btn-nav {
+        width: auto !important;
+        display: inline-block !important;
+    }
+
+    .hero {
+        padding-top: 130px;
     }
 
     .hero h1 {
@@ -348,4 +451,42 @@ footer {
     .announcement-attachment {
         max-height: 300px;
     }
+
+}
+
+
+/* =========================
+   PETIT TÉLÉPHONE
+========================= */
+
+@media (max-width: 500px) {
+
+    .logo-nav span {
+        font-size: 1rem;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
 }
