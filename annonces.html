@@ -8,14 +8,20 @@
 
     <title>Annonces - La communauté live</title>
 
-    <meta name="description" content="Les dernières annonces de La communauté live.">
+    <meta
+        name="description"
+        content="Retrouvez toutes les dernières annonces de La communauté live."
+    >
 
     <link rel="icon" href="images/logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
     <link rel="stylesheet" href="ccs/style.css">
 
@@ -24,6 +30,10 @@
 <body>
 
 <canvas id="particles"></canvas>
+
+<!-- =========================
+     NAVBAR
+========================= -->
 
 <nav class="navbar">
 
@@ -59,9 +69,12 @@
 
         <li>
 
-            <a class="discord-btn-nav"
-               href="https://discord.gg/HkcC9Kj29Z"
-               target="_blank">
+            <a
+                class="discord-btn-nav"
+                href="https://discord.gg/HkcC9Kj29Z"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
 
                 Rejoindre
 
@@ -73,15 +86,50 @@
 
 </nav>
 
+
+<!-- =========================
+     HERO
+========================= -->
+
 <header class="hero">
 
-    <h1>📢 Annonces</h1>
+    <h1>📢 Les annonces</h1>
 
     <p>
-        Retrouvez ici les dernières annonces publiées sur notre serveur Discord.
+        Retrouvez ici les dernières informations publiées
+        sur le serveur Discord.
     </p>
 
+    <div class="hero-buttons">
+
+        <a
+            href="https://discord.gg/HkcC9Kj29Z"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-primary"
+        >
+
+            💬 Ouvrir Discord
+
+        </a>
+
+        <a
+            href="index.html"
+            class="btn-secondary"
+        >
+
+            🏠 Retour à l'accueil
+
+        </a>
+
+    </div>
+
 </header>
+
+
+<!-- =========================
+     ANNONCES
+========================= -->
 
 <section>
 
@@ -89,17 +137,31 @@
 
     <div id="announcementsContainer">
 
-        Chargement des annonces...
+        <div class="feature">
+
+            <h3>⏳ Chargement...</h3>
+
+            <p>
+                Récupération des dernières annonces Discord.
+            </p>
+
+        </div>
 
     </div>
 
 </section>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
 
 <footer>
 
     © 2026 La communauté live
 
 </footer>
+
 
 <script src="js/annonces.js"></script>
 <script src="js/app.js"></script>
