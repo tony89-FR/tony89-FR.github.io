@@ -1,4 +1,4 @@
-const EVENTS_API = "https://la-communaute-live-bot.onrender.com";
+const EVENTS_API = "https://la-communaute-live-bot.de.deplexo.com";
 
 async function loadEvents() {
 
