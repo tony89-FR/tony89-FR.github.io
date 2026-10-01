@@ -1,4 +1,4 @@
-const STATS_API = "https://la-communaute-live-bot.onrender.com";
+const STATS_API = "https://la-communaute-live-bot.de.deplexo.com";
 
 async function loadStats() {
 
