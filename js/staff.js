@@ -1,4 +1,4 @@
-const STAFF_API = "https://la-communaute-live-bot.onrender.com";
+const STAFF_API = "https://la-communaute-live-bot.de.deplexo.com";
 
 async function loadStaff() {
 
