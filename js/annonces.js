@@ -1,4 +1,4 @@
-const API_ANNONCES = "https://la-communaute-live-bot.onrender.com";
+const API_ANNONCES = "https://la-communaute-live-bot.de.deplexo.com";
 
 async function loadAnnouncements() {
 
