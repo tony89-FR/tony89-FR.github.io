@@ -33,6 +33,512 @@
 
     <link rel="stylesheet" href="ccs/style.css">
 
+
+    <!-- ==================================================
+         STYLE DU RÈGLEMENT
+    ================================================== -->
+
+    <style>
+
+        /* ==============================================
+           PAGE
+        ============================================== */
+
+        .rules-page {
+
+            max-width: 1050px;
+
+            margin: 0 auto;
+
+            padding: 120px 30px 80px;
+
+        }
+
+
+        /* ==============================================
+           TITRE
+        ============================================== */
+
+        .rules-title {
+
+            text-align: center;
+
+            margin-bottom: 15px;
+
+            font-size: 3rem;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #00d9ff,
+                    #9b5cff,
+                    #ffffff
+                );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            animation:
+                rulesTitleGlow
+                6s linear infinite;
+
+        }
+
+
+        @keyframes rulesTitleGlow {
+
+            0% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+
+            100% {
+                background-position: 0% center;
+            }
+
+        }
+
+
+        .rules-subtitle {
+
+            text-align: center;
+
+            color: #bfc8ff;
+
+            font-size: 1.05rem;
+
+            margin-bottom: 50px;
+
+        }
+
+
+        /* ==============================================
+           CARTE PRINCIPALE
+        ============================================== */
+
+        .rules-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 45px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.025)
+                );
+
+            border:
+                1px solid rgba(0,217,255,0.22);
+
+            box-shadow:
+                0 20px 55px rgba(0,0,0,0.40),
+                0 0 30px rgba(0,217,255,0.08);
+
+            backdrop-filter: blur(18px);
+
+        }
+
+
+        /* Lumière cyan */
+
+        .rules-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+
+            height: 260px;
+
+            top: -150px;
+
+            right: -120px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,217,255,0.24),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        /* Lumière violette */
+
+        .rules-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 220px;
+
+            height: 220px;
+
+            bottom: -130px;
+
+            left: -110px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(155,92,255,0.22),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        /* ==============================================
+           EN-TÊTE DE LA CARTE
+        ============================================== */
+
+        .rules-card-header {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding-bottom: 25px;
+
+            margin-bottom: 30px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.10);
+
+        }
+
+
+        .rules-icon {
+
+            width: 60px;
+
+            height: 60px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0,217,255,0.15),
+                    rgba(155,92,255,0.15)
+                );
+
+            border:
+                1px solid rgba(0,217,255,0.25);
+
+            font-size: 1.8rem;
+
+            box-shadow:
+                0 0 25px rgba(0,217,255,0.10);
+
+            flex-shrink: 0;
+
+        }
+
+
+        .rules-card-header h2 {
+
+            margin: 0;
+
+            color: #ffffff;
+
+            font-size: 1.7rem;
+
+        }
+
+
+        .rules-card-header p {
+
+            margin-top: 5px;
+
+            color: #8993c7;
+
+            font-size: 0.9rem;
+
+        }
+
+
+        /* ==============================================
+           TEXTE DU RÈGLEMENT
+        ============================================== */
+
+        .rules-content {
+
+            position: relative;
+
+            color: #e7eaff;
+
+            text-align: left;
+
+            font-size: 1.05rem;
+
+            line-height: 2;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+        }
+
+
+        .rules-content strong {
+
+            color: #ffffff;
+
+            font-weight: 800;
+
+        }
+
+
+        /* ==============================================
+           LIGNES DU RÈGLEMENT
+        ============================================== */
+
+        .rules-content::first-line {
+
+            color: #ffffff;
+
+        }
+
+
+        /* ==============================================
+           MESSAGE
+        ============================================== */
+
+        .rules-message {
+
+            text-align: center;
+
+            padding: 50px 30px;
+
+            border-radius: 25px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            color: #cbd3ff;
+
+        }
+
+
+        .rules-message h2 {
+
+            color: #ffffff;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        /* ==============================================
+           BOUTONS
+        ============================================== */
+
+        .rules-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 40px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .rules-discord {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 13px 25px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5865F2,
+                    #7c4dff
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 25px rgba(88,101,242,0.30);
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+
+        }
+
+
+        .rules-discord:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 30px rgba(88,101,242,0.50);
+
+        }
+
+
+        .rules-home {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 13px 25px;
+
+            border-radius: 30px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            border:
+                1px solid rgba(255,255,255,0.15);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            transition:
+                background 0.3s ease,
+                transform 0.3s ease;
+
+        }
+
+
+        .rules-home:hover {
+
+            background:
+                rgba(255,255,255,0.10);
+
+            transform: translateY(-3px);
+
+        }
+
+
+        /* ==============================================
+           MOBILE
+        ============================================== */
+
+        @media (max-width: 700px) {
+
+            .rules-page {
+
+                padding:
+                    110px 18px 60px;
+
+            }
+
+
+            .rules-title {
+
+                font-size: 2.2rem;
+
+            }
+
+
+            .rules-subtitle {
+
+                font-size: 0.95rem;
+
+            }
+
+
+            .rules-card {
+
+                padding: 28px 22px;
+
+            }
+
+
+            .rules-card-header {
+
+                align-items: flex-start;
+
+            }
+
+
+            .rules-card-header h2 {
+
+                font-size: 1.35rem;
+
+            }
+
+
+            .rules-content {
+
+                font-size: 0.95rem;
+
+                line-height: 1.8;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -42,8 +548,7 @@
 
 
 <!-- ==================================================
-     NAVIGATION
-     Chargée depuis js/navbar.js
+     NAVBAR CENTRALE
 ================================================== -->
 
 <nav
@@ -53,46 +558,67 @@
 
 
 <!-- ==================================================
-     HERO
+     PAGE RÈGLEMENT
 ================================================== -->
 
-<header class="hero">
+<main class="rules-page">
 
-    <h1>
+    <h1 class="rules-title">
         📜 Règlement
     </h1>
 
-    <p>
+    <p class="rules-subtitle">
         Les règles de La communauté live,
         synchronisées automatiquement avec Discord.
     </p>
 
-</header>
 
-
-<!-- ==================================================
-     RÈGLEMENT
-================================================== -->
-
-<section>
+    <!-- ==================================================
+         RÈGLEMENT
+    ================================================== -->
 
     <div id="rulesContainer">
 
-        <div class="feature">
+        <div class="rules-message">
 
-            <h3>
-                ⏳ Chargement...
-            </h3>
+            <h2>
+                ⏳ Chargement du règlement...
+            </h2>
 
             <p>
-                Récupération du règlement depuis Discord.
+                Récupération des règles depuis Discord.
             </p>
 
         </div>
 
     </div>
 
-</section>
+
+    <!-- ==================================================
+         BOUTONS
+    ================================================== -->
+
+    <div class="rules-buttons">
+
+        <a
+            class="rules-discord"
+            href="https://discord.gg/HkcC9Kj29Z"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            💬 Ouvrir Discord
+        </a>
+
+        <a
+            class="rules-home"
+            href="index.html"
+        >
+            🏠 Retour à l'accueil
+        </a>
+
+    </div>
+
+</main>
 
 
 <!-- ==================================================
@@ -114,7 +640,9 @@
 <script src="js/navbar.js"></script>
 
 
-<!-- Règlement Discord -->
+<!-- ==================================================
+     RÈGLEMENT DISCORD
+================================================== -->
 
 <script>
 
@@ -139,7 +667,8 @@ async function loadRules() {
         if (!response.ok) {
 
             throw new Error(
-                "Erreur HTTP " + response.status
+                "Erreur HTTP " +
+                response.status
             );
 
         }
@@ -156,14 +685,15 @@ async function loadRules() {
 
             container.innerHTML = `
 
-                <div class="feature">
+                <div class="rules-message">
 
-                    <h3>
-                        📜 Règlement
-                    </h3>
+                    <h2>
+                        📜 Aucun règlement disponible
+                    </h2>
 
                     <p>
-                        Aucun règlement disponible.
+                        Le règlement n'est actuellement
+                        pas disponible.
                     </p>
 
                 </div>
@@ -177,27 +707,41 @@ async function loadRules() {
 
         container.innerHTML = `
 
-            <div class="feature">
+            <article class="rules-card">
 
-                <h2>
-                    📜 Règlement officiel
-                </h2>
+                <div class="rules-card-header">
 
-                <div
-                    style="
-                        white-space:pre-wrap;
-                        text-align:left;
-                        margin-top:25px;
-                        line-height:1.8;
-                    "
-                >
-                    ${rules.content.replace(
-                        /\*\*(.*?)\*\*/g,
-                        "<strong>$1</strong>"
-                    )}
+                    <div class="rules-icon">
+                        📜
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Règlement officiel
+                        </h2>
+
+                        <p>
+                            Synchronisé automatiquement avec Discord
+                        </p>
+
+                    </div>
+
                 </div>
 
-            </div>
+
+                <div class="rules-content">
+
+                    ${
+                        rules.content.replace(
+                            /\*\*(.*?)\*\*/g,
+                            "<strong>$1</strong>"
+                        )
+                    }
+
+                </div>
+
+            </article>
 
         `;
 
@@ -209,11 +753,11 @@ async function loadRules() {
 
         container.innerHTML = `
 
-            <div class="feature">
+            <div class="rules-message">
 
-                <h3>
+                <h2>
                     ❌ Impossible de charger le règlement
-                </h3>
+                </h2>
 
                 <p>
                     Vérifie que le bot Discord est bien connecté
