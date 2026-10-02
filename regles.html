@@ -172,7 +172,7 @@ async function loadRules() {
                         line-height:1.8;
                     "
                 >
-                    ${rules.content}
+                    ${rules.content.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")}
                 </div>
 
             </div>
