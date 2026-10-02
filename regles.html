@@ -1,19 +1,215 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<title>Règles</title>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Règlement - La communauté live</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="ccs/style.css">
+
 </head>
 
-<body style="background:#0b1020;color:white;font-family:Arial;text-align:center;padding:50px;">
+<body>
 
-<h1>📜 Règles</h1>
+<canvas id="particles"></canvas>
 
-<p>1. Respect des membres.</p>
-<p>2. Pas de spam.</p>
-<p>3. Pas de contenu interdit.</p>
+<nav class="navbar">
 
-<a href="index.html">⬅ Retour</a>
+    <div class="logo-nav">
+
+        <img src="images/logo.png" alt="Logo">
+
+        <span>La communauté live</span>
+
+    </div>
+
+    <ul class="nav-links">
+
+        <li>
+            <a href="index.html">Accueil</a>
+        </li>
+
+        <li>
+            <a href="annonces.html">Annonces</a>
+        </li>
+
+        <li>
+            <a href="staff.html">Staff</a>
+        </li>
+
+        <li>
+            <a href="evenements.html">Événements</a>
+        </li>
+
+        <li>
+            <a href="regles.html">Règlement</a>
+        </li>
+
+        <li>
+            <a
+                class="discord-btn-nav"
+                href="https://discord.gg/HkcC9Kj29Z"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Rejoindre
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+
+<header class="hero">
+
+    <h1>📜 Règlement</h1>
+
+    <p>
+        Les règles de La communauté live,
+        synchronisées automatiquement avec Discord.
+    </p>
+
+</header>
+
+
+<section>
+
+    <div id="rulesContainer">
+
+        <div class="feature">
+
+            <h3>⏳ Chargement...</h3>
+
+            <p>
+                Récupération du règlement depuis Discord.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer>
+
+    © 2026 La communauté live
+
+</footer>
+
+
+<script>
+
+const RULES_API =
+    "https://la-communaute-live-bot.de.deplexo.com/regles";
+
+
+async function loadRules() {
+
+    const container =
+        document.getElementById("rulesContainer");
+
+    try {
+
+        const response =
+            await fetch(RULES_API);
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Erreur HTTP " + response.status
+            );
+
+        }
+
+        const rules =
+            await response.json();
+
+        if (!rules || !rules.content) {
+
+            container.innerHTML = `
+
+                <div class="feature">
+
+                    <h3>📜 Règlement</h3>
+
+                    <p>
+                        Aucun règlement disponible.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+        container.innerHTML = `
+
+            <div class="feature">
+
+                <h2>📜 Règlement officiel</h2>
+
+                <div
+                    style="
+                        white-space:pre-wrap;
+                        text-align:left;
+                        margin-top:25px;
+                        line-height:1.8;
+                    "
+                >
+                    ${rules.content}
+                </div>
+
+            </div>
+
+        `;
+
+    } catch (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+
+            <div class="feature">
+
+                <h3>❌ Impossible de charger le règlement</h3>
+
+                <p>
+                    Vérifie que le bot Discord est bien connecté
+                    et que le salon du règlement est accessible.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+loadRules();
+
+</script>
+
+
+<script src="js/app.js"></script>
 
 </body>
+
 </html>
