@@ -27,69 +27,27 @@
 
 </head>
 
+
 <body>
 
 <canvas id="particles"></canvas>
 
-<!-- =========================
+
+<!-- ==================================================
      NAVBAR
-========================= -->
+     La navbar est chargée automatiquement depuis
+     js/navbar.js
+================================================== -->
 
-<nav class="navbar">
-
-    <div class="logo-nav">
-
-        <img src="images/logo.png" alt="Logo">
-
-        <span>La communauté live</span>
-
-    </div>
-
-    <ul class="nav-links">
-
-        <li>
-            <a href="index.html">Accueil</a>
-        </li>
-
-        <li>
-            <a href="annonces.html">Annonces</a>
-        </li>
-
-        <li>
-            <a href="staff.html">Staff</a>
-        </li>
-
-        <li>
-            <a href="evenements.html">Événements</a>
-        </li>
-
-        <li>
-            <a href="regles.html">Règlement</a>
-        </li>
-
-        <li>
-
-            <a
-                class="discord-btn-nav"
-                href="https://discord.gg/HkcC9Kj29Z"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-
-                Rejoindre
-
-            </a>
-
-        </li>
-
-    </ul>
-
-</nav>
+<nav
+    class="navbar"
+    id="navbar"
+></nav>
 
 
-<!-- =========================
+<!-- ==================================================
      HERO
-========================= -->
+================================================== -->
 
 <header class="hero">
 
@@ -108,18 +66,14 @@
             rel="noopener noreferrer"
             class="btn-primary"
         >
-
             💬 Ouvrir Discord
-
         </a>
 
         <a
             href="index.html"
             class="btn-secondary"
         >
-
             🏠 Retour à l'accueil
-
         </a>
 
     </div>
@@ -127,9 +81,9 @@
 </header>
 
 
-<!-- =========================
+<!-- ==================================================
      ANNONCES
-========================= -->
+================================================== -->
 
 <section>
 
@@ -152,9 +106,9 @@
 </section>
 
 
-<!-- =========================
+<!-- ==================================================
      FOOTER
-========================= -->
+================================================== -->
 
 <footer>
 
@@ -163,8 +117,19 @@
 </footer>
 
 
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<!-- Navbar centrale -->
+<script src="js/navbar.js"></script>
+
+<!-- Annonces Discord -->
 <script src="js/annonces.js"></script>
+
+<!-- Animations + menu mobile -->
 <script src="js/app.js"></script>
+
 
 </body>
 
