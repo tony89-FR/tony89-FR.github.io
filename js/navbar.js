@@ -22,9 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     alt="Logo La communauté live"
                 >
 
-                <span>La communauté live</span>
-
             </a>
+
+            <span>
+                La communauté live
+            </span>
 
         </div>
 
