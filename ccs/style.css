@@ -37,7 +37,7 @@ body {
 
 
 /* =========================
-   NAVBAR
+   NAVBAR ANIMÉE
 ========================= */
 
 .navbar {
@@ -45,44 +45,258 @@ body {
     top: 0;
     left: 0;
     width: 100%;
+    height: 82px;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 5%;
-    background: rgba(10, 15, 25, 0.65);
-    backdrop-filter: blur(18px);
+
+    padding: 12px 4%;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 14, 30, 0.92),
+            rgba(18, 8, 35, 0.92)
+        );
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border-bottom: 1px solid rgba(0, 217, 255, 0.12);
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25),
+        0 0 30px rgba(88, 101, 242, 0.08);
+
     z-index: 1000;
+
+    overflow: hidden;
 }
+
+
+/* Ligne lumineuse animée */
+
+.navbar::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0;
+    left: -35%;
+
+    width: 35%;
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #00d9ff,
+        #8b5cf6,
+        transparent
+    );
+
+    filter: blur(1px);
+
+    animation: navbarLight 7s linear infinite;
+
+    pointer-events: none;
+}
+
+@keyframes navbarLight {
+
+    0% {
+        left: -35%;
+    }
+
+    100% {
+        left: 110%;
+    }
+
+}
+
+
+/* =========================
+   LOGO
+========================= */
 
 .logo-nav {
     display: flex;
     align-items: center;
     gap: 12px;
+
     font-weight: 700;
     font-size: 1.3rem;
+
+    white-space: nowrap;
 }
 
 .logo-nav img {
     width: 45px;
     height: 45px;
+
     border-radius: 50%;
+    object-fit: cover;
+
+    box-shadow:
+        0 0 10px rgba(0, 217, 255, 0.35),
+        0 0 25px rgba(139, 92, 246, 0.25);
+
+    transition:
+        transform 0.4s ease,
+        box-shadow 0.4s ease;
 }
+
+.logo-nav:hover img {
+    transform: rotate(8deg) scale(1.08);
+
+    box-shadow:
+        0 0 15px rgba(0, 217, 255, 0.65),
+        0 0 35px rgba(139, 92, 246, 0.45);
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
 
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 30px;
+    gap: 28px;
     align-items: center;
+
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li {
+    position: relative;
 }
 
 .nav-links a {
-    color: white;
+    position: relative;
+
+    display: inline-block;
+
+    color: rgba(255, 255, 255, 0.9);
+
     text-decoration: none;
-    transition: 0.3s;
+
+    font-weight: 500;
+
+    padding: 8px 2px;
+
+    transition:
+        color 0.3s ease,
+        transform 0.3s ease;
 }
 
-.nav-links a:hover {
+
+/* Ligne sous les liens */
+
+.nav-links a:not(.discord-btn-nav)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 0;
+    height: 2px;
+
+    transform: translateX(-50%);
+
+    background: linear-gradient(
+        90deg,
+        #00d9ff,
+        #8b5cf6
+    );
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 0 8px rgba(0, 217, 255, 0.7);
+
+    transition: width 0.3s ease;
+}
+
+.nav-links a:not(.discord-btn-nav):hover {
     color: #00d9ff;
+
+    transform: translateY(-2px);
+
+    text-shadow:
+        0 0 12px rgba(0, 217, 255, 0.45);
+}
+
+.nav-links a:not(.discord-btn-nav):hover::after {
+    width: 100%;
+}
+
+
+/* =========================
+   BOUTON DISCORD
+========================= */
+
+.discord-btn-nav {
+    position: relative;
+
+    padding: 13px 25px !important;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5865f2,
+            #8b5cf6,
+            #5865f2
+        );
+
+    background-size: 200% 200%;
+
+    color: white !important;
+
+    font-weight: 700 !important;
+
+    box-shadow:
+        0 0 15px rgba(88, 101, 242, 0.35),
+        0 8px 20px rgba(0, 0, 0, 0.25);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-position 0.5s ease;
+
+    animation: discordGlow 4s ease-in-out infinite;
+}
+
+.discord-btn-nav:hover {
+    transform: translateY(-3px) scale(1.03) !important;
+
+    background-position: 100% 50%;
+
+    box-shadow:
+        0 0 20px rgba(88, 101, 242, 0.65),
+        0 0 40px rgba(139, 92, 246, 0.35);
+}
+
+@keyframes discordGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 0 15px rgba(88, 101, 242, 0.35),
+            0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(88, 101, 242, 0.55),
+            0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
 }
 
 
@@ -92,12 +306,26 @@ body {
 
 .menu-toggle {
     display: none;
+
     background: transparent;
     border: none;
+
     color: white;
+
     font-size: 28px;
+
     cursor: pointer;
+
     padding: 5px 10px;
+
+    transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+}
+
+.menu-toggle:hover {
+    color: #00d9ff;
+    transform: scale(1.1);
 }
 
 
@@ -105,18 +333,19 @@ body {
    BOUTONS
 ========================= */
 
-.discord-btn-nav,
 .btn-primary,
 .btn-secondary {
     padding: 14px 28px;
     border-radius: 12px;
+
     text-decoration: none;
     font-weight: 600;
+
     transition: 0.3s;
+
     display: inline-block;
 }
 
-.discord-btn-nav,
 .btn-primary {
     background: linear-gradient(90deg, #5865F2, #8b5cf6);
     color: white;
@@ -128,8 +357,7 @@ body {
 }
 
 .btn-primary:hover,
-.btn-secondary:hover,
-.discord-btn-nav:hover {
+.btn-secondary:hover {
     transform: translateY(-4px);
 }
 
@@ -140,18 +368,26 @@ body {
 
 .hero {
     min-height: 100vh;
+
     display: flex;
     flex-direction: column;
+
     justify-content: center;
     align-items: center;
+
     text-align: center;
+
     padding: 30px;
+    padding-top: 120px;
 }
 
 .hero-logo {
     width: 220px;
+
     border-radius: 50%;
+
     box-shadow: 0 0 45px #ff00c8;
+
     margin-bottom: 25px;
 }
 
@@ -162,7 +398,9 @@ body {
 
 .hero p {
     max-width: 700px;
+
     opacity: 0.9;
+
     margin-bottom: 35px;
 }
 
@@ -183,7 +421,9 @@ section {
 
 section h2 {
     text-align: center;
+
     margin-bottom: 50px;
+
     font-size: 2.3rem;
 }
 
@@ -194,24 +434,36 @@ section h2 {
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
     gap: 25px;
 }
 
 .stat-card {
     background: rgba(255, 255, 255, 0.05);
+
     backdrop-filter: blur(12px);
+
     border-radius: 20px;
+
     padding: 30px;
+
     text-align: center;
+
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .stat-card span {
     display: block;
+
     margin-top: 12px;
+
     font-size: 2rem;
+
     font-weight: 700;
+
     color: #00d9ff;
 }
 
@@ -222,16 +474,24 @@ section h2 {
 
 .features {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+
     gap: 25px;
 }
 
 .feature {
     background: rgba(255, 255, 255, 0.05);
+
     backdrop-filter: blur(12px);
+
     border-radius: 20px;
+
     padding: 30px;
+
     text-align: center;
+
     border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -242,73 +502,105 @@ section h2 {
 
 #announcementsContainer {
     display: flex;
+
     flex-direction: column;
+
     gap: 20px;
+
     max-width: 900px;
+
     margin: 0 auto;
 }
 
 .announcement-card {
     background: rgba(30, 33, 40, 0.85);
+
     backdrop-filter: blur(12px);
+
     border: 1px solid rgba(255, 255, 255, 0.08);
+
     border-radius: 16px;
+
     padding: 20px;
+
     transition: 0.3s ease;
 }
 
 .announcement-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(0, 217, 255, 0.4);
+
+    border-color:
+        rgba(0, 217, 255, 0.4);
 }
 
 .announcement-header {
     display: flex;
+
     align-items: center;
+
     gap: 12px;
+
     margin-bottom: 15px;
 }
 
 .announcement-avatar {
     width: 48px;
     height: 48px;
+
     border-radius: 50%;
+
     object-fit: cover;
 }
 
 .announcement-date {
     font-size: 0.8rem;
+
     opacity: 0.55;
+
     margin-top: 2px;
 }
 
 .announcement-content {
     line-height: 1.7;
+
     color: #e6e6e6;
+
     white-space: normal;
+
     word-wrap: break-word;
 }
 
 .announcement-attachments {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 10px;
+
     margin-top: 15px;
 }
 
 .announcement-attachment {
     max-width: 100%;
+
     max-height: 450px;
+
     border-radius: 10px;
+
     object-fit: contain;
 }
 
 .announcement-file {
     color: #00d9ff;
+
     text-decoration: none;
+
     padding: 10px 15px;
+
     border-radius: 8px;
+
     background: rgba(0, 217, 255, 0.08);
+
     transition: 0.3s;
 }
 
@@ -323,14 +615,19 @@ section h2 {
 
 .staff-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
     gap: 20px;
 }
 
 .staff-member img {
     width: 90px;
     height: 90px;
+
     border-radius: 50%;
+
     object-fit: cover;
 }
 
@@ -349,7 +646,9 @@ section h2 {
 
 footer {
     padding: 35px;
+
     text-align: center;
+
     background: #05060d;
 }
 
@@ -382,7 +681,12 @@ footer {
 @media (max-width: 800px) {
 
     .navbar {
+        height: auto;
+
+        min-height: 70px;
+
         padding: 14px 5%;
+
         flex-wrap: wrap;
     }
 
@@ -401,10 +705,15 @@ footer {
 
     .nav-links {
         width: 100%;
+
         display: none;
+
         flex-direction: column;
+
         align-items: center;
+
         gap: 18px;
+
         padding: 20px 0 10px;
     }
 
@@ -414,17 +723,21 @@ footer {
 
     .nav-links li {
         width: 100%;
+
         text-align: center;
     }
 
     .nav-links a {
         display: block;
+
         width: 100%;
+
         padding: 8px;
     }
 
     .discord-btn-nav {
         width: auto !important;
+
         display: inline-block !important;
     }
 
@@ -475,13 +788,16 @@ footer {
 
     .hero-buttons {
         flex-direction: column;
+
         width: 100%;
+
         max-width: 300px;
     }
 
     .btn-primary,
     .btn-secondary {
         width: 100%;
+
         text-align: center;
     }
 
