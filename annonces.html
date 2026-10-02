@@ -4,7 +4,11 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Annonces - La communauté live</title>
 
@@ -16,7 +20,11 @@
     <link rel="icon" href="images/logo.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
@@ -24,6 +32,458 @@
     >
 
     <link rel="stylesheet" href="ccs/style.css">
+
+
+    <!-- ==================================================
+         STYLE DES ANNONCES
+    ================================================== -->
+
+    <style>
+
+        /* ==============================================
+           PAGE
+        ============================================== */
+
+        .announcements-page {
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 120px 30px 80px;
+
+        }
+
+
+        /* ==============================================
+           TITRE
+        ============================================== */
+
+        .announcements-title {
+
+            text-align: center;
+
+            margin-bottom: 15px;
+
+            font-size: 3rem;
+
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #00d9ff,
+                    #9b5cff,
+                    #ffffff
+                );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            animation:
+                announcementsTitleGlow
+                6s linear infinite;
+
+        }
+
+
+        @keyframes announcementsTitleGlow {
+
+            0% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+
+            100% {
+                background-position: 0% center;
+            }
+
+        }
+
+
+        .announcements-subtitle {
+
+            text-align: center;
+
+            color: #bfc8ff;
+
+            font-size: 1.05rem;
+
+            margin-bottom: 50px;
+
+        }
+
+
+        /* ==============================================
+           LISTE DES ANNONCES
+        ============================================== */
+
+        #announcementsContainer {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(320px, 1fr)
+                );
+
+            gap: 30px;
+
+        }
+
+
+        /* ==============================================
+           CARTE D'ANNONCE
+        ============================================== */
+
+        .announcement-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 30px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.025)
+                );
+
+            border:
+                1px solid rgba(0,217,255,0.22);
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.35),
+                0 0 25px rgba(0,217,255,0.08);
+
+            backdrop-filter: blur(16px);
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+
+        /* Lumière cyan */
+
+        .announcement-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 200px;
+
+            height: 200px;
+
+            top: -120px;
+
+            right: -90px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,217,255,0.25),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        /* Lumière violette */
+
+        .announcement-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+
+            height: 150px;
+
+            bottom: -100px;
+
+            left: -70px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(155,92,255,0.22),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        .announcement-card:hover {
+
+            transform: translateY(-9px);
+
+            border-color:
+                rgba(0,217,255,0.65);
+
+            box-shadow:
+                0 20px 55px rgba(0,0,0,0.45),
+                0 0 35px rgba(0,217,255,0.18);
+
+        }
+
+
+        /* ==============================================
+           EN-TÊTE DE L'ANNONCE
+        ============================================== */
+
+        .announcement-header {
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .announcement-avatar {
+
+            width: 55px;
+
+            height: 55px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border:
+                2px solid rgba(0,217,255,0.6);
+
+            box-shadow:
+                0 0 18px rgba(0,217,255,0.2);
+
+            flex-shrink: 0;
+
+        }
+
+
+        .announcement-author {
+
+            min-width: 0;
+
+        }
+
+
+        .announcement-author strong {
+
+            display: block;
+
+            color: #ffffff;
+
+            font-size: 1rem;
+
+        }
+
+
+        .announcement-date {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: #8993c7;
+
+            font-size: 0.82rem;
+
+        }
+
+
+        /* ==============================================
+           CONTENU
+        ============================================== */
+
+        .announcement-content {
+
+            position: relative;
+
+            color: #e4e8ff;
+
+            line-height: 1.75;
+
+            font-size: 1rem;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+        }
+
+
+        /* ==============================================
+           PIÈCES JOINTES
+        ============================================== */
+
+        .announcement-attachments {
+
+            position: relative;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+            margin-top: 22px;
+
+        }
+
+
+        .announcement-attachment {
+
+            display: block;
+
+            padding: 10px 14px;
+
+            border-radius: 12px;
+
+            color: #00d9ff;
+
+            background:
+                rgba(0,217,255,0.06);
+
+            border:
+                1px solid rgba(0,217,255,0.15);
+
+            text-decoration: none;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+            transition:
+                background 0.25s ease,
+                transform 0.25s ease;
+
+        }
+
+
+        .announcement-attachment:hover {
+
+            background:
+                rgba(0,217,255,0.12);
+
+            transform: translateX(4px);
+
+        }
+
+
+        /* ==============================================
+           AUCUNE ANNONCE / ERREUR
+        ============================================== */
+
+        .announcements-message {
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 45px 25px;
+
+            border-radius: 24px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            color: #cbd3ff;
+
+        }
+
+
+        .announcements-message h2 {
+
+            color: white;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        /* ==============================================
+           MOBILE
+        ============================================== */
+
+        @media (max-width: 700px) {
+
+            .announcements-page {
+
+                padding:
+                    110px 18px 60px;
+
+            }
+
+
+            .announcements-title {
+
+                font-size: 2.2rem;
+
+            }
+
+
+            .announcements-subtitle {
+
+                font-size: 0.95rem;
+
+            }
+
+
+            #announcementsContainer {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .announcement-card {
+
+                padding: 25px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -34,9 +494,7 @@
 
 
 <!-- ==================================================
-     NAVBAR
-     La navbar est chargée automatiquement depuis
-     js/navbar.js
+     NAVBAR CENTRALE
 ================================================== -->
 
 <nav
@@ -46,19 +504,53 @@
 
 
 <!-- ==================================================
-     HERO
+     PAGE ANNONCES
 ================================================== -->
 
-<header class="hero">
+<main class="announcements-page">
 
-    <h1>📢 Les annonces</h1>
+    <h1 class="announcements-title">
+        📢 Les annonces
+    </h1>
 
-    <p>
-        Retrouvez ici les dernières informations publiées
-        sur le serveur Discord.
+    <p class="announcements-subtitle">
+        Retrouvez ici les dernières informations
+        publiées sur le serveur Discord.
     </p>
 
-    <div class="hero-buttons">
+
+    <!-- ==================================================
+         ANNONCES
+    ================================================== -->
+
+    <div id="announcementsContainer">
+
+        <div class="announcements-message">
+
+            <h2>
+                ⏳ Chargement...
+            </h2>
+
+            <p>
+                Récupération des dernières annonces Discord.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         BOUTONS
+    ================================================== -->
+
+    <div
+        class="hero-buttons"
+        style="
+            justify-content:center;
+            margin-top:45px;
+        "
+    >
 
         <a
             href="https://discord.gg/HkcC9Kj29Z"
@@ -78,32 +570,7 @@
 
     </div>
 
-</header>
-
-
-<!-- ==================================================
-     ANNONCES
-================================================== -->
-
-<section>
-
-    <h2>📢 Toutes les annonces</h2>
-
-    <div id="announcementsContainer">
-
-        <div class="feature">
-
-            <h3>⏳ Chargement...</h3>
-
-            <p>
-                Récupération des dernières annonces Discord.
-            </p>
-
-        </div>
-
-    </div>
-
-</section>
+</main>
 
 
 <!-- ==================================================
@@ -121,7 +588,7 @@
      JAVASCRIPT
 ================================================== -->
 
-<!-- Navbar centrale -->
+<!-- 🧠 Navbar centrale -->
 <script src="js/navbar.js"></script>
 
 <!-- Annonces Discord -->
