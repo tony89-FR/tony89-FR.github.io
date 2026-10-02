@@ -33,6 +33,496 @@
 
     <link rel="stylesheet" href="ccs/style.css">
 
+
+    <!-- ==================================================
+         STYLE DES ÉVÉNEMENTS
+    ================================================== -->
+
+    <style>
+
+        /* ==============================================
+           CONTENEUR PRINCIPAL
+        ============================================== */
+
+        .events-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 30px 80px;
+        }
+
+
+        /* ==============================================
+           TITRE
+        ============================================== */
+
+        .events-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 3rem;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #00d9ff,
+                    #9b5cff,
+                    #ffffff
+                );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            animation: eventsTitleGlow 6s linear infinite;
+        }
+
+
+        @keyframes eventsTitleGlow {
+
+            0% {
+                background-position: 0% center;
+            }
+
+            50% {
+                background-position: 100% center;
+            }
+
+            100% {
+                background-position: 0% center;
+            }
+
+        }
+
+
+        .events-subtitle {
+            text-align: center;
+            color: #bfc8ff;
+            font-size: 1.05rem;
+            margin-bottom: 50px;
+        }
+
+
+        /* ==============================================
+           CONTENEUR DES CARTES
+        ============================================== */
+
+        #events {
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(320px, 1fr)
+                );
+
+            gap: 30px;
+        }
+
+
+        /* ==============================================
+           CARTE ÉVÉNEMENT
+        ============================================== */
+
+        .event-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 35px;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.025)
+                );
+
+            border: 1px solid rgba(0,217,255,0.22);
+
+            box-shadow:
+                0 15px 45px rgba(0,0,0,0.35),
+                0 0 25px rgba(0,217,255,0.08);
+
+            backdrop-filter: blur(16px);
+
+            transition:
+                transform 0.35s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
+
+        }
+
+
+        /* lumière décorative */
+
+        .event-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            top: -100px;
+            right: -80px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,217,255,0.25),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        .event-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 120px;
+            height: 120px;
+
+            bottom: -80px;
+            left: -60px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(155,92,255,0.22),
+                    transparent 70%
+                );
+
+            pointer-events: none;
+
+        }
+
+
+        .event-card:hover {
+
+            transform: translateY(-10px);
+
+            border-color:
+                rgba(0,217,255,0.65);
+
+            box-shadow:
+                0 20px 55px rgba(0,0,0,0.45),
+                0 0 35px rgba(0,217,255,0.18);
+
+        }
+
+
+        /* ==============================================
+           NOM DE L'ÉVÉNEMENT
+        ============================================== */
+
+        .event-card h2 {
+
+            position: relative;
+
+            margin: 0 0 18px;
+
+            font-size: 1.7rem;
+
+            font-weight: 700;
+
+            color: #ffffff;
+
+        }
+
+
+        /* ==============================================
+           DESCRIPTION
+        ============================================== */
+
+        .event-description {
+
+            position: relative;
+
+            color: #cbd3ff;
+
+            line-height: 1.7;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        /* ==============================================
+           DATE
+        ============================================== */
+
+        .event-date {
+
+            position: relative;
+
+            display: inline-block;
+
+            padding: 9px 14px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(0,217,255,0.08);
+
+            border:
+                1px solid rgba(0,217,255,0.18);
+
+            color: #00d9ff;
+
+            font-weight: 600;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* ==============================================
+           COMPTE À REBOURS
+        ============================================== */
+
+        .event-countdown {
+
+            position: relative;
+
+            margin-top: 22px;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            text-align: center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(0,217,255,0.08),
+                    rgba(155,92,255,0.08)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            color: #ffffff;
+
+            font-size: 1.15rem;
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+
+        }
+
+
+        /* ==============================================
+           BOUTONS
+        ============================================== */
+
+        .events-buttons {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-top: 45px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .events-discord {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 13px 25px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #5865F2,
+                    #7c4dff
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 25px rgba(88,101,242,0.3);
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+
+        }
+
+
+        .events-discord:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 12px 30px rgba(88,101,242,0.5);
+
+        }
+
+
+        .events-home {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 13px 25px;
+
+            border-radius: 30px;
+
+            color: #ffffff;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            border:
+                1px solid rgba(255,255,255,0.15);
+
+            background:
+                rgba(255,255,255,0.05);
+
+            transition:
+                background 0.3s ease,
+                transform 0.3s ease;
+
+        }
+
+
+        .events-home:hover {
+
+            background:
+                rgba(255,255,255,0.10);
+
+            transform: translateY(-3px);
+
+        }
+
+
+        /* ==============================================
+           MESSAGE VIDE / ERREUR
+        ============================================== */
+
+        .events-message {
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            padding: 45px 25px;
+
+            border-radius: 24px;
+
+            background:
+                rgba(255,255,255,0.05);
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            color: #cbd3ff;
+
+        }
+
+
+        .events-message h2 {
+
+            margin-bottom: 12px;
+
+            color: white;
+
+        }
+
+
+        /* ==============================================
+           MOBILE
+        ============================================== */
+
+        @media (max-width: 700px) {
+
+            .events-page {
+
+                padding:
+                    110px 18px 60px;
+
+            }
+
+
+            .events-title {
+
+                font-size: 2.2rem;
+
+            }
+
+
+            .events-subtitle {
+
+                font-size: 0.95rem;
+
+            }
+
+
+            #events {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .event-card {
+
+                padding: 25px;
+
+            }
+
+
+            .event-card h2 {
+
+                font-size: 1.45rem;
+
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
@@ -42,8 +532,7 @@
 
 
 <!-- ==================================================
-     NAVIGATION
-     Chargée depuis js/navbar.js
+     NAVBAR CENTRALE
 ================================================== -->
 
 <nav
@@ -53,56 +542,26 @@
 
 
 <!-- ==================================================
-     HERO
+     PAGE ÉVÉNEMENTS
 ================================================== -->
 
-<header class="hero">
+<main class="events-page">
 
-    <h1>
-        🎉 Événements
+    <h1 class="events-title">
+        🎉 Nos événements
     </h1>
 
-    <p>
+    <p class="events-subtitle">
         Retrouvez ici les événements programmés
         sur La communauté live.
     </p>
 
-    <div class="hero-buttons">
 
-        <a
-            href="https://discord.gg/HkcC9Kj29Z"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-primary"
-        >
-            🚀 Rejoindre le Discord
-        </a>
-
-        <a
-            href="index.html"
-            class="btn-secondary"
-        >
-            🏠 Retour à l'accueil
-        </a>
-
-    </div>
-
-</header>
-
-
-<!-- ==================================================
-     ÉVÉNEMENTS
-================================================== -->
-
-<section>
-
-    <h2>
-        🎉 Nos événements
-    </h2>
+    <!-- ÉVÉNEMENTS -->
 
     <div id="events">
 
-        <div class="event-card">
+        <div class="events-message">
 
             <h2>
                 ⏳ Chargement...
@@ -116,7 +575,30 @@
 
     </div>
 
-</section>
+
+    <!-- BOUTONS -->
+
+    <div class="events-buttons">
+
+        <a
+            class="events-discord"
+            href="https://discord.gg/HkcC9Kj29Z"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            🚀 Rejoindre le Discord
+        </a>
+
+        <a
+            class="events-home"
+            href="index.html"
+        >
+            🏠 Retour à l'accueil
+        </a>
+
+    </div>
+
+</main>
 
 
 <!-- ==================================================
@@ -137,23 +619,35 @@
 <!-- 🧠 Navbar centrale -->
 <script src="js/navbar.js"></script>
 
-<!-- Événements Discord -->
+
+<!-- ==================================================
+     ÉVÉNEMENTS DISCORD
+================================================== -->
+
 <script>
 
-function startCountdown(timestamp, elementId) {
+function startCountdown(
+    timestamp,
+    elementId
+) {
 
     function update() {
 
         const now = Date.now();
 
-        const distance = timestamp - now;
+        const distance =
+            timestamp - now;
 
         const element =
-            document.getElementById(elementId);
+            document.getElementById(
+                elementId
+            );
+
 
         if (!element) {
             return;
         }
+
 
         if (distance <= 0) {
 
@@ -164,37 +658,56 @@ function startCountdown(timestamp, elementId) {
 
         }
 
+
         const jours =
             Math.floor(
-                distance / (1000 * 60 * 60 * 24)
+                distance /
+                (1000 * 60 * 60 * 24)
             );
+
 
         const heures =
             Math.floor(
-                (distance % (1000 * 60 * 60 * 24))
-                / (1000 * 60 * 60)
+                (
+                    distance %
+                    (1000 * 60 * 60 * 24)
+                ) /
+                (1000 * 60 * 60)
             );
+
 
         const minutes =
             Math.floor(
-                (distance % (1000 * 60 * 60))
-                / (1000 * 60)
+                (
+                    distance %
+                    (1000 * 60 * 60)
+                ) /
+                (1000 * 60)
             );
+
 
         const secondes =
             Math.floor(
-                (distance % (1000 * 60))
-                / 1000
+                (
+                    distance %
+                    (1000 * 60)
+                ) /
+                1000
             );
+
 
         element.innerHTML =
             `⏳ ${jours}j ${heures}h ${minutes}m ${secondes}s`;
 
     }
 
+
     update();
 
-    setInterval(update, 1000);
+    setInterval(
+        update,
+        1000
+    );
 
 }
 
@@ -208,33 +721,43 @@ async function chargerEvents() {
                 "https://la-communaute-live-bot.de.deplexo.com/events"
             );
 
+
         if (!response.ok) {
 
             throw new Error(
-                "Erreur HTTP " + response.status
+                "Erreur HTTP " +
+                response.status
             );
 
         }
 
+
         const events =
             await response.json();
 
+
         const container =
-            document.getElementById("events");
+            document.getElementById(
+                "events"
+            );
 
 
-        if (!events || events.length === 0) {
+        if (
+            !events ||
+            events.length === 0
+        ) {
 
             container.innerHTML = `
 
-                <div class="event-card">
+                <div class="events-message">
 
                     <h2>
-                        Aucun événement prévu
+                        🎉 Aucun événement prévu
                     </h2>
 
                     <p>
-                        Aucun événement Discord n'est actuellement programmé.
+                        Aucun événement Discord
+                        n'est actuellement programmé.
                     </p>
 
                 </div>
@@ -249,77 +772,101 @@ async function chargerEvents() {
         container.innerHTML = "";
 
 
-        events.forEach(event => {
+        events.forEach(
+            (event, index) => {
 
-            const date =
-                new Date(event.startTime);
+                const date =
+                    new Date(
+                        event.startTime
+                    );
 
 
-            const countdownId =
-                `countdown-${event.startTime}`;
+                const countdownId =
+                    `countdown-${event.startTime}-${index}`;
 
 
-            container.innerHTML += `
+                container.innerHTML += `
 
-                <div class="event-card">
+                    <article class="event-card">
 
-                    <h2>
-                        ${event.name}
-                    </h2>
+                        <h2>
+                            🎉 ${event.name}
+                        </h2>
 
-                    <p>
-                        ${event.description || "Aucune description"}
-                    </p>
 
-                    <p class="date">
+                        <p class="event-description">
 
-                        📅
-                        ${date.toLocaleDateString("fr-FR")}
-                        à
-                        ${date.toLocaleTimeString(
-                            "fr-FR",
-                            {
-                                hour: "2-digit",
-                                minute: "2-digit"
+                            ${
+                                event.description ||
+                                "Aucune description disponible."
                             }
-                        )}
 
-                    </p>
-
-                    <p
-                        class="countdown"
-                        id="${countdownId}"
-                    >
-                        ⏳ Chargement...
-                    </p>
-
-                </div>
-
-            `;
+                        </p>
 
 
-            startCountdown(
-                event.startTime,
-                countdownId
-            );
+                        <div class="event-date">
 
-        });
+                            📅
+                            ${
+                                date.toLocaleDateString(
+                                    "fr-FR"
+                                )
+                            }
+
+                            à
+
+                            ${
+                                date.toLocaleTimeString(
+                                    "fr-FR",
+                                    {
+                                        hour: "2-digit",
+                                        minute: "2-digit"
+                                    }
+                                )
+                            }
+
+                        </div>
+
+
+                        <div
+                            class="event-countdown"
+                            id="${countdownId}"
+                        >
+                            ⏳ Chargement...
+                        </div>
+
+                    </article>
+
+                `;
+
+
+                startCountdown(
+                    event.startTime,
+                    countdownId
+                );
+
+            }
+        );
 
     }
     catch (error) {
 
         console.error(error);
 
-        document.getElementById("events").innerHTML = `
 
-            <div class="event-card">
+        document.getElementById(
+            "events"
+        ).innerHTML = `
+
+            <div class="events-message">
 
                 <h2>
                     ❌ Impossible de charger les événements
                 </h2>
 
                 <p>
-                    Vérifie que le bot Discord est bien connecté.
+                    Vérifie que le bot Discord
+                    est bien connecté.
                 </p>
 
             </div>
@@ -332,6 +879,7 @@ async function chargerEvents() {
 
 
 chargerEvents();
+
 
 setInterval(
     chargerEvents,
