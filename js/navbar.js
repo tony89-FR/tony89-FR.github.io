@@ -27,8 +27,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             hash.substring(1)
         );
 
-        const token =
-            params.get("discord_token");
+        const token = params.get("discord_token");
 
         if (token) {
             localStorage.setItem(
@@ -37,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             );
         }
 
-        // Nettoyer le token de l'adresse
+        // Supprime le token de l'adresse
         history.replaceState(
             null,
             "",
@@ -47,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ==================================================
-    // RÉCUPÉRER LA SESSION
+    // VÉRIFIER LA SESSION
     // ==================================================
 
     const token =
@@ -71,8 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (response.ok) {
 
-                const data =
-                    await response.json();
+                const data = await response.json();
 
                 if (data.connected) {
                     user = data.user;
@@ -80,7 +78,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             } else {
 
-                // Session expirée / invalide
                 localStorage.removeItem(
                     "discord_session"
                 );
@@ -90,7 +87,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) {
 
             console.error(
-                "❌ Impossible de vérifier la connexion Discord :",
+                "❌ Erreur vérification Discord :",
                 error
             );
 
@@ -98,52 +95,62 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // ==================================================
-    // CONSTRUIRE LA PARTIE COMPTE
+    // COMPTE
     // ==================================================
 
     let accountHTML = "";
 
     if (user) {
 
-        let avatarURL =
-            "images/logo.png";
+        let avatarURL = "images/logo.png";
 
         if (user.avatar) {
 
             avatarURL =
-                `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=64`;
+                `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
 
         }
 
+        const displayName =
+            user.globalName ||
+            user.username;
+
         accountHTML = `
             <li class="discord-account">
+
                 <button
                     class="discord-account-btn"
                     id="discordAccountBtn"
                     type="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
                 >
+
                     <img
                         src="${avatarURL}"
                         alt="Avatar Discord"
                         class="discord-avatar"
                     >
 
-                    <span>
-                        ${escapeHTML(
-                            user.globalName ||
-                            user.username
-                        )}
+                    <span class="discord-account-name">
+                        ${escapeHTML(displayName)}
                     </span>
 
-                    <span class="account-arrow">
+                    <span
+                        class="account-arrow"
+                        id="accountArrow"
+                    >
                         ▾
                     </span>
+
                 </button>
+
 
                 <div
                     class="discord-account-menu"
                     id="discordAccountMenu"
                 >
+
                     <div class="account-info">
 
                         <img
@@ -153,14 +160,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         >
 
                         <strong>
-                            ${escapeHTML(
-                                user.globalName ||
-                                user.username
-                            )}
+                            ${escapeHTML(displayName)}
                         </strong>
 
                         <small>
-                            Connecté avec Discord
+                            🟢 Connecté avec Discord
                         </small>
 
                     </div>
@@ -172,7 +176,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                     >
                         🚪 Se déconnecter
                     </button>
+
                 </div>
+
             </li>
         `;
 
@@ -180,18 +186,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         accountHTML = `
             <li>
+
                 <a
                     class="discord-btn-nav"
                     href="${API_URL}/auth/discord"
                 >
                     🎮 Se connecter
                 </a>
+
             </li>
         `;
     }
 
     // ==================================================
-    // AFFICHER LA NAVBAR
+    // NAVBAR
     // ==================================================
 
     navbarContainer.innerHTML = `
@@ -214,8 +222,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
 
 
-        <!-- BOUTON MENU MOBILE -->
-
         <button
             class="menu-toggle"
             id="menuToggle"
@@ -224,8 +230,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             ☰
         </button>
 
-
-        <!-- LIENS DE NAVIGATION -->
 
         <ul
             class="nav-links"
@@ -269,7 +273,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
 
     // ==================================================
-    // COMPTE DISCORD
+    // MENU COMPTE
     // ==================================================
 
     const accountButton =
@@ -282,6 +286,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             "discordAccountMenu"
         );
 
+    const accountArrow =
+        document.getElementById(
+            "accountArrow"
+        );
+
     if (accountButton && accountMenu) {
 
         accountButton.addEventListener(
@@ -290,10 +299,28 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 event.stopPropagation();
 
-                accountMenu.classList.toggle(
-                    "active"
+                const isOpen =
+                    accountMenu.classList.toggle("active");
+
+                accountButton.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
                 );
 
+                if (accountArrow) {
+
+                    accountArrow.textContent =
+                        isOpen ? "▴" : "▾";
+
+                }
+
+            }
+        );
+
+        accountMenu.addEventListener(
+            "click",
+            (event) => {
+                event.stopPropagation();
             }
         );
 
@@ -304,6 +331,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 accountMenu.classList.remove(
                     "active"
                 );
+
+                accountButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                if (accountArrow) {
+                    accountArrow.textContent = "▾";
+                }
 
             }
         );
@@ -340,14 +376,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ==================================================
 
     const menuToggle =
-        document.getElementById(
-            "menuToggle"
-        );
+        document.getElementById("menuToggle");
 
     const navLinks =
-        document.getElementById(
-            "navLinks"
-        );
+        document.getElementById("navLinks");
 
     if (menuToggle && navLinks) {
 
@@ -382,8 +414,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 });
 
+
 // ======================================================
-// PROTECTION DU TEXTE AFFICHÉ
+// PROTECTION HTML
 // ======================================================
 
 function escapeHTML(text) {
