@@ -12,6 +12,20 @@
 
     <title>Règlement - La communauté live</title>
 
+    <meta
+        name="description"
+        content="Consultez le règlement officiel de La communauté live."
+    >
+
+    <link rel="icon" href="images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet"
@@ -21,61 +35,32 @@
 
 </head>
 
+
 <body>
 
 <canvas id="particles"></canvas>
 
-<nav class="navbar">
 
-    <div class="logo-nav">
+<!-- ==================================================
+     NAVIGATION
+     Chargée depuis js/navbar.js
+================================================== -->
 
-        <img src="images/logo.png" alt="Logo">
+<nav
+    class="navbar"
+    id="navbar"
+></nav>
 
-        <span>La communauté live</span>
 
-    </div>
-
-    <ul class="nav-links">
-
-        <li>
-            <a href="index.html">Accueil</a>
-        </li>
-
-        <li>
-            <a href="annonces.html">Annonces</a>
-        </li>
-
-        <li>
-            <a href="staff.html">Staff</a>
-        </li>
-
-        <li>
-            <a href="evenements.html">Événements</a>
-        </li>
-
-        <li>
-            <a href="regles.html">Règlement</a>
-        </li>
-
-        <li>
-            <a
-                class="discord-btn-nav"
-                href="https://discord.gg/HkcC9Kj29Z"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Rejoindre
-            </a>
-        </li>
-
-    </ul>
-
-</nav>
-
+<!-- ==================================================
+     HERO
+================================================== -->
 
 <header class="hero">
 
-    <h1>📜 Règlement</h1>
+    <h1>
+        📜 Règlement
+    </h1>
 
     <p>
         Les règles de La communauté live,
@@ -85,13 +70,19 @@
 </header>
 
 
+<!-- ==================================================
+     RÈGLEMENT
+================================================== -->
+
 <section>
 
     <div id="rulesContainer">
 
         <div class="feature">
 
-            <h3>⏳ Chargement...</h3>
+            <h3>
+                ⏳ Chargement...
+            </h3>
 
             <p>
                 Récupération du règlement depuis Discord.
@@ -104,12 +95,26 @@
 </section>
 
 
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
 <footer>
 
     © 2026 La communauté live
 
 </footer>
 
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<!-- 🧠 Navbar centrale -->
+<script src="js/navbar.js"></script>
+
+
+<!-- Règlement Discord -->
 
 <script>
 
@@ -120,12 +125,16 @@ const RULES_API =
 async function loadRules() {
 
     const container =
-        document.getElementById("rulesContainer");
+        document.getElementById(
+            "rulesContainer"
+        );
+
 
     try {
 
         const response =
             await fetch(RULES_API);
+
 
         if (!response.ok) {
 
@@ -135,16 +144,23 @@ async function loadRules() {
 
         }
 
+
         const rules =
             await response.json();
 
-        if (!rules || !rules.content) {
+
+        if (
+            !rules ||
+            !rules.content
+        ) {
 
             container.innerHTML = `
 
                 <div class="feature">
 
-                    <h3>📜 Règlement</h3>
+                    <h3>
+                        📜 Règlement
+                    </h3>
 
                     <p>
                         Aucun règlement disponible.
@@ -158,11 +174,14 @@ async function loadRules() {
 
         }
 
+
         container.innerHTML = `
 
             <div class="feature">
 
-                <h2>📜 Règlement officiel</h2>
+                <h2>
+                    📜 Règlement officiel
+                </h2>
 
                 <div
                     style="
@@ -172,22 +191,29 @@ async function loadRules() {
                         line-height:1.8;
                     "
                 >
-                    ${rules.content.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")}
+                    ${rules.content.replace(
+                        /\*\*(.*?)\*\*/g,
+                        "<strong>$1</strong>"
+                    )}
                 </div>
 
             </div>
 
         `;
 
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(error);
+
 
         container.innerHTML = `
 
             <div class="feature">
 
-                <h3>❌ Impossible de charger le règlement</h3>
+                <h3>
+                    ❌ Impossible de charger le règlement
+                </h3>
 
                 <p>
                     Vérifie que le bot Discord est bien connecté
@@ -208,7 +234,9 @@ loadRules();
 </script>
 
 
+<!-- Animations + menu mobile -->
 <script src="js/app.js"></script>
+
 
 </body>
 
