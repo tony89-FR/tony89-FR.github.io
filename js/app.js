@@ -1,116 +1,107 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================
-       PARTICULES
-    ========================= */
+    // ==================================================
+    // PARTICULES
+    // ==================================================
 
     const canvas = document.getElementById("particles");
 
-    if (canvas) {
+    if (!canvas) {
+        return;
+    }
 
-        const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
 
-        function resize() {
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+    resizeCanvas();
 
-        }
+    window.addEventListener("resize", resizeCanvas);
 
-        resize();
 
-        window.addEventListener("resize", resize);
+    const particles = [];
 
-        const particles = [];
+    for (let i = 0; i < 80; i++) {
 
-        for (let i = 0; i < 80; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
 
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
-                r: Math.random() * 2 + 1
-            });
+            size: Math.random() * 2 + 1,
 
-        }
+            speedX:
+                (Math.random() - 0.5) * 0.5,
 
-        function animate() {
+            speedY:
+                (Math.random() - 0.5) * 0.5
+        });
 
-            ctx.clearRect(
+    }
+
+
+    function animateParticles() {
+
+        ctx.clearRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+
+        particles.forEach((particle) => {
+
+            particle.x += particle.speedX;
+            particle.y += particle.speedY;
+
+
+            // Revenir de l'autre côté
+
+            if (particle.x < 0) {
+                particle.x = canvas.width;
+            }
+
+            if (particle.x > canvas.width) {
+                particle.x = 0;
+            }
+
+            if (particle.y < 0) {
+                particle.y = canvas.height;
+            }
+
+            if (particle.y > canvas.height) {
+                particle.y = 0;
+            }
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                particle.x,
+                particle.y,
+                particle.size,
                 0,
-                0,
-                canvas.width,
-                canvas.height
+                Math.PI * 2
             );
 
-            particles.forEach(p => {
+            ctx.fillStyle =
+                "rgba(255, 255, 255, 0.5)";
 
-                p.x += p.vx;
-                p.y += p.vy;
-
-                if (p.x < 0 || p.x > canvas.width) {
-                    p.vx *= -1;
-                }
-
-                if (p.y < 0 || p.y > canvas.height) {
-                    p.vy *= -1;
-                }
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    p.x,
-                    p.y,
-                    p.r,
-                    0,
-                    Math.PI * 2
-                );
-
-                ctx.fillStyle = "#00d9ff";
-
-                ctx.fill();
-
-            });
-
-            requestAnimationFrame(animate);
-
-        }
-
-        animate();
-
-    }
-
-
-    /* =========================
-       MENU MOBILE
-    ========================= */
-
-    const menuToggle = document.getElementById("menuToggle");
-    const navLinks = document.getElementById("navLinks");
-
-    if (menuToggle && navLinks) {
-
-        menuToggle.addEventListener("click", () => {
-
-            navLinks.classList.toggle("active");
+            ctx.fill();
 
         });
 
 
-        /* Fermer le menu après avoir cliqué
-           sur un lien */
-
-        navLinks.querySelectorAll("a").forEach(link => {
-
-            link.addEventListener("click", () => {
-
-                navLinks.classList.remove("active");
-
-            });
-
-        });
+        requestAnimationFrame(
+            animateParticles
+        );
 
     }
+
+
+    animateParticles();
 
 });
