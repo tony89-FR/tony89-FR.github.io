@@ -12,13 +12,338 @@
 
     <title>Membres — La communauté live</title>
 
-    <!-- CSS PRINCIPAL DU SITE -->
-    <link
-        rel="stylesheet"
-        href="css/style.css?v=20261006"
-    >
 
     <style>
+
+        /* ==================================================
+           THÈME DU SITE
+        ================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        html {
+            background: #080b14;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(88,101,242,.20),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(0,217,255,.10),
+                    transparent 35%
+                ),
+                linear-gradient(
+                    135deg,
+                    #080b14,
+                    #0d1220 55%,
+                    #13041f
+                );
+
+            color: #f8fafc;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+        }
+
+
+        /* ==================================================
+           NAVBAR
+        ================================================== */
+
+        .navbar {
+
+            position: fixed;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            height: 70px;
+
+            z-index: 1000;
+
+            display: flex;
+
+            align-items: center;
+
+            padding:
+                0 28px;
+
+            background:
+                rgba(8,11,20,.92);
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.07);
+
+            backdrop-filter:
+                blur(14px);
+
+            -webkit-backdrop-filter:
+                blur(14px);
+
+        }
+
+
+        .navbar a {
+
+            color:
+                #e2e8f0;
+
+            text-decoration:
+                none;
+
+        }
+
+
+        /* ==================================================
+           LOGO
+        ================================================== */
+
+        .logo-nav {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                10px;
+
+            flex-shrink:
+                0;
+
+        }
+
+
+        .logo-nav img {
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            object-fit:
+                contain;
+
+        }
+
+
+        .logo-nav span {
+
+            color:
+                #ffffff;
+
+            font-size:
+                1.05rem;
+
+            font-weight:
+                800;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        /* ==================================================
+           LIENS NAVIGATION
+        ================================================== */
+
+        .nav-links {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                6px;
+
+            margin-left:
+                30px;
+
+        }
+
+
+        .nav-links a {
+
+            padding:
+                9px 12px;
+
+            border-radius:
+                9px;
+
+            color:
+                #cbd5e1;
+
+            font-size:
+                .88rem;
+
+            transition:
+                .2s ease;
+
+        }
+
+
+        .nav-links a:hover {
+
+            background:
+                rgba(88,101,242,.15);
+
+            color:
+                #ffffff;
+
+        }
+
+
+        /* ==================================================
+           COMPTE DISCORD
+        ================================================== */
+
+        .discord-account-nav {
+
+            margin-left:
+                auto;
+
+            position:
+                relative;
+
+        }
+
+
+        .discord-account-button {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap:
+                9px;
+
+            padding:
+                7px 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            border-radius:
+                10px;
+
+            background:
+                rgba(15,23,42,.8);
+
+            color:
+                #ffffff;
+
+            cursor:
+                pointer;
+
+        }
+
+
+        .discord-avatar-nav {
+
+            width:
+                34px;
+
+            height:
+                34px;
+
+            border-radius:
+                50%;
+
+            object-fit:
+                cover;
+
+        }
+
+
+        .discord-account-name {
+
+            color:
+                #f8fafc;
+
+            font-weight:
+                700;
+
+            font-size:
+                .85rem;
+
+        }
+
+
+        .discord-status-nav {
+
+            color:
+                #86efac;
+
+            font-size:
+                .68rem;
+
+        }
+
+
+        /* ==================================================
+           MENU MOBILE
+        ================================================== */
+
+        .menu-toggle {
+
+            display:
+                none;
+
+            margin-left:
+                auto;
+
+            border:
+                1px solid
+                rgba(255,255,255,.10);
+
+            background:
+                rgba(15,23,42,.8);
+
+            color:
+                #ffffff;
+
+            border-radius:
+                9px;
+
+            padding:
+                9px 11px;
+
+            font-size:
+                1.2rem;
+
+            cursor:
+                pointer;
+
+        }
+
 
         /* ==================================================
            PAGE
@@ -33,7 +358,7 @@
                 0 auto;
 
             padding:
-                120px 0 60px;
+                110px 0 60px;
 
         }
 
@@ -135,7 +460,7 @@
 
 
         /* ==================================================
-           BARRE DE RECHERCHE
+           RECHERCHE
         ================================================== */
 
         .members-toolbar {
@@ -174,10 +499,10 @@
                 rgba(255,255,255,.08);
 
             background:
-                rgba(15,23,42,.85);
+                rgba(15,23,42,.88);
 
             color:
-                white;
+                #ffffff;
 
             outline:
                 none;
@@ -217,7 +542,7 @@
                 13px;
 
             background:
-                rgba(15,23,42,.85);
+                rgba(15,23,42,.88);
 
             border:
                 1px solid
@@ -233,7 +558,7 @@
 
 
         /* ==================================================
-           LISTE
+           LISTE DES MEMBRES
         ================================================== */
 
         .members-list {
@@ -249,10 +574,6 @@
 
         }
 
-
-        /* ==================================================
-           MEMBRE
-        ================================================== */
 
         .member-row {
 
@@ -281,7 +602,7 @@
                 14px;
 
             background:
-                rgba(15,23,42,.72);
+                rgba(15,23,42,.78);
 
             border:
                 1px solid
@@ -289,7 +610,7 @@
 
             box-shadow:
                 0 8px 25px
-                rgba(0,0,0,.10);
+                rgba(0,0,0,.18);
 
             transition:
                 .18s ease;
@@ -300,7 +621,7 @@
         .member-row:hover {
 
             background:
-                rgba(20,30,52,.95);
+                rgba(20,30,52,.96);
 
             border-color:
                 rgba(96,165,250,.25);
@@ -483,20 +804,6 @@
         }
 
 
-        .role-everyone {
-
-            color:
-                #94a3b8;
-
-            background:
-                rgba(148,163,184,.08);
-
-            border-color:
-                rgba(148,163,184,.15);
-
-        }
-
-
         /* ==================================================
            ACTIONS
         ================================================== */
@@ -534,7 +841,7 @@
                 8px 10px;
 
             background:
-                rgba(30,41,59,.75);
+                rgba(30,41,59,.85);
 
             color:
                 #e2e8f0;
@@ -563,7 +870,7 @@
                 translateY(-1px);
 
             background:
-                rgba(51,65,85,.95);
+                rgba(51,65,85,.98);
 
         }
 
@@ -624,7 +931,7 @@
 
 
         /* ==================================================
-           MESSAGE
+           MESSAGES
         ================================================== */
 
         .message {
@@ -639,7 +946,7 @@
                 15px;
 
             background:
-                rgba(15,23,42,.8);
+                rgba(15,23,42,.85);
 
             border:
                 1px solid
@@ -663,32 +970,41 @@
 
 
         /* ==================================================
-           RESPONSIVE
+           MOBILE
         ================================================== */
 
-        @media (max-width: 1200px) {
+        @media (max-width: 950px) {
 
-            .member-row {
+            .nav-links {
 
-                grid-template-columns:
-                    48px
-                    minmax(180px, 1fr)
-                    minmax(180px, 1fr)
-                    minmax(300px, 1.5fr);
+                display:
+                    none;
 
             }
 
-        }
+
+            .menu-toggle {
+
+                display:
+                    block;
+
+            }
 
 
-        @media (max-width: 950px) {
+            .discord-account-nav {
+
+                display:
+                    none;
+
+            }
+
 
             .member-row {
 
                 grid-template-columns:
                     48px
                     1fr
-                    minmax(260px, 1fr);
+                    minmax(250px, 1fr);
 
             }
 
@@ -705,13 +1021,29 @@
 
         @media (max-width: 700px) {
 
+            .navbar {
+
+                padding:
+                    0 15px;
+
+            }
+
+
+            .logo-nav span {
+
+                display:
+                    none;
+
+            }
+
+
             .members-page {
 
                 width:
                     94%;
 
                 padding:
-                    100px 0 40px;
+                    95px 0 40px;
 
             }
 
@@ -780,14 +1112,6 @@
             }
 
 
-            .member-name {
-
-                min-width:
-                    0;
-
-            }
-
-
             .member-roles {
 
                 display:
@@ -844,7 +1168,60 @@
 <nav
     class="navbar"
     id="navbar"
-></nav>
+>
+
+    <a
+        href="index.html"
+        class="logo-nav"
+    >
+
+        <img
+            src="assets/logo.png"
+            alt="Logo"
+            onerror="this.style.display='none'"
+        >
+
+        <span>
+            La communauté live
+        </span>
+
+    </a>
+
+
+    <div
+        class="nav-links"
+    >
+
+        <a href="index.html">
+            Accueil
+        </a>
+
+        <a href="evenements.html">
+            Événements
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="membres.html">
+            Membres
+        </a>
+
+    </div>
+
+
+    <button
+        class="menu-toggle"
+        type="button"
+        aria-label="Ouvrir le menu"
+    >
+
+        ☰
+
+    </button>
+
+</nav>
 
 
 <!-- ======================================================
@@ -853,10 +1230,6 @@
 
 <main class="members-page">
 
-
-    <!-- ==================================================
-         TITRE
-    ================================================== -->
 
     <header class="members-header">
 
@@ -887,10 +1260,6 @@
     </header>
 
 
-    <!-- ==================================================
-         RECHERCHE
-    ================================================== -->
-
     <div class="members-toolbar">
 
 
@@ -915,10 +1284,6 @@
     </div>
 
 
-    <!-- ==================================================
-         LISTE DES MEMBRES
-    ================================================== -->
-
     <section
         id="membersList"
         class="members-list"
@@ -936,15 +1301,10 @@
 </main>
 
 
-<!-- ======================================================
-     NAVBAR JAVASCRIPT
-====================================================== -->
-
 <script src="js/navbar.js"></script>
 
 
 <script>
-
 
 /* ======================================================
    CONFIGURATION
@@ -982,7 +1342,7 @@ const memberCount =
 
 
 /* ======================================================
-   SÉCURITÉ HTML
+   SÉCURITÉ
 ====================================================== */
 
 function escapeHTML(value) {
@@ -991,36 +1351,17 @@ function escapeHTML(value) {
         value ?? ""
     )
 
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
 
 /* ======================================================
-   AVATAR PAR DÉFAUT
+   AVATAR
 ====================================================== */
 
 function getDefaultAvatar() {
@@ -1049,7 +1390,7 @@ function hasPermission(
 
 
 /* ======================================================
-   ACTIONS
+   ACTIONS SELON LES PERMISSIONS
 ====================================================== */
 
 function createActions(
@@ -1059,12 +1400,8 @@ function createActions(
     const actions = [];
 
 
-    /* BAN TEMPORAIRE */
-
     if (
-        hasPermission(
-            "temp_ban"
-        )
+        hasPermission("temp_ban")
     ) {
 
         actions.push(`
@@ -1084,12 +1421,8 @@ function createActions(
     }
 
 
-    /* BAN DÉFINITIF */
-
     if (
-        hasPermission(
-            "perm_ban"
-        )
+        hasPermission("perm_ban")
     ) {
 
         actions.push(`
@@ -1109,12 +1442,8 @@ function createActions(
     }
 
 
-    /* GESTION DES RÔLES */
-
     if (
-        hasPermission(
-            "manage_roles"
-        )
+        hasPermission("manage_roles")
     ) {
 
         actions.push(`
@@ -1134,12 +1463,8 @@ function createActions(
     }
 
 
-    /* SANCTIONS */
-
     if (
-        hasPermission(
-            "sanctions_total"
-        )
+        hasPermission("sanctions_total")
     ) {
 
         actions.push(`
@@ -1159,12 +1484,8 @@ function createActions(
     }
 
 
-    /* CARTE */
-
     if (
-        hasPermission(
-            "own_card"
-        )
+        hasPermission("own_card")
     ) {
 
         actions.push(`
@@ -1185,7 +1506,7 @@ function createActions(
 
 
     if (
-        actions.length === 0
+        !actions.length
     ) {
 
         return `
@@ -1212,7 +1533,7 @@ function createActions(
 
 
 /* ======================================================
-   AFFICHAGE DES MEMBRES
+   AFFICHAGE
 ====================================================== */
 
 function renderMembers(
@@ -1255,7 +1576,7 @@ function renderMembers(
 
                     const rolesHTML =
 
-                        roles.length > 0
+                        roles.length
 
                             ?
 
@@ -1282,10 +1603,7 @@ function renderMembers(
                             `
 
                                 <span
-                                    class="
-                                        role
-                                        role-everyone
-                                    "
+                                    class="role"
                                 >
 
                                     @everyone
@@ -1302,8 +1620,6 @@ function renderMembers(
                         >
 
 
-                            <!-- AVATAR -->
-
                             <img
                                 class="member-avatar"
 
@@ -1312,18 +1628,12 @@ function renderMembers(
                                     getDefaultAvatar()
                                 )}"
 
-                                alt="Avatar de ${escapeHTML(
-                                    member.displayName ||
-                                    member.username ||
-                                    "membre"
-                                )}"
+                                alt="Avatar"
 
                                 loading="lazy"
 
                             >
 
-
-                            <!-- IDENTITÉ -->
 
                             <div
                                 class="member-name"
@@ -1372,8 +1682,6 @@ function renderMembers(
                             </div>
 
 
-                            <!-- RÔLES -->
-
                             <div
                                 class="member-roles"
                             >
@@ -1382,8 +1690,6 @@ function renderMembers(
 
                             </div>
 
-
-                            <!-- ACTIONS -->
 
                             <div
                                 class="member-actions"
@@ -1408,7 +1714,7 @@ function renderMembers(
 
 
 /* ======================================================
-   CHARGER LES MEMBRES
+   CHARGEMENT
 ====================================================== */
 
 async function loadMembers() {
@@ -1424,9 +1730,7 @@ async function loadMembers() {
 
         membersList.innerHTML = `
 
-            <div
-                class="message error"
-            >
+            <div class="message error">
 
                 ❌ Tu dois être connecté avec Discord.
 
@@ -1445,9 +1749,7 @@ async function loadMembers() {
     try {
 
 
-        /* ================================================
-           RÉCUPÉRER LES PERMISSIONS
-        ================================================ */
+        /* PERMISSIONS */
 
         const permissionsResponse =
             await fetch(
@@ -1479,7 +1781,6 @@ async function loadMembers() {
             throw new Error(
 
                 permissionsData.error ||
-
                 "Impossible de récupérer tes permissions."
 
             );
@@ -1491,9 +1792,7 @@ async function loadMembers() {
             permissionsData.permissions || [];
 
 
-        /* ================================================
-           RÉCUPÉRER LES MEMBRES
-        ================================================ */
+        /* MEMBRES */
 
         const membersResponse =
             await fetch(
@@ -1525,7 +1824,6 @@ async function loadMembers() {
             throw new Error(
 
                 membersData.error ||
-
                 "Impossible de récupérer les membres."
 
             );
@@ -1542,9 +1840,7 @@ async function loadMembers() {
         );
 
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Erreur membres :",
@@ -1554,9 +1850,7 @@ async function loadMembers() {
 
         membersList.innerHTML = `
 
-            <div
-                class="message error"
-            >
+            <div class="message error">
 
                 ❌ ${escapeHTML(
                     error.message
@@ -1592,9 +1886,7 @@ searchInput.addEventListener(
                 .toLowerCase();
 
 
-        if (
-            !query
-        ) {
+        if (!query) {
 
             renderMembers(
                 allMembers
@@ -1631,15 +1923,11 @@ searchInput.addEventListener(
 
                     return (
 
-                        name.includes(
-                            query
-                        )
+                        name.includes(query)
 
                         ||
 
-                        username.includes(
-                            query
-                        )
+                        username.includes(query)
 
                         ||
 
@@ -1651,9 +1939,7 @@ searchInput.addEventListener(
                                     role.name || ""
                                 )
                                     .toLowerCase()
-                                    .includes(
-                                        query
-                                    )
+                                    .includes(query)
 
                         )
 
@@ -1674,7 +1960,7 @@ searchInput.addEventListener(
 
 
 /* ======================================================
-   ACTIONS DES BOUTONS
+   ACTIONS
 ====================================================== */
 
 membersList.addEventListener(
@@ -1691,9 +1977,7 @@ membersList.addEventListener(
 
 
         if (!button) {
-
             return;
-
         }
 
 
@@ -1705,10 +1989,6 @@ membersList.addEventListener(
             button.dataset.memberId;
 
 
-        /* ================================================
-           BAN TEMPORAIRE
-        ================================================ */
-
         if (
             action === "temp-ban"
         ) {
@@ -1716,22 +1996,15 @@ membersList.addEventListener(
             alert(
 
                 "⏳ Ban temporaire\n\n" +
-
                 "Membre : " +
                 memberId +
-
                 "\n\n" +
-
-                "Le système de ban temporaire sera connecté au bot à l'étape suivante."
+                "Action à connecter au bot."
 
             );
 
         }
 
-
-        /* ================================================
-           BAN DÉFINITIF
-        ================================================ */
 
         if (
             action === "perm-ban"
@@ -1740,22 +2013,15 @@ membersList.addEventListener(
             alert(
 
                 "🔨 Ban définitif\n\n" +
-
                 "Membre : " +
                 memberId +
-
                 "\n\n" +
-
-                "Le système de ban définitif sera connecté au bot à l'étape suivante."
+                "Action à connecter au bot."
 
             );
 
         }
 
-
-        /* ================================================
-           RÔLES
-        ================================================ */
 
         if (
             action === "manage-role"
@@ -1764,22 +2030,15 @@ membersList.addEventListener(
             alert(
 
                 "🎭 Gestion des rôles\n\n" +
-
                 "Membre : " +
                 memberId +
-
                 "\n\n" +
-
-                "La gestion des rôles sera connectée au bot à l'étape suivante."
+                "Action à connecter au bot."
 
             );
 
         }
 
-
-        /* ================================================
-           SANCTIONS
-        ================================================ */
 
         if (
             action === "sanctions"
@@ -1788,22 +2047,15 @@ membersList.addEventListener(
             alert(
 
                 "📋 Sanctions\n\n" +
-
                 "Membre : " +
                 memberId +
-
                 "\n\n" +
-
-                "Le système de sanctions sera connecté au bot à l'étape suivante."
+                "Action à connecter au bot."
 
             );
 
         }
 
-
-        /* ================================================
-           CARTE
-        ================================================ */
 
         if (
             action === "card"
@@ -1812,13 +2064,10 @@ membersList.addEventListener(
             alert(
 
                 "🪪 Carte du membre\n\n" +
-
                 "Membre : " +
                 memberId +
-
                 "\n\n" +
-
-                "La carte du membre sera connectée à l'étape suivante."
+                "Action à connecter."
 
             );
 
