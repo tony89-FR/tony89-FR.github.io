@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Test permissions</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #0f172a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #00d9ff;
+        }
+
+        pre {
+            background: #020617;
+            padding: 20px;
+            border-radius: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .success {
+            color: #4ade80;
+        }
+
+        .error {
+            color: #f87171;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🔐 Test des permissions Discord</h1>
+
+    <p id="status">
+        Vérification...
+    </p>
+
+    <pre id="result"></pre>
+
+    <script>
+
+        const API_URL =
+            "https://la-communaute-live-bot.de.deplexo.com";
+
+        const token =
+            localStorage.getItem("discord_session");
+
+        const status =
+            document.getElementById("status");
+
+        const result =
+            document.getElementById("result");
+
+
+        if (!token) {
+
+            status.className = "error";
+
+            status.textContent =
+                "❌ Aucun compte Discord connecté.";
+
+            result.textContent =
+                "Connecte-toi d'abord avec Discord sur le site.";
+
+        } else {
+
+            fetch(
+                `${API_URL}/auth/permissions`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            )
+
+            .then(response => {
+
+                return response.json()
+                    .then(data => ({
+                        status: response.status,
+                        data: data
+                    }));
+
+            })
+
+            .then(resultData => {
+
+                console.log(resultData);
+
+                if (resultData.status === 200) {
+
+                    status.className =
+                        "success";
+
+                    status.textContent =
+                        "✅ Permissions récupérées !";
+
+                } else {
+
+                    status.className =
+                        "error";
+
+                    status.textContent =
+                        "❌ Erreur API";
+
+                }
+
+                result.textContent =
+                    JSON.stringify(
+                        resultData.data,
+                        null,
+                        4
+                    );
+
+            })
+
+            .catch(error => {
+
+                status.className =
+                    "error";
+
+                status.textContent =
+                    "❌ Erreur de connexion";
+
+                result.textContent =
+                    error.toString();
+
+            });
+
+        }
+
+    </script>
+
+</body>
+</html>
