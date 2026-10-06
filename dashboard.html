@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tableau de bord — La communauté live</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(88, 101, 242, .18), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(0, 217, 255, .10), transparent 35%),
+                #080b14;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .dashboard {
+            width: min(1400px, 92%);
+            margin: 0 auto;
+            padding: 120px 0 60px;
+        }
+
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: clamp(2rem, 5vw, 3.2rem);
+        }
+
+        .hero p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 1.05rem;
+        }
+
+        .account-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(15, 23, 42, .72);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+        }
+
+        .account-name {
+            font-weight: 700;
+        }
+
+        .account-role {
+            margin-top: 4px;
+            color: #60a5fa;
+            font-size: .9rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 5px;
+            color: #4ade80;
+            font-size: .8rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 10px #4ade80;
+        }
+
+        .loading,
+        .error {
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(15, 23, 42, .8);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .error {
+            border-color: rgba(248, 113, 113, .3);
+            color: #fca5a5;
+        }
+
+        .section-title {
+            margin: 40px 0 18px;
+            font-size: 1.35rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+        }
+
+        .tool-card {
+            position: relative;
+            min-height: 150px;
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, .75);
+            border: 1px solid rgba(255,255,255,.07);
+            transition: .25s ease;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(88,101,242,.12),
+                transparent 60%
+            );
+            pointer-events: none;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96,165,250,.35);
+            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .tool-card h3 {
+            margin: 0 0 8px;
+            font-size: 1.05rem;
+        }
+
+        .tool-card p {
+            margin: 0;
+            color: #94a3b8;
+            font-size: .9rem;
+            line-height: 1.5;
+        }
+
+        .role-box {
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, .75);
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        .roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .role {
+            padding: 9px 13px;
+            border-radius: 999px;
+            background: rgba(88,101,242,.15);
+            border: 1px solid rgba(88,101,242,.25);
+            color: #c7d2fe;
+            font-size: .9rem;
+        }
+
+        .permission-count {
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .logout {
+            margin-top: 35px;
+            padding: 12px 18px;
+            border: 1px solid rgba(248,113,113,.25);
+            border-radius: 12px;
+            background: rgba(127,29,29,.18);
+            color: #fca5a5;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout:hover {
+            background: rgba(127,29,29,.3);
+        }
+
+        @media (max-width: 800px) {
+
+            .dashboard {
+                padding-top: 100px;
+            }
+
+            .hero {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .account-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar"></nav>
+
+    <main class="dashboard">
+
+        <div id="loading" class="loading">
+            🔄 Chargement de ton espace...
+        </div>
+
+        <div id="content" style="display:none;">
+
+            <section class="hero">
+
+                <div>
+                    <h1>👋 Bonjour !</h1>
+                    <p>
+                        Bienvenue dans le tableau de bord de
+                        <strong>La communauté live</strong>.
+                    </p>
+                </div>
+
+                <div class="account-card">
+
+                    <img
+                        id="avatar"
+                        class="avatar"
+                        src=""
+                        alt="Avatar Discord"
+                    >
+
+                    <div>
+
+                        <div
+                            id="username"
+                            class="account-name">
+                        </div>
+
+                        <div
+                            id="mainRole"
+                            class="account-role">
+                        </div>
+
+                        <div class="status">
+                            <span class="status-dot"></span>
+                            Connecté avec Discord
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- OUTILS -->
+
+            <h2 class="section-title">
+                🛠️ Tes outils
+            </h2>
+
+            <section
+                id="tools"
+                class="tools-grid">
+            </section>
+
+
+            <!-- RÔLES -->
+
+            <h2 class="section-title">
+                🛡️ Tes rôles Discord
+            </h2>
+
+            <section class="role-box">
+
+                <div
+                    id="roles"
+                    class="roles">
+                </div>
+
+                <div
+                    id="permissionCount"
+                    class="permission-count">
+                </div>
+
+            </section>
+
+
+            <button
+                id="logout"
+                class="logout">
+                🚪 Se déconnecter
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- NAVBAR -->
+
+    <script src="js/navbar.js"></script>
+
+
+    <script>
+
+        const API_URL =
+            "https://la-communaute-live-bot.de.deplexo.com";
+
+
+        /*
+         * Chaque outil correspond à une permission
+         * définie côté serveur.
+         */
+
+        const TOOLS = [
+
+            {
+                permission: "dashboard",
+                icon: "📊",
+                title: "Tableau de bord",
+                description:
+                    "Accéder à ton espace personnel."
+            },
+
+            {
+                permission: "level_money",
+                icon: "💰",
+                title: "Niveau + argent",
+                description:
+                    "Consulter les informations de niveau et d'argent."
+            },
+
+            {
+                permission: "member_list",
+                icon: "👥",
+                title: "Liste des membres",
+                description:
+                    "Consulter les membres du serveur."
+            },
+
+            {
+                permission: "temp_ban",
+                icon: "⏳",
+                title: "Ban temporaire",
+                description:
+                    "Gérer les bannissements temporaires."
+            },
+
+            {
+                permission: "perm_ban",
+                icon: "🔨",
+                title: "Ban définitif",
+                description:
+                    "Gérer les bannissements définitifs."
+            },
+
+            {
+                permission: "manage_roles",
+                icon: "🎭",
+                title: "Gestion des rôles",
+                description:
+                    "Ajouter ou retirer des rôles Discord."
+            },
+
+            {
+                permission: "sanctions_total",
+                icon: "⚠️",
+                title: "Sanctions",
+                description:
+                    "Consulter les sanctions des membres."
+            },
+
+            {
+                permission: "view_own_sanctions",
+                icon: "📋",
+                title: "Mes sanctions",
+                description:
+                    "Consulter tes propres sanctions."
+            },
+
+            {
+                permission: "own_card",
+                icon: "🪪",
+                title: "Ma carte",
+                description:
+                    "Afficher ta carte membre."
+            },
+
+            {
+                permission: "discord_mobile",
+                icon: "📱",
+                title: "Discord mobile",
+                description:
+                    "Accéder aux informations pour l'application mobile."
+            },
+
+            {
+                permission: "discord_pc",
+                icon: "💻",
+                title: "Discord PC",
+                description:
+                    "Accéder aux informations pour Discord PC."
+            },
+
+            {
+                permission: "server_logs",
+                icon: "📜",
+                title: "Logs du serveur",
+                description:
+                    "Consulter les journaux du serveur."
+            },
+
+            {
+                permission: "create_event",
+                icon: "📅",
+                title: "Créer un événement",
+                description:
+                    "Créer un nouvel événement Discord."
+            },
+
+            {
+                permission: "create_announcement",
+                icon: "📢",
+                title: "Créer une annonce",
+                description:
+                    "Créer une annonce pour la communauté."
+            },
+
+            {
+                permission: "deplexo_links",
+                icon: "🔗",
+                title: "Liens Deplexo",
+                description:
+                    "Accéder aux liens et informations Deplexo."
+            },
+
+            {
+                permission: "bot_status",
+                icon: "🤖",
+                title: "Statut du bot",
+                description:
+                    "Consulter l'état du bot Discord."
+            }
+
+        ];
+
+
+        function getAvatarURL(user) {
+
+            if (!user.avatar) {
+
+                return "https://cdn.discordapp.com/embed/avatars/0.png";
+
+            }
+
+            return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
+
+        }
+
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+
+        }
+
+
+        async function loadDashboard() {
+
+            const token =
+                localStorage.getItem("discord_session");
+
+
+            if (!token) {
+
+                showError(
+                    "Tu dois être connecté avec Discord pour accéder au tableau de bord."
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${API_URL}/auth/permissions`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.error ||
+                        "Impossible de récupérer les permissions."
+                    );
+
+                }
+
+
+                renderDashboard(data);
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showError(error.message);
+
+            }
+
+        }
+
+
+        function renderDashboard(data) {
+
+            document.getElementById("loading")
+                .style.display = "none";
+
+            document.getElementById("content")
+                .style.display = "block";
+
+
+            const user =
+                data.user;
+
+
+            document.getElementById("username")
+                .textContent =
+                    user.username;
+
+
+            document.getElementById("avatar")
+                .src =
+                    getAvatarURL(user);
+
+
+            const roles =
+                data.roles || [];
+
+
+            const permissions =
+                data.permissions || [];
+
+
+            /*
+             * Rôle principal :
+             * premier rôle reconnu par le serveur.
+             */
+
+            const mainRole =
+                roles.length
+                    ? roles[0].name
+                    : "@everyone";
+
+
+            document.getElementById("mainRole")
+                .textContent =
+                    mainRole;
+
+
+            /*
+             * Affichage des rôles
+             */
+
+            const rolesContainer =
+                document.getElementById("roles");
+
+
+            if (!roles.length) {
+
+                rolesContainer.innerHTML =
+                    `<span class="role">@everyone</span>`;
+
+            } else {
+
+                rolesContainer.innerHTML =
+                    roles
+                        .map(
+                            role =>
+                                `<span class="role">${escapeHTML(role.name)}</span>`
+                        )
+                        .join("");
+
+            }
+
+
+            document.getElementById("permissionCount")
+                .textContent =
+                    `${permissions.length} permission(s) active(s)`;
+
+
+            /*
+             * Affichage des outils autorisés
+             */
+
+            const toolsContainer =
+                document.getElementById("tools");
+
+
+            const allowedTools =
+                TOOLS.filter(
+                    tool =>
+                        permissions.includes(
+                            tool.permission
+                        )
+                );
+
+
+            if (!allowedTools.length) {
+
+                toolsContainer.innerHTML = `
+                    <div class="error">
+                        ❌ Aucun outil n'est disponible pour ton compte.
+                    </div>
+                `;
+
+                return;
+
+            }
+
+
+            toolsContainer.innerHTML =
+                allowedTools
+                    .map(
+                        tool => `
+                            <article class="tool-card">
+
+                                <div class="tool-icon">
+                                    ${tool.icon}
+                                </div>
+
+                                <h3>
+                                    ${escapeHTML(tool.title)}
+                                </h3>
+
+                                <p>
+                                    ${escapeHTML(tool.description)}
+                                </p>
+
+                            </article>
+                        `
+                    )
+                    .join("");
+
+        }
+
+
+        function showError(message) {
+
+            document.getElementById("loading")
+                .className = "error";
+
+            document.getElementById("loading")
+                .textContent =
+                    `❌ ${message}`;
+
+        }
+
+
+        document.getElementById("logout")
+            .addEventListener(
+                "click",
+                () => {
+
+                    localStorage.removeItem(
+                        "discord_session"
+                    );
+
+                    window.location.href =
+                        "index.html";
+
+                }
+            );
+
+
+        loadDashboard();
+
+    </script>
+
+</body>
+</html>
