@@ -18,6 +18,7 @@
             box-sizing: border-box;
         }
 
+
         body {
 
             margin: 0;
@@ -46,53 +47,71 @@
 
         }
 
+
         .page {
 
-            width: min(1400px, 92%);
+            width:
+                min(1500px, 94%);
 
-            margin: auto;
+            margin:
+                0 auto;
 
             padding:
                 120px 0 60px;
 
         }
 
-        .header {
 
-            display: flex;
+        /* ==================================================
+           EN-TÊTE
+        ================================================== */
+
+        .page-header {
+
+            display:
+                flex;
 
             justify-content:
                 space-between;
 
-            align-items: center;
+            align-items:
+                center;
 
-            gap: 20px;
+            gap:
+                20px;
 
-            margin-bottom: 30px;
+            margin-bottom:
+                25px;
 
         }
 
-        .header h1 {
 
-            margin: 0 0 8px;
+        .page-title h1 {
+
+            margin:
+                0 0 7px;
 
             font-size:
-                clamp(2rem, 5vw, 3rem);
+                clamp(2rem, 4vw, 2.8rem);
 
         }
 
-        .header p {
 
-            margin: 0;
+        .page-title p {
 
-            color: #94a3b8;
+            margin:
+                0;
+
+            color:
+                #94a3b8;
 
         }
 
-        .back {
+
+        .back-button {
 
             padding:
-                12px 18px;
+                11px 17px;
 
             border-radius:
                 12px;
@@ -102,7 +121,7 @@
 
             border:
                 1px solid
-                rgba(88,101,242,.3);
+                rgba(88,101,242,.30);
 
             color:
                 #c7d2fe;
@@ -113,45 +132,64 @@
             transition:
                 .2s;
 
+            white-space:
+                nowrap;
+
         }
 
-        .back:hover {
+
+        .back-button:hover {
 
             background:
-                rgba(88,101,242,.25);
+                rgba(88,101,242,.28);
+
+            transform:
+                translateY(-2px);
 
         }
+
+
+        /* ==================================================
+           BARRE DE RECHERCHE
+        ================================================== */
 
         .toolbar {
 
-            display: flex;
+            display:
+                flex;
 
-            gap: 15px;
+            align-items:
+                center;
 
-            flex-wrap: wrap;
+            gap:
+                12px;
 
-            margin-bottom: 25px;
+            margin-bottom:
+                15px;
 
         }
 
+
         #search {
 
-            flex: 1;
+            flex:
+                1;
 
-            min-width: 240px;
+            min-width:
+                200px;
 
             padding:
-                15px 18px;
+                14px 17px;
 
             border-radius:
-                14px;
+                13px;
 
             border:
                 1px solid
                 rgba(255,255,255,.08);
 
             background:
-                rgba(15,23,42,.8);
+                rgba(15,23,42,.85);
 
             color:
                 white;
@@ -160,31 +198,29 @@
                 none;
 
             font-size:
-                1rem;
+                .95rem;
 
         }
+
 
         #search:focus {
 
             border-color:
-                rgba(96,165,250,.5);
+                rgba(96,165,250,.55);
 
         }
 
-        .count {
 
-            display: flex;
-
-            align-items: center;
+        .member-count {
 
             padding:
-                0 18px;
+                13px 17px;
 
             border-radius:
-                14px;
+                13px;
 
             background:
-                rgba(15,23,42,.8);
+                rgba(15,23,42,.85);
 
             border:
                 1px solid
@@ -193,74 +229,92 @@
             color:
                 #94a3b8;
 
+            white-space:
+                nowrap;
+
         }
 
-        .members {
 
-            display: grid;
+        /* ==================================================
+           LISTE
+        ================================================== */
+
+        .members-list {
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            gap:
+                8px;
+
+        }
+
+
+        .member-row {
+
+            display:
+                grid;
 
             grid-template-columns:
-                repeat(
-                    auto-fill,
-                    minmax(280px, 1fr)
-                );
+                45px
+                minmax(180px, 1fr)
+                minmax(160px, 1fr)
+                minmax(160px, 1fr)
+                minmax(420px, auto);
+
+            align-items:
+                center;
 
             gap:
-                18px;
+                14px;
 
-        }
-
-        .member {
-
-            display: flex;
-
-            align-items: center;
-
-            gap:
-                15px;
+            min-height:
+                76px;
 
             padding:
-                18px;
+                10px 14px;
 
             border-radius:
-                18px;
+                14px;
 
             background:
-                rgba(15,23,42,.75);
+                rgba(15,23,42,.72);
 
             border:
                 1px solid
-                rgba(255,255,255,.07);
+                rgba(255,255,255,.06);
 
             transition:
-                .2s ease;
+                .18s ease;
 
         }
 
-        .member:hover {
 
-            transform:
-                translateY(-3px);
+        .member-row:hover {
+
+            background:
+                rgba(20,30,52,.95);
 
             border-color:
-                rgba(96,165,250,.35);
-
-            box-shadow:
-                0 10px 30px
-                rgba(0,0,0,.2);
+                rgba(96,165,250,.25);
 
         }
 
-        .avatar {
+
+        /* ==================================================
+           AVATAR
+        ================================================== */
+
+        .member-avatar {
 
             width:
-                58px;
+                45px;
 
             height:
-                58px;
-
-            flex-shrink:
-                0;
+                45px;
 
             border-radius:
                 50%;
@@ -273,20 +327,26 @@
 
         }
 
-        .info {
+
+        /* ==================================================
+           IDENTITÉ
+        ================================================== */
+
+        .member-name {
 
             min-width:
                 0;
 
-            flex:
-                1;
-
         }
 
-        .name {
+
+        .display-name {
 
             font-weight:
                 700;
+
+            white-space:
+                nowrap;
 
             overflow:
                 hidden;
@@ -294,25 +354,37 @@
             text-overflow:
                 ellipsis;
 
-            white-space:
-                nowrap;
-
         }
+
 
         .username {
 
             margin-top:
-                4px;
+                3px;
 
             color:
                 #64748b;
 
             font-size:
-                .85rem;
+                .78rem;
+
+            white-space:
+                nowrap;
+
+            overflow:
+                hidden;
+
+            text-overflow:
+                ellipsis;
 
         }
 
-        .roles {
+
+        /* ==================================================
+           RÔLES
+        ================================================== */
+
+        .member-roles {
 
             display:
                 flex;
@@ -323,15 +395,19 @@
             gap:
                 5px;
 
-            margin-top:
-                9px;
-
         }
+
 
         .role {
 
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
             padding:
-                4px 8px;
+                5px 8px;
 
             border-radius:
                 999px;
@@ -339,61 +415,258 @@
             background:
                 rgba(88,101,242,.14);
 
-            color:
-                #c7d2fe;
-
             border:
                 1px solid
-                rgba(88,101,242,.25);
+                rgba(88,101,242,.22);
+
+            color:
+                #c7d2fe;
 
             font-size:
                 .72rem;
 
+            white-space:
+                nowrap;
+
         }
+
+
+        .role-everyone {
+
+            color:
+                #94a3b8;
+
+            background:
+                rgba(148,163,184,.08);
+
+            border-color:
+                rgba(148,163,184,.15);
+
+        }
+
 
         .bot {
 
+            margin-left:
+                5px;
+
+            padding:
+                3px 6px;
+
+            border-radius:
+                6px;
+
             background:
-                rgba(34,197,94,.15);
+                rgba(34,197,94,.13);
 
             color:
                 #86efac;
 
-            border-color:
-                rgba(34,197,94,.25);
+            font-size:
+                .65rem;
 
         }
+
+
+        /* ==================================================
+           ACTIONS
+        ================================================== */
+
+        .member-actions {
+
+            display:
+                flex;
+
+            justify-content:
+                flex-end;
+
+            align-items:
+                center;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                6px;
+
+        }
+
+
+        .action-button {
+
+            border:
+                1px solid
+                rgba(255,255,255,.09);
+
+            border-radius:
+                8px;
+
+            padding:
+                7px 9px;
+
+            background:
+                rgba(30,41,59,.75);
+
+            color:
+                #e2e8f0;
+
+            cursor:
+                pointer;
+
+            font-size:
+                .73rem;
+
+            transition:
+                .18s;
+
+            white-space:
+                nowrap;
+
+        }
+
+
+        .action-button:hover {
+
+            transform:
+                translateY(-1px);
+
+            background:
+                rgba(51,65,85,.95);
+
+        }
+
+
+        .action-temp {
+
+            border-color:
+                rgba(251,191,36,.25);
+
+            color:
+                #fcd34d;
+
+        }
+
+
+        .action-perm {
+
+            border-color:
+                rgba(248,113,113,.25);
+
+            color:
+                #fca5a5;
+
+        }
+
+
+        .action-role {
+
+            border-color:
+                rgba(167,139,250,.25);
+
+            color:
+                #c4b5fd;
+
+        }
+
+
+        .action-sanction {
+
+            border-color:
+                rgba(251,146,60,.25);
+
+            color:
+                #fdba74;
+
+        }
+
+
+        .action-card {
+
+            border-color:
+                rgba(96,165,250,.25);
+
+            color:
+                #93c5fd;
+
+        }
+
+
+        /* ==================================================
+           MESSAGE
+        ================================================== */
 
         .message {
 
             padding:
                 30px;
 
+            text-align:
+                center;
+
             border-radius:
-                18px;
+                15px;
 
             background:
                 rgba(15,23,42,.8);
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
 
             color:
                 #94a3b8;
 
         }
 
-        .error {
+
+        .message.error {
 
             color:
                 #fca5a5;
 
-            border:
-                1px solid
+            border-color:
                 rgba(248,113,113,.25);
 
         }
 
-        @media (max-width:700px) {
 
-            .header {
+        /* ==================================================
+           RESPONSIVE
+        ================================================== */
+
+        @media (max-width:1100px) {
+
+            .member-row {
+
+                grid-template-columns:
+                    45px
+                    minmax(170px, 1fr)
+                    minmax(140px, 1fr)
+                    minmax(280px, auto);
+
+            }
+
+            .member-roles {
+
+                display:
+                    none;
+
+            }
+
+        }
+
+
+        @media (max-width:800px) {
+
+            .page {
+
+                padding-top:
+                    100px;
+
+            }
+
+
+            .page-header {
 
                 flex-direction:
                     column;
@@ -403,10 +676,101 @@
 
             }
 
-            .back {
+
+            .back-button {
 
                 text-align:
                     center;
+
+            }
+
+
+            .toolbar {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
+            }
+
+
+            .member-count {
+
+                text-align:
+                    center;
+
+            }
+
+
+            .member-row {
+
+                grid-template-columns:
+                    42px
+                    1fr;
+
+                padding:
+                    12px;
+
+            }
+
+
+            .member-avatar {
+
+                width:
+                    42px;
+
+                height:
+                    42px;
+
+            }
+
+
+            .member-name {
+
+                grid-column:
+                    2;
+
+            }
+
+
+            .member-roles {
+
+                display:
+                    flex;
+
+                grid-column:
+                    2;
+
+            }
+
+
+            .member-actions {
+
+                grid-column:
+                    1 / -1;
+
+                justify-content:
+                    flex-start;
+
+                padding-top:
+                    5px;
+
+                border-top:
+                    1px solid
+                    rgba(255,255,255,.05);
+
+            }
+
+
+            .action-button {
+
+                flex:
+                    1;
+
+                min-width:
+                    130px;
 
             }
 
@@ -429,16 +793,21 @@
 <main class="page">
 
 
-    <section class="header">
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
 
-        <div>
+    <header class="page-header">
+
+
+        <div class="page-title">
 
             <h1>
                 👥 Membres
             </h1>
 
             <p>
-                Membres de La communauté live
+                Gestion des membres de La communauté live
             </p>
 
         </div>
@@ -446,43 +815,57 @@
 
         <a
             href="dashboard.html"
-            class="back"
+            class="back-button"
         >
             ← Retour au dashboard
         </a>
 
-    </section>
+
+    </header>
 
 
-    <section class="toolbar">
+    <!-- ==================================================
+         RECHERCHE
+    ================================================== -->
+
+    <div class="toolbar">
+
 
         <input
             id="search"
             type="search"
-            placeholder="🔎 Rechercher un membre..."
+            placeholder="🔎 Rechercher un pseudo, un rôle..."
             autocomplete="off"
         >
 
+
         <div
-            id="count"
-            class="count"
+            id="memberCount"
+            class="member-count"
         >
             Chargement...
         </div>
 
-    </section>
 
+    </div>
+
+
+    <!-- ==================================================
+         LISTE
+    ================================================== -->
 
     <section
-        id="members"
-        class="members"
+        id="membersList"
+        class="members-list"
     >
+
 
         <div class="message">
 
             🔄 Chargement des membres...
 
         </div>
+
 
     </section>
 
@@ -495,16 +878,27 @@
 
 <script>
 
+
+/* ======================================================
+   CONFIGURATION
+====================================================== */
+
 const API_URL =
     "https://la-communaute-live-bot.de.deplexo.com";
 
 
 let allMembers = [];
 
+let myPermissions = [];
 
-const membersContainer =
+
+/* ======================================================
+   ÉLÉMENTS
+====================================================== */
+
+const membersList =
     document.getElementById(
-        "members"
+        "membersList"
     );
 
 
@@ -514,11 +908,15 @@ const searchInput =
     );
 
 
-const count =
+const memberCount =
     document.getElementById(
-        "count"
+        "memberCount"
     );
 
+
+/* ======================================================
+   SÉCURITÉ HTML
+====================================================== */
 
 function escapeHTML(value) {
 
@@ -552,17 +950,266 @@ function escapeHTML(value) {
 }
 
 
-function renderMembers(
-    list
+/* ======================================================
+   AVATAR
+====================================================== */
+
+function getDefaultAvatar() {
+
+    return (
+        "https://cdn.discordapp.com/" +
+        "embed/avatars/0.png"
+    );
+
+}
+
+
+/* ======================================================
+   VÉRIFICATION PERMISSION
+====================================================== */
+
+function hasPermission(
+    permission
 ) {
 
-    count.textContent =
-        `${list.length} membre(s)`;
+    return myPermissions.includes(
+        permission
+    );
+
+}
 
 
-    if (!list.length) {
+/* ======================================================
+   ACTIONS DISPONIBLES
+====================================================== */
 
-        membersContainer.innerHTML = `
+function createActions(
+    member
+) {
+
+    const actions = [];
+
+
+    /*
+       BAN TEMPORAIRE
+    */
+
+    if (
+        hasPermission(
+            "temp_ban"
+        )
+    ) {
+
+        actions.push(`
+
+            <button
+
+                class="
+                    action-button
+                    action-temp
+                "
+
+                data-action="temp-ban"
+
+                data-member-id="${escapeHTML(
+                    member.id
+                )}"
+
+            >
+
+                ⏳ Ban temporaire
+
+            </button>
+
+        `);
+
+    }
+
+
+    /*
+       BAN DÉFINITIF
+    */
+
+    if (
+        hasPermission(
+            "perm_ban"
+        )
+    ) {
+
+        actions.push(`
+
+            <button
+
+                class="
+                    action-button
+                    action-perm
+                "
+
+                data-action="perm-ban"
+
+                data-member-id="${escapeHTML(
+                    member.id
+                )}"
+
+            >
+
+                🔨 Ban définitif
+
+            </button>
+
+        `);
+
+    }
+
+
+    /*
+       AJOUTER / RETIRER UN RÔLE
+    */
+
+    if (
+        hasPermission(
+            "manage_roles"
+        )
+    ) {
+
+        actions.push(`
+
+            <button
+
+                class="
+                    action-button
+                    action-role
+                "
+
+                data-action="manage-role"
+
+                data-member-id="${escapeHTML(
+                    member.id
+                )}"
+
+            >
+
+                🎭 Rôles
+
+            </button>
+
+        `);
+
+    }
+
+
+    /*
+       SANCTIONS
+    */
+
+    if (
+        hasPermission(
+            "sanctions_total"
+        )
+    ) {
+
+        actions.push(`
+
+            <button
+
+                class="
+                    action-button
+                    action-sanction
+                "
+
+                data-action="sanctions"
+
+                data-member-id="${escapeHTML(
+                    member.id
+                )}"
+
+            >
+
+                📋 Sanctions
+
+            </button>
+
+        `);
+
+    }
+
+
+    /*
+       CARTE
+    */
+
+    if (
+        hasPermission(
+            "own_card"
+        )
+    ) {
+
+        actions.push(`
+
+            <button
+
+                class="
+                    action-button
+                    action-card
+                "
+
+                data-action="card"
+
+                data-member-id="${escapeHTML(
+                    member.id
+                )}"
+
+            >
+
+                🪪 Carte
+
+            </button>
+
+        `);
+
+    }
+
+
+    if (!actions.length) {
+
+        return `
+
+            <span
+                style="
+                    color:#64748b;
+                    font-size:.75rem;
+                "
+            >
+
+                Aucune action disponible
+
+            </span>
+
+        `;
+
+    }
+
+
+    return actions.join("");
+
+}
+
+
+/* ======================================================
+   AFFICHER LES MEMBRES
+====================================================== */
+
+function renderMembers(
+    members
+) {
+
+    memberCount.textContent =
+        `${members.length} membre(s)`;
+
+
+    if (!members.length) {
+
+        membersList.innerHTML = `
 
             <div class="message">
 
@@ -577,130 +1224,178 @@ function renderMembers(
     }
 
 
-    membersContainer.innerHTML =
+    membersList.innerHTML =
 
-        list.map(
-            member => {
+        members
 
-                const roles =
-                    member.roles || [];
-
-
-                const rolesHTML =
-
-                    roles.length
-
-                        ?
-
-                        roles
-
-                            .map(
-                                role => `
-
-                                    <span
-                                        class="role"
-                                    >
-
-                                        ${escapeHTML(
-                                            role.name
-                                        )}
-
-                                    </span>
-
-                                `
-                            )
-
-                            .join("")
-
-                        :
-
-                        `
-
-                            <span class="role">
-
-                                @everyone
-
-                            </span>
-
-                        `;
+            .map(
+                member => {
 
 
-                return `
+                    const roles =
+                        member.roles || [];
 
-                    <article class="member">
+
+                    const rolesHTML =
+
+                        roles.length
+
+                            ?
+
+                            roles
+
+                                .map(
+                                    role => `
+
+                                        <span
+                                            class="role"
+                                        >
+
+                                            ${escapeHTML(
+                                                role.name
+                                            )}
+
+                                        </span>
+
+                                    `
+                                )
+
+                                .join("")
+
+                            :
+
+                            `
+
+                                <span
+                                    class="
+                                        role
+                                        role-everyone
+                                    "
+                                >
+
+                                    @everyone
+
+                                </span>
+
+                            `;
 
 
-                        <img
+                    return `
 
-                            class="avatar"
-
-                            src="${escapeHTML(
-                                member.avatar
-                            )}"
-
-                            alt="Avatar"
-
-                            loading="lazy"
-
+                        <article
+                            class="member-row"
                         >
 
 
-                        <div class="info">
+                            <!-- AVATAR -->
+
+                            <img
+
+                                class="member-avatar"
+
+                                src="${escapeHTML(
+                                    member.avatar ||
+                                    getDefaultAvatar()
+                                )}"
+
+                                alt="Avatar"
+
+                                loading="lazy"
+
+                            >
 
 
-                            <div class="name">
+                            <!-- IDENTITÉ -->
 
-                                ${escapeHTML(
-                                    member.displayName
-                                )}
+                            <div
+                                class="member-name"
+                            >
 
-                                ${
-                                    member.bot
-                                        ?
-                                        `
-                                            <span class="role bot">
-                                                BOT
-                                            </span>
-                                        `
-                                        :
-                                        ""
-                                }
+
+                                <div
+                                    class="display-name"
+                                >
+
+                                    ${escapeHTML(
+                                        member.displayName
+                                    )}
+
+                                    ${
+                                        member.bot
+                                            ?
+
+                                            `
+                                                <span
+                                                    class="bot"
+                                                >
+                                                    BOT
+                                                </span>
+                                            `
+
+                                            :
+
+                                            ""
+                                    }
+
+                                </div>
+
+
+                                <div
+                                    class="username"
+                                >
+
+                                    @${escapeHTML(
+                                        member.username
+                                    )}
+
+                                </div>
+
 
                             </div>
 
 
-                            <div class="username">
+                            <!-- RÔLES -->
 
-                                @${escapeHTML(
-                                    member.username
-                                )}
-
-                            </div>
-
-
-                            <div class="roles">
+                            <div
+                                class="member-roles"
+                            >
 
                                 ${rolesHTML}
 
                             </div>
 
 
-                        </div>
+                            <!-- ACTIONS -->
+
+                            <div
+                                class="member-actions"
+                            >
+
+                                ${createActions(
+                                    member
+                                )}
+
+                            </div>
 
 
-                    </article>
+                        </article>
 
-                `;
+                    `;
 
-            }
-        )
+                }
+            )
 
-        .join("");
+            .join("");
 
 }
 
 
+/* ======================================================
+   CHARGEMENT DES MEMBRES
+====================================================== */
+
 async function loadMembers() {
+
 
     const token =
         localStorage.getItem(
@@ -710,9 +1405,14 @@ async function loadMembers() {
 
     if (!token) {
 
-        membersContainer.innerHTML = `
+        membersList.innerHTML = `
 
-            <div class="message error">
+            <div
+                class="
+                    message
+                    error
+                "
+            >
 
                 ❌ Tu dois être connecté avec Discord.
 
@@ -727,7 +1427,60 @@ async function loadMembers() {
 
     try {
 
-        const response =
+
+        /*
+           On récupère d'abord
+           les permissions de l'utilisateur connecté.
+        */
+
+        const permissionsResponse =
+            await fetch(
+
+                `${API_URL}/auth/permissions`,
+
+                {
+
+                    headers: {
+
+                        Authorization:
+                            `Bearer ${token}`
+
+                    }
+
+                }
+
+            );
+
+
+        const permissionsData =
+            await permissionsResponse.json();
+
+
+        if (
+            !permissionsResponse.ok
+        ) {
+
+            throw new Error(
+
+                permissionsData.error ||
+
+                "Impossible de récupérer tes permissions."
+
+            );
+
+        }
+
+
+        myPermissions =
+            permissionsData.permissions || [];
+
+
+        /*
+           Ensuite on récupère
+           les membres.
+        */
+
+        const membersResponse =
             await fetch(
 
                 `${API_URL}/members`,
@@ -746,15 +1499,17 @@ async function loadMembers() {
             );
 
 
-        const data =
-            await response.json();
+        const membersData =
+            await membersResponse.json();
 
 
-        if (!response.ok) {
+        if (
+            !membersResponse.ok
+        ) {
 
             throw new Error(
 
-                data.error ||
+                membersData.error ||
 
                 "Impossible de récupérer les membres."
 
@@ -764,7 +1519,7 @@ async function loadMembers() {
 
 
         allMembers =
-            data.members || [];
+            membersData.members || [];
 
 
         renderMembers(
@@ -774,14 +1529,20 @@ async function loadMembers() {
 
     } catch (error) {
 
+
         console.error(
             error
         );
 
 
-        membersContainer.innerHTML = `
+        membersList.innerHTML = `
 
-            <div class="message error">
+            <div
+                class="
+                    message
+                    error
+                "
+            >
 
                 ❌ ${escapeHTML(
                     error.message
@@ -796,11 +1557,16 @@ async function loadMembers() {
 }
 
 
+/* ======================================================
+   RECHERCHE
+====================================================== */
+
 searchInput.addEventListener(
 
     "input",
 
     () => {
+
 
         const query =
             searchInput.value
@@ -822,29 +1588,61 @@ searchInput.addEventListener(
         const filtered =
             allMembers.filter(
 
-                member =>
+                member => {
 
-                    member.displayName
-                        .toLowerCase()
-                        .includes(query)
 
-                    ||
+                    const name =
+                        (
+                            member.displayName ||
+                            ""
+                        )
+                            .toLowerCase();
 
-                    member.username
-                        .toLowerCase()
-                        .includes(query)
 
-                    ||
+                    const username =
+                        (
+                            member.username ||
+                            ""
+                        )
+                            .toLowerCase();
 
-                    member.roles.some(
 
-                        role =>
+                    const roles =
+                        (
+                            member.roles ||
+                            []
+                        );
 
-                            role.name
-                                .toLowerCase()
-                                .includes(query)
 
-                    )
+                    return (
+
+                        name.includes(
+                            query
+                        )
+
+                        ||
+
+                        username.includes(
+                            query
+                        )
+
+                        ||
+
+                        roles.some(
+
+                            role =>
+
+                                role.name
+                                    .toLowerCase()
+                                    .includes(
+                                        query
+                                    )
+
+                        )
+
+                    );
+
+                }
 
             );
 
@@ -857,6 +1655,130 @@ searchInput.addEventListener(
 
 );
 
+
+/* ======================================================
+   CLICS SUR LES ACTIONS
+====================================================== */
+
+membersList.addEventListener(
+
+    "click",
+
+    event => {
+
+
+        const button =
+            event.target.closest(
+                ".action-button"
+            );
+
+
+        if (!button) {
+
+            return;
+
+        }
+
+
+        const action =
+            button.dataset.action;
+
+
+        const memberId =
+            button.dataset.memberId;
+
+
+        /*
+           Pour l'instant,
+           on prépare les actions.
+
+           Les vraies actions Discord
+           seront connectées ensuite
+           au backend.
+        */
+
+        if (
+            action === "temp-ban"
+        ) {
+
+            alert(
+                "⏳ Ban temporaire\n\n" +
+                "Membre : " +
+                memberId +
+                "\n\n" +
+                "Action à connecter au bot."
+            );
+
+        }
+
+
+        if (
+            action === "perm-ban"
+        ) {
+
+            alert(
+                "🔨 Ban définitif\n\n" +
+                "Membre : " +
+                memberId +
+                "\n\n" +
+                "Action à connecter au bot."
+            );
+
+        }
+
+
+        if (
+            action === "manage-role"
+        ) {
+
+            alert(
+                "🎭 Gestion des rôles\n\n" +
+                "Membre : " +
+                memberId +
+                "\n\n" +
+                "Action à connecter au bot."
+            );
+
+        }
+
+
+        if (
+            action === "sanctions"
+        ) {
+
+            alert(
+                "📋 Sanctions\n\n" +
+                "Membre : " +
+                memberId +
+                "\n\n" +
+                "Action à connecter au bot."
+            );
+
+        }
+
+
+        if (
+            action === "card"
+        ) {
+
+            alert(
+                "🪪 Carte du membre\n\n" +
+                "Membre : " +
+                memberId +
+                "\n\n" +
+                "Action à connecter."
+            );
+
+        }
+
+    }
+
+);
+
+
+/* ======================================================
+   DÉMARRAGE
+====================================================== */
 
 loadMembers();
 
