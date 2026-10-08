@@ -1,168 +1,641 @@
-/* =========================================================
+/* =====================================================
    NAVBAR - LA COMMUNAUTÉ LIVE
-   ========================================================= */
+===================================================== */
 
 (() => {
+
+    "use strict";
+
+
+    /* =================================================
+       CONFIGURATION
+    ================================================= */
 
     const API_URL =
         "https://la-communaute-live-bot.de.deplexo.com";
 
-    const navbar = document.getElementById("navbar");
+    const FRONTEND_URL =
+        "https://tony89-fr.github.io";
+
+
+    /* =================================================
+       ÉLÉMENTS
+    ================================================= */
+
+    const navbar =
+        document.getElementById("navbar");
 
     if (!navbar) {
-        console.warn("Navbar introuvable.");
         return;
     }
 
-    /* =====================================================
-       NAVIGATION
-       ===================================================== */
 
-    const currentPage =
-        window.location.pathname.split("/").pop() || "index.html";
+    /* =================================================
+       UTILITAIRES
+    ================================================= */
 
-    const links = [
-        {
-            name: "Accueil",
-            url: "index.html"
-        },
-        {
-            name: "Annonces",
-            url: "annonces.html"
-        },
-        {
-            name: "Staff",
-            url: "staff.html"
-        },
-        {
-            name: "Événements",
-            url: "evenements.html"
-        },
-        {
-            name: "Règlement",
-            url: "regles.html"
-        }
-    ];
+    function getSessionToken() {
 
-    /* =====================================================
-       HTML DE BASE
-       ===================================================== */
+        return localStorage.getItem(
+            "discord_session"
+        );
 
-    navbar.innerHTML = `
-        <a
-            class="logo-nav"
-            href="index.html"
-            aria-label="La communauté live"
-        >
-            <img
-                src="images/logo.png"
-                alt="Logo La communauté live"
-            >
-
-            <span>
-                La communauté live
-            </span>
-        </a>
-
-        <ul class="nav-links">
-            ${links.map(link => `
-                <li>
-                    <a
-                        href="${link.url}"
-                        class="${currentPage === link.url ? "active" : ""}"
-                    >
-                        ${link.name}
-                    </a>
-                </li>
-            `).join("")}
-        </ul>
-
-        <div
-            class="nav-account"
-            id="nav-account"
-        >
-            <a
-                class="discord-btn-nav"
-                href="${API_URL}/auth/discord"
-            >
-                🎮 Connexion Discord
-            </a>
-        </div>
-
-        <button
-            class="menu-toggle"
-            id="menu-toggle"
-            type="button"
-            aria-label="Ouvrir le menu"
-            aria-expanded="false"
-        >
-            ☰
-        </button>
-    `;
-
-    /* =====================================================
-       MENU MOBILE
-       ===================================================== */
-
-    const menuToggle =
-        document.getElementById("menu-toggle");
-
-    const navLinks =
-        navbar.querySelector(".nav-links");
-
-    if (menuToggle && navLinks) {
-
-        menuToggle.addEventListener("click", () => {
-
-            const active =
-                navLinks.classList.toggle("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                String(active)
-            );
-
-            menuToggle.textContent =
-                active ? "✕" : "☰";
-        });
-
-        navLinks.querySelectorAll("a").forEach(link => {
-
-            link.addEventListener("click", () => {
-
-                navLinks.classList.remove("active");
-
-                menuToggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                menuToggle.textContent = "☰";
-            });
-
-        });
     }
 
-    /* =====================================================
-       OAUTH DISCORD
-       ===================================================== */
+
+    function logout() {
+
+        localStorage.removeItem(
+            "discord_session"
+        );
+
+        window.location.href =
+            FRONTEND_URL;
+
+    }
+
+
+    function getAvatarUrl(user) {
+
+        if (
+            user &&
+            user.id &&
+            user.avatar
+        ) {
+
+            return (
+                "https://cdn.discordapp.com/avatars/" +
+                user.id +
+                "/" +
+                user.avatar +
+                ".png?size=128"
+            );
+
+        }
+
+        return (
+            "https://cdn.discordapp.com/embed/avatars/0.png"
+        );
+
+    }
+
+
+    function getCurrentPage() {
+
+        const path =
+            window.location.pathname
+                .split("/")
+                .pop();
+
+        return path || "index.html";
+
+    }
+
+
+    /* =================================================
+       RÉCUPÉRER L'UTILISATEUR
+    ================================================= */
+
+    async function getCurrentUser() {
+
+        const token =
+            getSessionToken();
+
+        if (!token) {
+            return null;
+        }
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `${API_URL}/auth/me`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                                `Bearer ${token}`
+                        },
+
+                        cache: "no-store"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                localStorage.removeItem(
+                    "discord_session"
+                );
+
+                return null;
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            if (
+                !data.connected ||
+                !data.user
+            ) {
+
+                localStorage.removeItem(
+                    "discord_session"
+                );
+
+                return null;
+
+            }
+
+
+            return data.user;
+
+        } catch (error) {
+
+            console.error(
+                "Erreur récupération compte Discord :",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    /* =================================================
+       GÉNÉRER LA NAVBAR
+    ================================================= */
+
+    function renderNavbar(user) {
+
+        const currentPage =
+            getCurrentPage();
+
+
+        const isActive = (page) => {
+
+            return currentPage === page
+                ? "active"
+                : "";
+
+        };
+
+
+        /* ---------------------------------------------
+           COMPTE NON CONNECTÉ
+        --------------------------------------------- */
+
+        let accountHTML = `
+            <li class="nav-account">
+                <a
+                    href="${API_URL}/auth/discord"
+                    class="discord-btn-nav"
+                >
+                    🎮 Connexion Discord
+                </a>
+            </li>
+        `;
+
+
+        /* ---------------------------------------------
+           COMPTE CONNECTÉ
+        --------------------------------------------- */
+
+        if (user) {
+
+            const avatar =
+                getAvatarUrl(user);
+
+            const displayName =
+                user.globalName ||
+                user.username ||
+                "Discord";
+
+
+            accountHTML = `
+                <li class="nav-account discord-account">
+
+                    <button
+                        type="button"
+                        class="discord-account-button"
+                        id="discordAccountButton"
+                        aria-expanded="false"
+                        aria-controls="discordAccountMenu"
+                    >
+
+                        <img
+                            src="${avatar}"
+                            alt="Avatar Discord"
+                            class="discord-nav-avatar"
+                        >
+
+                        <span
+                            class="discord-account-name"
+                        >
+                            ${escapeHTML(displayName)}
+                        </span>
+
+                        <span
+                            class="discord-account-arrow"
+                        >
+                            ▴
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        class="discord-account-menu"
+                        id="discordAccountMenu"
+                    >
+
+                        <div
+                            class="discord-account-header"
+                        >
+
+                            <img
+                                src="${avatar}"
+                                alt="Avatar Discord"
+                                class="discord-menu-avatar"
+                            >
+
+                            <div>
+
+                                <strong>
+                                    ${escapeHTML(displayName)}
+                                </strong>
+
+                                <span>
+                                    🟢 Connecté avec Discord
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="discord-account-separator"
+                        ></div>
+
+
+                        <a
+                            href="dashboard.html"
+                            class="discord-account-link"
+                        >
+                            📊 Tableau de bord
+                        </a>
+
+
+                        <button
+                            type="button"
+                            class="discord-account-logout"
+                            id="discordLogoutButton"
+                        >
+                            🚪 Se déconnecter
+                        </button>
+
+                    </div>
+
+                </li>
+            `;
+
+        }
+
+
+        /* ---------------------------------------------
+           HTML NAVBAR
+        --------------------------------------------- */
+
+        navbar.innerHTML = `
+
+            <a
+                href="index.html"
+                class="logo-nav"
+            >
+
+                <img
+                    src="images/logo.png"
+                    alt="Logo"
+                >
+
+                <span>
+                    La communauté live
+                </span>
+
+            </a>
+
+
+            <button
+                type="button"
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Ouvrir le menu"
+                aria-expanded="false"
+            >
+                ☰
+            </button>
+
+
+            <ul
+                class="nav-links"
+                id="navLinks"
+            >
+
+                <li>
+                    <a
+                        href="index.html"
+                        class="${isActive("index.html")}"
+                    >
+                        Accueil
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="annonces.html"
+                        class="${isActive("annonces.html")}"
+                    >
+                        Annonces
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="staff.html"
+                        class="${isActive("staff.html")}"
+                    >
+                        Staff
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="evenements.html"
+                        class="${isActive("evenements.html")}"
+                    >
+                        Événements
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="regles.html"
+                        class="${isActive("regles.html")}"
+                    >
+                        Règlement
+                    </a>
+                </li>
+
+                ${accountHTML}
+
+            </ul>
+
+        `;
+
+
+        setupEvents();
+
+    }
+
+
+    /* =================================================
+       ÉCHAPPEMENT HTML
+    ================================================= */
+
+    function escapeHTML(value) {
+
+        return String(value)
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* =================================================
+       ÉVÉNEMENTS
+    ================================================= */
+
+    function setupEvents() {
+
+        const menuToggle =
+            document.getElementById(
+                "menuToggle"
+            );
+
+        const navLinks =
+            document.getElementById(
+                "navLinks"
+            );
+
+
+        /* ---------------------------------------------
+           MENU MOBILE
+        --------------------------------------------- */
+
+        if (
+            menuToggle &&
+            navLinks
+        ) {
+
+            menuToggle.addEventListener(
+                "click",
+                (event) => {
+
+                    event.stopPropagation();
+
+                    const active =
+                        navLinks.classList.toggle(
+                            "active"
+                        );
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        active
+                            ? "true"
+                            : "false"
+                    );
+
+                }
+            );
+
+
+            navLinks
+                .querySelectorAll("a")
+                .forEach((link) => {
+
+                    link.addEventListener(
+                        "click",
+                        () => {
+
+                            navLinks.classList.remove(
+                                "active"
+                            );
+
+                            menuToggle.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* ---------------------------------------------
+           COMPTE DISCORD
+        --------------------------------------------- */
+
+        const accountButton =
+            document.getElementById(
+                "discordAccountButton"
+            );
+
+        const accountMenu =
+            document.getElementById(
+                "discordAccountMenu"
+            );
+
+
+        if (
+            accountButton &&
+            accountMenu
+        ) {
+
+            accountButton.addEventListener(
+                "click",
+                (event) => {
+
+                    event.stopPropagation();
+
+                    const active =
+                        accountMenu.classList.toggle(
+                            "active"
+                        );
+
+                    accountButton.setAttribute(
+                        "aria-expanded",
+                        active
+                            ? "true"
+                            : "false"
+                    );
+
+                }
+            );
+
+
+            accountMenu.addEventListener(
+                "click",
+                (event) => {
+
+                    event.stopPropagation();
+
+                }
+            );
+
+
+            document.addEventListener(
+                "click",
+                () => {
+
+                    accountMenu.classList.remove(
+                        "active"
+                    );
+
+                    accountButton.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* ---------------------------------------------
+           DÉCONNEXION
+        --------------------------------------------- */
+
+        const logoutButton =
+            document.getElementById(
+                "discordLogoutButton"
+            );
+
+
+        if (logoutButton) {
+
+            logoutButton.addEventListener(
+                "click",
+                logout
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       TOKEN OAUTH DANS L'URL
+    ================================================= */
 
     function handleOAuthToken() {
 
         const hash =
             window.location.hash;
 
-        if (!hash.includes("discord_token=")) {
+
+        if (
+            !hash ||
+            !hash.includes(
+                "discord_token="
+            )
+        ) {
+
             return;
+
         }
+
 
         const params =
             new URLSearchParams(
                 hash.substring(1)
             );
 
+
         const token =
-            params.get("discord_token");
+            params.get(
+                "discord_token"
+            );
+
 
         if (token) {
 
@@ -171,305 +644,46 @@
                 token
             );
 
-            window.history.replaceState(
-                {},
-                document.title,
-                window.location.pathname +
-                window.location.search
-            );
-        }
-    }
-
-    handleOAuthToken();
-
-    /* =====================================================
-       RÉCUPÉRATION DU TOKEN
-       ===================================================== */
-
-    function getToken() {
-
-        return localStorage.getItem(
-            "discord_session"
-        );
-    }
-
-    /* =====================================================
-       CHARGEMENT UTILISATEUR
-       ===================================================== */
-
-    async function loadAccount() {
-
-        const token = getToken();
-
-        if (!token) {
-            return;
         }
 
-        try {
 
-            const response =
-                await fetch(
-                    `${API_URL}/auth/me`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    }
-                );
+        /* Nettoyer le token de l'URL */
 
-            if (!response.ok) {
-
-                localStorage.removeItem(
-                    "discord_session"
-                );
-
-                return;
-            }
-
-            const data =
-                await response.json();
-
-            if (
-                !data ||
-                !data.connected ||
-                !data.user
-            ) {
-                return;
-            }
-
-            renderConnectedAccount(
-                data.user
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Erreur chargement compte Discord :",
-                error
-            );
-        }
-    }
-
-    /* =====================================================
-       COMPTE CONNECTÉ
-       ===================================================== */
-
-    function renderConnectedAccount(user) {
-
-        const account =
-            document.getElementById("nav-account");
-
-        if (!account) {
-            return;
-        }
-
-        const avatar =
-            user.avatar
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`
-                : `https://cdn.discordapp.com/embed/avatars/0.png`;
-
-        account.innerHTML = `
-            <div class="discord-account">
-
-                <button
-                    class="discord-account-button"
-                    id="discord-account-button"
-                    type="button"
-                    aria-expanded="false"
-                >
-
-                    <img
-                        class="discord-nav-avatar"
-                        src="${avatar}"
-                        alt="Avatar Discord"
-                    >
-
-                    <span class="discord-account-name">
-                        ${escapeHtml(
-                            user.global_name ||
-                            user.username ||
-                            "Utilisateur"
-                        )}
-                    </span>
-
-                    <span
-                        class="discord-account-arrow"
-                    >
-                        ▴
-                    </span>
-
-                </button>
-
-                <div
-                    class="discord-account-menu"
-                    id="discord-account-menu"
-                >
-
-                    <div
-                        class="discord-account-header"
-                    >
-
-                        <img
-                            class="discord-menu-avatar"
-                            src="${avatar}"
-                            alt="Avatar Discord"
-                        >
-
-                        <div>
-
-                            <strong>
-                                ${escapeHtml(
-                                    user.global_name ||
-                                    user.username ||
-                                    "Utilisateur"
-                                )}
-                            </strong>
-
-                            <span>
-                                🟢 Connecté avec Discord
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                    <div
-                        class="discord-account-separator"
-                    ></div>
-
-                    <a
-                        class="discord-account-link"
-                        href="dashboard.html"
-                    >
-                        📊 Tableau de bord
-                    </a>
-
-                    <a
-                        class="discord-account-link"
-                        href="membres.html"
-                    >
-                        👥 Membres
-                    </a>
-
-                    <div
-                        class="discord-account-separator"
-                    ></div>
-
-                    <button
-                        class="discord-account-logout"
-                        id="discord-logout"
-                        type="button"
-                    >
-                        🚪 Se déconnecter
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-        setupAccountMenu();
-    }
-
-    /* =====================================================
-       MENU COMPTE
-       ===================================================== */
-
-    function setupAccountMenu() {
-
-        const button =
-            document.getElementById(
-                "discord-account-button"
-            );
-
-        const menu =
-            document.getElementById(
-                "discord-account-menu"
-            );
-
-        const logout =
-            document.getElementById(
-                "discord-logout"
-            );
-
-        if (!button || !menu) {
-            return;
-        }
-
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.stopPropagation();
-
-                const active =
-                    menu.classList.toggle(
-                        "active"
-                    );
-
-                button.setAttribute(
-                    "aria-expanded",
-                    String(active)
-                );
-            }
+        window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname +
+            window.location.search
         );
 
-        document.addEventListener(
-            "click",
-            event => {
-
-                if (
-                    !menu.contains(event.target) &&
-                    !button.contains(event.target)
-                ) {
-
-                    menu.classList.remove(
-                        "active"
-                    );
-
-                    button.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-                }
-            }
-        );
-
-        if (logout) {
-
-            logout.addEventListener(
-                "click",
-                () => {
-
-                    localStorage.removeItem(
-                        "discord_session"
-                    );
-
-                    window.location.reload();
-                }
-            );
-        }
     }
 
-    /* =====================================================
-       PROTECTION HTML
-       ===================================================== */
 
-    function escapeHtml(value) {
+    /* =================================================
+       INITIALISATION
+    ================================================= */
 
-        return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
+    async function init() {
+
+        handleOAuthToken();
+
+
+        /* Navbar temporaire */
+
+        renderNavbar(null);
+
+
+        /* Vérification session */
+
+        const user =
+            await getCurrentUser();
+
+
+        renderNavbar(user);
+
     }
 
-    /* =====================================================
-       LANCEMENT
-       ===================================================== */
 
-    loadAccount();
+    init();
 
 })();
