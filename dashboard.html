@@ -12,15 +12,11 @@
 
     <title>Tableau de bord — La communauté live</title>
 
-<title>Tableau de bord — La communauté live</title>
+    <link
+        rel="stylesheet"
+        href="css/style.css?v=20261008"
+    >
 
-<link
-    rel="stylesheet"
-    href="css/style.css?v=20261008"
->
-
-<style>
-    
     <style>
 
         * {
@@ -626,7 +622,7 @@
 </main>
 
 
-<script src="js/navbar.js"></script>
+<script src="js/navbar.js?v=20261008"></script>
 
 
 <script>
@@ -923,18 +919,13 @@ function getAvatarURL(user) {
 
     if (!user.avatar) {
 
-        return
-            "https://cdn.discordapp.com/embed/avatars/0.png";
+        return "https://cdn.discordapp.com/embed/avatars/0.png";
 
     }
 
-
     return (
-
         `https://cdn.discordapp.com/avatars/` +
-
         `${user.id}/${user.avatar}.png?size=128`
-
     );
 
 }
