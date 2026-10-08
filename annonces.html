@@ -19,7 +19,12 @@
 
     <link rel="icon" href="images/logo.png">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Google Font -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
     <link
         rel="preconnect"
         href="https://fonts.gstatic.com"
@@ -31,18 +36,18 @@
         rel="stylesheet"
     >
 
-    <link rel="stylesheet" href="ccs/style.css">
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="ccs/style.css?v=20261008"
+    >
 
 
     <!-- ==================================================
-         STYLE DES ANNONCES
+         STYLE DE LA PAGE
     ================================================== -->
 
     <style>
-
-        /* ==============================================
-           PAGE
-        ============================================== */
 
         .announcements-page {
 
@@ -50,14 +55,11 @@
 
             margin: 0 auto;
 
-            padding: 120px 30px 80px;
+            padding:
+                120px 30px 80px;
 
         }
 
-
-        /* ==============================================
-           TITRE
-        ============================================== */
 
         .announcements-title {
 
@@ -123,10 +125,6 @@
         }
 
 
-        /* ==============================================
-           LISTE DES ANNONCES
-        ============================================== */
-
         #announcementsContainer {
 
             display: grid;
@@ -141,10 +139,6 @@
 
         }
 
-
-        /* ==============================================
-           CARTE D'ANNONCE
-        ============================================== */
 
         .announcement-card {
 
@@ -164,7 +158,8 @@
                 );
 
             border:
-                1px solid rgba(0,217,255,0.22);
+                1px solid
+                rgba(0,217,255,0.22);
 
             box-shadow:
                 0 15px 45px rgba(0,0,0,0.35),
@@ -179,8 +174,6 @@
 
         }
 
-
-        /* Lumière cyan */
 
         .announcement-card::before {
 
@@ -209,8 +202,6 @@
 
         }
 
-
-        /* Lumière violette */
 
         .announcement-card::after {
 
@@ -254,10 +245,6 @@
         }
 
 
-        /* ==============================================
-           EN-TÊTE DE L'ANNONCE
-        ============================================== */
-
         .announcement-header {
 
             position: relative;
@@ -284,10 +271,12 @@
             object-fit: cover;
 
             border:
-                2px solid rgba(0,217,255,0.6);
+                2px solid
+                rgba(0,217,255,0.6);
 
             box-shadow:
-                0 0 18px rgba(0,217,255,0.2);
+                0 0 18px
+                rgba(0,217,255,0.2);
 
             flex-shrink: 0;
 
@@ -325,10 +314,6 @@
         }
 
 
-        /* ==============================================
-           CONTENU
-        ============================================== */
-
         .announcement-content {
 
             position: relative;
@@ -345,10 +330,6 @@
 
         }
 
-
-        /* ==============================================
-           PIÈCES JOINTES
-        ============================================== */
 
         .announcement-attachments {
 
@@ -379,7 +360,8 @@
                 rgba(0,217,255,0.06);
 
             border:
-                1px solid rgba(0,217,255,0.15);
+                1px solid
+                rgba(0,217,255,0.15);
 
             text-decoration: none;
 
@@ -406,10 +388,6 @@
         }
 
 
-        /* ==============================================
-           AUCUNE ANNONCE / ERREUR
-        ============================================== */
-
         .announcements-message {
 
             grid-column: 1 / -1;
@@ -424,7 +402,8 @@
                 rgba(255,255,255,0.05);
 
             border:
-                1px solid rgba(255,255,255,0.10);
+                1px solid
+                rgba(255,255,255,0.10);
 
             color: #cbd3ff;
 
@@ -440,9 +419,44 @@
         }
 
 
-        /* ==============================================
-           MOBILE
-        ============================================== */
+        .announcements-message p {
+
+            margin: 0;
+
+        }
+
+
+        .announcement-image {
+
+            display: block;
+
+            width: 100%;
+
+            max-height: 500px;
+
+            object-fit: contain;
+
+            margin-top: 20px;
+
+            border-radius: 14px;
+
+        }
+
+
+        .hero-buttons {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+        }
+
 
         @media (max-width: 700px) {
 
@@ -481,6 +495,22 @@
 
             }
 
+
+            .hero-buttons {
+
+                flex-direction: column;
+
+            }
+
+
+            .hero-buttons a {
+
+                width: 100%;
+
+                text-align: center;
+
+            }
+
         }
 
     </style>
@@ -490,112 +520,113 @@
 
 <body>
 
-<canvas id="particles"></canvas>
 
+    <!-- PARTICULES -->
 
-<!-- ==================================================
-     NAVBAR CENTRALE
-================================================== -->
-
-<nav
-    class="navbar"
-    id="navbar"
-></nav>
-
-
-<!-- ==================================================
-     PAGE ANNONCES
-================================================== -->
-
-<main class="announcements-page">
-
-    <h1 class="announcements-title">
-        📢 Les annonces
-    </h1>
-
-    <p class="announcements-subtitle">
-        Retrouvez ici les dernières informations
-        publiées sur le serveur Discord.
-    </p>
+    <canvas id="particles"></canvas>
 
 
     <!-- ==================================================
-         ANNONCES
+         NAVBAR CENTRALE
     ================================================== -->
 
-    <div id="announcementsContainer">
+    <nav
+        class="navbar"
+        id="navbar"
+    ></nav>
 
-        <div class="announcements-message">
 
-            <h2>
-                ⏳ Chargement...
-            </h2>
+    <!-- ==================================================
+         PAGE ANNONCES
+    ================================================== -->
 
-            <p>
-                Récupération des dernières annonces Discord.
-            </p>
+    <main class="announcements-page">
+
+
+        <h1 class="announcements-title">
+
+            📢 Les annonces
+
+        </h1>
+
+
+        <p class="announcements-subtitle">
+
+            Retrouvez ici les dernières informations
+            publiées sur le serveur Discord.
+
+        </p>
+
+
+        <div id="announcementsContainer">
+
+            <div class="announcements-message">
+
+                <h2>
+                    ⏳ Chargement...
+                </h2>
+
+                <p>
+                    Récupération des dernières annonces Discord.
+                </p>
+
+            </div>
 
         </div>
 
-    </div>
+
+        <!-- BOUTONS -->
+
+        <div
+            class="hero-buttons"
+            style="
+                margin-top:45px;
+            "
+        >
+
+            <a
+                href="https://discord.gg/HkcC9Kj29Z"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary"
+            >
+                💬 Ouvrir Discord
+            </a>
+
+
+            <a
+                href="index.html"
+                class="btn-secondary"
+            >
+                🏠 Retour à l'accueil
+            </a>
+
+        </div>
+
+
+    </main>
 
 
     <!-- ==================================================
-         BOUTONS
+         FOOTER
     ================================================== -->
 
-    <div
-        class="hero-buttons"
-        style="
-            justify-content:center;
-            margin-top:45px;
-        "
-    >
+    <footer>
 
-        <a
-            href="https://discord.gg/HkcC9Kj29Z"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-primary"
-        >
-            💬 Ouvrir Discord
-        </a>
+        © 2026 La communauté live
 
-        <a
-            href="index.html"
-            class="btn-secondary"
-        >
-            🏠 Retour à l'accueil
-        </a>
-
-    </div>
-
-</main>
+    </footer>
 
 
-<!-- ==================================================
-     FOOTER
-================================================== -->
+    <!-- ==================================================
+         JAVASCRIPT
+    ================================================== -->
 
-<footer>
+    <script src="js/navbar.js?v=20261008"></script>
 
-    © 2026 La communauté live
+    <script src="js/annonces.js?v=20261008"></script>
 
-</footer>
-
-
-<!-- ==================================================
-     JAVASCRIPT
-================================================== -->
-
-<!-- 🧠 Navbar centrale -->
-<script src="js/navbar.js"></script>
-
-<!-- Annonces Discord -->
-<script src="js/annonces.js"></script>
-
-<!-- Animations + menu mobile -->
-<script src="js/app.js"></script>
+    <script src="js/app.js?v=20261008"></script>
 
 
 </body>
