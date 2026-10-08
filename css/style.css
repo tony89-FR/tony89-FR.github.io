@@ -1,12 +1,17 @@
-/* =========================================================
+/* =====================================================
    LA COMMUNAUTÉ LIVE
-   STYLE GLOBAL DU SITE
-   ========================================================= */
+   STYLE PRINCIPAL DU SITE
+===================================================== */
+
+
+/* =====================================================
+   RESET
+===================================================== */
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html {
@@ -14,186 +19,230 @@ html {
 }
 
 body {
-    min-height: 100vh;
-    font-family: "Poppins", Arial, sans-serif;
+    font-family: "Poppins", sans-serif;
     color: #ffffff;
     background:
-        radial-gradient(circle at 20% 20%, rgba(0, 217, 255, 0.08), transparent 35%),
-        radial-gradient(circle at 80% 20%, rgba(180, 0, 255, 0.10), transparent 35%),
-        linear-gradient(135deg, #081421 0%, #13041f 100%);
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(88, 101, 242, 0.10),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #081421 0%,
+            #0b0a1d 45%,
+            #13041f 100%
+        );
+
+    min-height: 100vh;
     overflow-x: hidden;
 }
 
-/* =========================================================
-   LIENS
-   ========================================================= */
 
-a {
-    color: inherit;
+/* =====================================================
+   PARTICULES
+===================================================== */
+
+#particles {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    z-index: -1;
+    pointer-events: none;
 }
 
-button,
-a {
-    -webkit-tap-highlight-color: transparent;
-}
 
-/* =========================================================
+/* =====================================================
    NAVBAR
-   ========================================================= */
+===================================================== */
 
 .navbar {
     position: fixed;
+
     top: 0;
     left: 0;
 
     width: 100%;
-    height: 82px;
+    min-height: 74px;
 
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    padding: 0 30px;
+    padding: 12px 2%;
 
-    background: rgba(6, 11, 25, 0.82);
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 14, 30, 0.96),
+            rgba(18, 8, 35, 0.96)
+        );
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     border-bottom: 1px solid rgba(0, 217, 255, 0.12);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
     box-shadow:
-        0 10px 35px rgba(0, 0, 0, 0.30),
-        0 0 30px rgba(0, 217, 255, 0.04);
+        0 8px 30px rgba(0, 0, 0, 0.30),
+        0 0 30px rgba(88, 101, 242, 0.08);
 
-    z-index: 5000;
+    z-index: 1000;
 
+    /* IMPORTANT :
+       le menu Discord doit pouvoir dépasser */
     overflow: visible;
 }
 
-/* Ligne lumineuse sous la navbar */
+
+/* Ligne lumineuse */
 
 .navbar::after {
     content: "";
 
     position: absolute;
 
-    left: 0;
-    right: 0;
-    bottom: -1px;
+    bottom: 0;
+    left: -35%;
 
+    width: 35%;
     height: 2px;
 
-    background: linear-gradient(
-        90deg,
-        transparent,
-        #00d9ff,
-        #8b5cf6,
-        #ff2bd6,
-        transparent
-    );
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d9ff,
+            #8b5cf6,
+            #ff00c8,
+            transparent
+        );
 
-    opacity: 0.75;
+    filter: blur(1px);
+
+    animation: navbarLight 7s linear infinite;
+
+    pointer-events: none;
 }
 
-/* =========================================================
-   LOGO / NOM
-   ========================================================= */
+@keyframes navbarLight {
+
+    0% {
+        left: -35%;
+    }
+
+    100% {
+        left: 110%;
+    }
+
+}
+
+
+/* =====================================================
+   LOGO NAVBAR
+===================================================== */
 
 .logo-nav {
     display: flex;
+
     align-items: center;
 
-    gap: 10px;
+    gap: 12px;
+
+    color: white;
+
+    font-size: 1.25rem;
+    font-weight: 700;
 
     text-decoration: none;
 
-    color: #ffffff;
-
-    font-size: 1.15rem;
-    font-weight: 700;
-
     white-space: nowrap;
-
-    text-shadow:
-        0 0 12px rgba(0, 217, 255, 0.35);
-
-    transition:
-        transform 0.2s ease,
-        color 0.2s ease;
-}
-
-.logo-nav:hover {
-    color: #00d9ff;
-    transform: translateY(-1px);
 }
 
 .logo-nav img {
-    width: 42px;
-    height: 42px;
+    width: 45px;
+    height: 45px;
+
+    border-radius: 50%;
 
     object-fit: cover;
 
-    border-radius: 12px;
-
     box-shadow:
-        0 0 15px rgba(0, 217, 255, 0.25);
+        0 0 10px rgba(0, 217, 255, 0.35),
+        0 0 25px rgba(139, 92, 246, 0.25);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
 }
 
-/* =========================================================
-   LIENS DE NAVIGATION
-   ========================================================= */
+.logo-nav:hover img {
+    transform: rotate(8deg) scale(1.08);
+
+    box-shadow:
+        0 0 15px rgba(0, 217, 255, 0.65),
+        0 0 35px rgba(139, 92, 246, 0.45);
+}
+
+
+/* =====================================================
+   LIENS NAVBAR
+===================================================== */
 
 .nav-links {
     display: flex;
+
     align-items: center;
 
-    gap: 8px;
-
-    margin-left: auto;
-    margin-right: 20px;
+    gap: 24px;
 
     list-style: none;
+
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links li {
-    list-style: none;
+    position: relative;
 }
 
 .nav-links a {
-    display: flex;
+    position: relative;
+
+    display: inline-flex;
+
     align-items: center;
 
-    min-height: 42px;
-
-    padding: 9px 14px;
-
-    border-radius: 10px;
-
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.88);
 
     text-decoration: none;
 
-    font-size: 0.93rem;
-    font-weight: 500;
+    font-size: 0.95rem;
+    font-weight: 600;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
 
     transition:
-        color 0.2s ease,
-        background 0.2s ease,
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        color 0.25s ease,
+        background 0.25s ease,
+        transform 0.25s ease;
 }
 
 .nav-links a:hover {
     color: #ffffff;
 
-    background: rgba(0, 217, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
 
-    box-shadow:
-        inset 0 0 0 1px rgba(0, 217, 255, 0.10),
-        0 0 18px rgba(0, 217, 255, 0.06);
-
-    transform: translateY(-1px);
+    transform: translateY(-2px);
 }
+
+
+/* Page actuelle */
 
 .nav-links a.active {
     color: #ffffff;
@@ -202,16 +251,99 @@ a {
         linear-gradient(
             135deg,
             rgba(0, 217, 255, 0.12),
-            rgba(139, 92, 246, 0.10)
+            rgba(139, 92, 246, 0.14)
         );
 
+    border: 1px solid rgba(0, 217, 255, 0.12);
+
     box-shadow:
-        inset 0 0 0 1px rgba(0, 217, 255, 0.12);
+        0 0 20px rgba(0, 217, 255, 0.06);
 }
 
-/* =========================================================
-   BOUTON DISCORD / COMPTE
-   ========================================================= */
+
+/* Petite ligne sous les liens */
+
+.nav-links a:not(.discord-btn-nav)::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    bottom: 4px;
+
+    width: 0;
+    height: 2px;
+
+    transform: translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            #00d9ff,
+            #8b5cf6
+        );
+
+    border-radius: 10px;
+
+    transition: width 0.25s ease;
+}
+
+.nav-links a:not(.discord-btn-nav):hover::after,
+.nav-links a.active:not(.discord-btn-nav)::after {
+    width: 55%;
+}
+
+
+/* =====================================================
+   BOUTON CONNEXION DISCORD
+===================================================== */
+
+.discord-btn-nav {
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 11px 16px !important;
+
+    border-radius: 12px !important;
+
+    background:
+        linear-gradient(
+            135deg,
+            #5865f2,
+            #8b5cf6
+        ) !important;
+
+    color: white !important;
+
+    font-weight: 700 !important;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    box-shadow:
+        0 0 15px rgba(88, 101, 242, 0.30),
+        0 8px 20px rgba(0, 0, 0, 0.25);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.discord-btn-nav:hover {
+    transform: translateY(-2px) scale(1.02) !important;
+
+    box-shadow:
+        0 0 25px rgba(88, 101, 242, 0.55),
+        0 0 40px rgba(139, 92, 246, 0.20);
+}
+
+
+/* =====================================================
+   COMPTE DISCORD
+===================================================== */
 
 .nav-account {
     list-style: none;
@@ -222,14 +354,14 @@ a {
 
 .discord-account {
     position: relative;
-
-    list-style: none;
 }
 
-/* bouton */
+
+/* Bouton compte */
 
 .discord-account-button {
     display: flex !important;
+
     align-items: center;
     justify-content: center;
 
@@ -239,62 +371,65 @@ a {
 
     padding: 7px 12px;
 
-    border: 1px solid rgba(255, 255, 255, 0.10);
+    cursor: pointer;
+
+    border: 1px solid rgba(88, 101, 242, 0.25);
 
     border-radius: 12px;
 
     background:
         linear-gradient(
             135deg,
-            rgba(88, 101, 242, 0.16),
-            rgba(0, 217, 255, 0.08)
+            rgba(20, 31, 55, 0.95),
+            rgba(28, 17, 52, 0.95)
         );
 
-    color: #ffffff;
+    color: white;
 
     font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
 
     white-space: nowrap;
 
-    cursor: pointer;
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.20);
 
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+        background 0.25s ease,
+        transform 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .discord-account-button:hover {
     background:
         linear-gradient(
             135deg,
-            rgba(88, 101, 242, 0.25),
-            rgba(0, 217, 255, 0.14)
+            rgba(32, 48, 80, 0.98),
+            rgba(43, 24, 72, 0.98)
         );
 
-    border-color: rgba(0, 217, 255, 0.25);
-
-    box-shadow:
-        0 0 20px rgba(0, 217, 255, 0.10);
+    border-color: rgba(0, 217, 255, 0.30);
 
     transform: translateY(-1px);
 }
 
-.discord-nav-avatar {
-    width: 30px !important;
-    height: 30px !important;
 
-    flex: 0 0 30px;
+/* Avatar navbar */
+
+.discord-nav-avatar {
+    width: 28px !important;
+    height: 28px !important;
+
+    flex-shrink: 0;
 
     border-radius: 50% !important;
 
     object-fit: cover;
 
-    border: 2px solid rgba(255, 255, 255, 0.35);
+    border: 2px solid rgba(255, 255, 255, 0.30);
 }
+
+
+/* Nom */
 
 .discord-account-name {
     max-width: 140px;
@@ -305,6 +440,9 @@ a {
 
     white-space: nowrap;
 }
+
+
+/* Flèche */
 
 .discord-account-arrow {
     font-size: 11px;
@@ -318,15 +456,15 @@ a {
     transform: rotate(180deg);
 }
 
-/* =========================================================
-   MENU DU COMPTE
-   ========================================================= */
+
+/* =====================================================
+   MENU COMPTE
+===================================================== */
 
 .discord-account-menu {
     position: absolute;
 
     top: calc(100% + 12px);
-
     right: 0;
 
     width: 285px;
@@ -354,6 +492,7 @@ a {
     -webkit-backdrop-filter: blur(20px);
 
     opacity: 0;
+
     visibility: hidden;
 
     transform:
@@ -367,7 +506,7 @@ a {
         visibility 0.2s ease,
         transform 0.2s ease;
 
-    z-index: 6000;
+    z-index: 2000;
 }
 
 .discord-account-menu.active {
@@ -382,9 +521,10 @@ a {
     pointer-events: auto;
 }
 
-/* =========================================================
+
+/* =====================================================
    HEADER COMPTE
-   ========================================================= */
+===================================================== */
 
 .discord-account-header {
     display: flex;
@@ -400,17 +540,19 @@ a {
     width: 48px !important;
     height: 48px !important;
 
-    flex: 0 0 48px;
+    flex-shrink: 0;
 
     border-radius: 50% !important;
 
     object-fit: cover;
+
+    border: 2px solid rgba(255, 255, 255, 0.20);
 }
 
 .discord-account-header strong {
     display: block;
 
-    color: #ffffff;
+    color: white;
 
     font-size: 0.95rem;
 }
@@ -425,9 +567,10 @@ a {
     font-size: 0.78rem;
 }
 
-/* =========================================================
+
+/* =====================================================
    SÉPARATEUR
-   ========================================================= */
+===================================================== */
 
 .discord-account-separator {
     height: 1px;
@@ -438,9 +581,10 @@ a {
         rgba(255, 255, 255, 0.08);
 }
 
-/* =========================================================
-   LIENS DU MENU
-   ========================================================= */
+
+/* =====================================================
+   LIEN COMPTE
+===================================================== */
 
 .discord-account-link {
     display: block !important;
@@ -451,7 +595,7 @@ a {
 
     border-radius: 10px;
 
-    color: #ffffff !important;
+    color: white !important;
 
     text-decoration: none;
 
@@ -468,9 +612,10 @@ a {
         #00d9ff !important;
 }
 
-/* =========================================================
+
+/* =====================================================
    DÉCONNEXION
-   ========================================================= */
+===================================================== */
 
 .discord-account-logout {
     width: 100%;
@@ -510,151 +655,173 @@ a {
         #ffb3bd;
 }
 
-/* =========================================================
-   BOUTON CONNEXION DISCORD
-   ========================================================= */
 
-.discord-btn-nav {
+/* =====================================================
+   MENU MOBILE
+===================================================== */
+
+.menu-toggle {
+    display: none;
+
+    background: transparent;
+
+    border: none;
+
+    color: white;
+
+    font-size: 28px;
+
+    cursor: pointer;
+
+    padding: 5px 10px;
+
+    transition:
+        transform 0.25s ease,
+        color 0.25s ease;
+}
+
+.menu-toggle:hover {
+    color: #00d9ff;
+
+    transform: scale(1.08);
+}
+
+
+/* =====================================================
+   BOUTONS HERO
+===================================================== */
+
+.btn-primary,
+.btn-secondary {
     display: inline-flex;
 
     align-items: center;
     justify-content: center;
 
-    min-height: 44px;
-
-    padding: 9px 15px;
+    padding: 14px 28px;
 
     border-radius: 12px;
-
-    color: #ffffff;
-
-    background:
-        linear-gradient(
-            135deg,
-            #5865f2,
-            #4752c4
-        );
 
     text-decoration: none;
 
     font-weight: 600;
 
-    box-shadow:
-        0 8px 20px rgba(88, 101, 242, 0.20);
+    cursor: pointer;
 
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
 }
 
-.discord-btn-nav:hover {
-    transform: translateY(-1px);
+.btn-primary {
+    background:
+        linear-gradient(
+            90deg,
+            #5865f2,
+            #8b5cf6
+        );
+
+    color: white;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
 
     box-shadow:
-        0 12px 28px rgba(88, 101, 242, 0.30);
+        0 8px 25px rgba(88, 101, 242, 0.25);
 }
 
-/* =========================================================
-   MENU MOBILE
-   ========================================================= */
+.btn-primary:hover {
+    transform: translateY(-4px);
 
-.menu-toggle {
-    display: none;
+    box-shadow:
+        0 12px 30px rgba(88, 101, 242, 0.40);
+}
 
-    width: 44px;
-    height: 44px;
+.btn-secondary {
+    border:
+        2px solid
+        #00d9ff;
 
-    margin-left: 10px;
-
-    border: 1px solid rgba(255, 255, 255, 0.10);
-
-    border-radius: 10px;
+    color:
+        #00d9ff;
 
     background:
-        rgba(255, 255, 255, 0.05);
-
-    color: #ffffff;
-
-    font-size: 1.25rem;
-
-    cursor: pointer;
+        rgba(0, 217, 255, 0.04);
 }
 
-.menu-toggle:hover {
+.btn-secondary:hover {
+    transform: translateY(-4px);
+
     background:
         rgba(0, 217, 255, 0.10);
+
+    box-shadow:
+        0 0 25px rgba(0, 217, 255, 0.20);
 }
 
-/* =========================================================
-   CONTENU
-   ========================================================= */
 
-main {
-    width: 100%;
-    max-width: 1200px;
-
-    margin: 0 auto;
-
-    padding:
-        130px
-        25px
-        60px;
-}
-
-section {
-    width: 100%;
-}
-
-/* =========================================================
+/* =====================================================
    HERO
-   ========================================================= */
+===================================================== */
 
 .hero {
-    min-height: 620px;
+    min-height: 100vh;
 
     display: flex;
 
     flex-direction: column;
 
-    align-items: center;
-
     justify-content: center;
+    align-items: center;
 
     text-align: center;
 
-    padding: 40px 20px;
+    padding: 120px 30px 80px;
 }
 
 .hero-logo {
-    display: block;
+    width: 220px;
+    height: 220px;
 
-    width: min(360px, 80vw);
+    object-fit: cover;
 
-    height: auto;
-
-    margin: 0 auto 25px;
-
-    border-radius: 20px;
+    border-radius: 50%;
 
     box-shadow:
-        0 0 35px rgba(0, 217, 255, 0.14),
-        0 0 70px rgba(255, 43, 214, 0.10);
+        0 0 30px rgba(255, 0, 200, 0.35),
+        0 0 70px rgba(255, 0, 200, 0.15);
+
+    margin-bottom: 25px;
+
+    animation: heroLogoFloat 5s ease-in-out infinite;
+}
+
+@keyframes heroLogoFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
 }
 
 .hero h1 {
-    margin-bottom: 15px;
-
-    font-size:
-        clamp(2rem, 5vw, 4rem);
+    font-size: 4rem;
 
     line-height: 1.1;
+
+    margin-bottom: 18px;
 
     background:
         linear-gradient(
             90deg,
             #00d9ff,
-            #ffffff,
-            #ff2bd6
+            #8b5cf6,
+            #ff4fcf
         );
 
     -webkit-background-clip: text;
@@ -664,195 +831,581 @@ section {
 }
 
 .hero p {
-    max-width: 720px;
+    max-width: 700px;
 
-    margin: 0 auto 25px;
+    color:
+        rgba(255, 255, 255, 0.82);
 
+    line-height: 1.7;
+
+    margin-bottom: 35px;
+}
+
+.hero-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 20px;
+
+    flex-wrap: wrap;
+}
+
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+section {
+    padding: 100px 8%;
+
+    width: 100%;
+}
+
+section h2 {
+    text-align: center;
+
+    margin-bottom: 50px;
+
+    font-size: 2.3rem;
+
+    background:
+        linear-gradient(
+            90deg,
+            #00d9ff,
+            #ffffff,
+            #ff4fcf
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =====================================================
+   STATISTIQUES
+===================================================== */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 25px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+.stat-card {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    min-height: 150px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(0, 217, 255, 0.30);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.20),
+        0 0 25px rgba(0, 217, 255, 0.07);
+}
+
+.stat-card h3 {
+    font-size: 1rem;
+
+    color:
+        rgba(255, 255, 255, 0.80);
+
+    margin-bottom: 10px;
+}
+
+.stat-card span {
+    display: block;
+
+    font-size: 2.2rem;
+
+    font-weight: 700;
+
+    color:
+        #00d9ff;
+}
+
+
+/* =====================================================
+   FEATURES
+===================================================== */
+
+.features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0, 1fr)
+        );
+
+    gap: 25px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+.feature {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.07),
+            rgba(255, 255, 255, 0.025)
+        );
+
+    backdrop-filter: blur(12px);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.09);
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    min-height: 200px;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-7px);
+
+    border-color:
+        rgba(139, 92, 246, 0.35);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.20);
+}
+
+.feature h3 {
+    margin: 15px 0 10px;
+
+    font-size: 1.15rem;
+}
+
+.feature p {
     color:
         rgba(255, 255, 255, 0.72);
 
-    line-height: 1.7;
+    line-height: 1.6;
 }
 
-/* =========================================================
-   CARTES
-   ========================================================= */
 
-.card,
-.event-card,
-.staff-card {
+/* =====================================================
+   ANNONCES
+===================================================== */
+
+#announcementsContainer {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+
+    max-width: 900px;
+
+    margin: 0 auto;
+}
+
+.announcement-card {
     background:
-        rgba(255, 255, 255, 0.045);
+        rgba(30, 33, 40, 0.85);
+
+    backdrop-filter: blur(12px);
 
     border:
         1px solid
         rgba(255, 255, 255, 0.08);
 
-    border-radius: 18px;
+    border-radius: 16px;
 
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.18);
+    padding: 20px;
 
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease;
 }
 
-/* =========================================================
-   BOUTONS
-   ========================================================= */
+.announcement-card:hover {
+    transform: translateY(-4px);
 
-button {
-    font-family: inherit;
+    border-color:
+        rgba(0, 217, 255, 0.4);
 }
 
-/* =========================================================
+.announcement-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+.announcement-avatar {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.announcement-date {
+    font-size: 0.8rem;
+
+    opacity: 0.55;
+
+    margin-top: 2px;
+}
+
+.announcement-content {
+    line-height: 1.7;
+
+    color: #e6e6e6;
+
+    white-space: normal;
+
+    word-wrap: break-word;
+}
+
+.announcement-attachments {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+.announcement-attachment {
+    max-width: 100%;
+
+    max-height: 450px;
+
+    border-radius: 10px;
+
+    object-fit: contain;
+}
+
+.announcement-file {
+    color: #00d9ff;
+
+    text-decoration: none;
+
+    padding: 10px 15px;
+
+    border-radius: 8px;
+
+    background:
+        rgba(0, 217, 255, 0.08);
+
+    transition: 0.3s;
+}
+
+.announcement-file:hover {
+    background:
+        rgba(0, 217, 255, 0.18);
+}
+
+
+/* =====================================================
+   STAFF
+===================================================== */
+
+.staff-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(200px, 1fr)
+        );
+
+    gap: 20px;
+
+    max-width: 1200px;
+
+    margin: 0 auto;
+}
+
+.staff-member {
+    text-align: center;
+
+    transition:
+        transform 0.3s ease;
+}
+
+.staff-member:hover {
+    transform: translateY(-6px);
+}
+
+.staff-member img {
+    width: 90px;
+    height: 90px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    padding: 35px;
+
+    text-align: center;
+
+    color:
+        rgba(255, 255, 255, 0.65);
+
+    background:
+        rgba(5, 6, 13, 0.75);
+
+    border-top:
+        1px solid
+        rgba(255, 255, 255, 0.05);
+}
+
+
+/* =====================================================
+   TABLETTE
+===================================================== */
+
+@media (max-width: 1100px) {
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.88rem;
+
+        padding: 9px 8px;
+    }
+
+    .stats-grid,
+    .features {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =====================================================
    MOBILE
-   ========================================================= */
+===================================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 800px) {
 
     .navbar {
-        height: 72px;
+        min-height: 70px;
 
-        padding:
-            0 16px;
+        padding: 12px 5%;
+
+        flex-wrap: wrap;
     }
 
     .logo-nav {
-        font-size: 1rem;
+        font-size: 1.05rem;
     }
 
     .logo-nav img {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
     }
 
     .menu-toggle {
-        display: inline-flex;
-
-        align-items: center;
-        justify-content: center;
+        display: block;
     }
 
     .nav-links {
-        position: absolute;
-
-        top: calc(100% + 1px);
-
-        left: 0;
-        right: 0;
+        width: 100%;
 
         display: none;
 
         flex-direction: column;
 
-        align-items: stretch;
+        align-items: center;
 
-        gap: 4px;
+        gap: 10px;
 
-        margin: 0;
-
-        padding: 12px;
-
-        background:
-            rgba(7, 13, 28, 0.97);
-
-        border-bottom:
-            1px solid
-            rgba(0, 217, 255, 0.12);
-
-        box-shadow:
-            0 20px 35px rgba(0, 0, 0, 0.35);
-
-        backdrop-filter: blur(20px);
+        padding: 18px 0 8px;
     }
 
     .nav-links.active {
         display: flex;
     }
 
-    .nav-links a {
+    .nav-links li {
         width: 100%;
+
+        text-align: center;
+    }
+
+    .nav-links a {
+        display: flex;
+
+        justify-content: center;
+
+        width: 100%;
+
+        padding: 10px;
+    }
+
+    .nav-account {
+        width: 100%;
+
+        display: flex;
 
         justify-content: center;
     }
 
-    .discord-account-button {
-        min-height: 42px;
-    }
-
-    .discord-account-name {
-        display: none;
+    .discord-account {
+        width: auto;
     }
 
     .discord-account-menu {
-        position: absolute;
+        position: static;
 
-        top: calc(100% + 10px);
+        width: min(
+            100%,
+            320px
+        );
 
-        right: 0;
-
-        width: min(285px, calc(100vw - 30px));
-    }
-
-    main {
-        padding:
-            105px
-            16px
-            40px;
+        margin: 10px auto 0;
     }
 
     .hero {
-        min-height: 540px;
-    }
-}
-
-@media (max-width: 600px) {
-
-    .navbar {
-        padding: 0 10px;
-    }
-
-    .logo-nav {
-        font-size: 0.92rem;
-    }
-
-    .logo-nav img {
-        width: 36px;
-        height: 36px;
-    }
-
-    .discord-account-button {
-        padding: 6px 8px;
-    }
-
-    .discord-nav-avatar {
-        width: 28px !important;
-        height: 28px !important;
+        padding-top: 120px;
     }
 
     .hero-logo {
-        width: min(300px, 88vw);
+        width: 170px;
+        height: 170px;
     }
+
+    .hero h1 {
+        font-size: 2.8rem;
+    }
+
+    section {
+        padding: 80px 6%;
+    }
+
 }
 
-/* =========================================================
-   ANIMATION
-   ========================================================= */
 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
+/* =====================================================
+   PETIT TÉLÉPHONE
+===================================================== */
+
+@media (max-width: 500px) {
+
+    .logo-nav span {
+        font-size: 0.95rem;
     }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    .hero {
+        padding-top: 110px;
     }
-}
 
-.fade-in {
-    animation:
-        fadeInUp 0.6s ease both;
+    .hero-logo {
+        width: 145px;
+        height: 145px;
+    }
+
+    .hero h1 {
+        font-size: 2.2rem;
+    }
+
+    .hero p {
+        font-size: 0.95rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+
+        width: 100%;
+
+        max-width: 300px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+
+        text-align: center;
+    }
+
+    section h2 {
+        font-size: 1.8rem;
+    }
+
+    .stats-grid,
+    .features {
+        grid-template-columns: 1fr;
+    }
+
 }
