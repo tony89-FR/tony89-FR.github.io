@@ -51,6 +51,11 @@
 
         }
 
+
+        /* ==========================================
+           DASHBOARD
+        ========================================== */
+
         .dashboard {
 
             width:
@@ -60,14 +65,35 @@
                 0 auto;
 
             padding:
-                120px 0 60px;
+                110px 0 60px;
 
         }
 
-        .hero {
+
+        /* ==========================================
+           HERO DU DASHBOARD
+           
+           IMPORTANT :
+           min-height: auto évite le conflit avec
+           le .hero global du site.
+        ========================================== */
+
+        .dashboard .hero {
+
+            min-height: auto !important;
+
+            height: auto !important;
+
+            padding: 0 !important;
+
+            margin:
+                0 0 45px !important;
 
             display:
                 flex;
+
+            flex-direction:
+                row;
 
             justify-content:
                 space-between;
@@ -76,14 +102,15 @@
                 center;
 
             gap:
-                25px;
-
-            margin-bottom:
                 35px;
+
+            text-align:
+                left;
 
         }
 
-        .hero h1 {
+
+        .dashboard .hero h1 {
 
             margin:
                 0 0 8px;
@@ -93,7 +120,8 @@
 
         }
 
-        .hero p {
+
+        .dashboard .hero p {
 
             margin:
                 0;
@@ -106,6 +134,11 @@
 
         }
 
+
+        /* ==========================================
+           CARTE PROFIL
+        ========================================== */
+
         .account-card {
 
             display:
@@ -115,17 +148,20 @@
                 center;
 
             gap:
-                14px;
+                16px;
+
+            min-width:
+                280px;
 
             padding:
-                14px 18px;
+                16px 20px;
 
             border:
                 1px solid
                 rgba(255,255,255,.08);
 
             background:
-                rgba(15,23,42,.72);
+                rgba(15,23,42,.82);
 
             backdrop-filter:
                 blur(12px);
@@ -133,15 +169,23 @@
             border-radius:
                 18px;
 
+            box-shadow:
+                0 15px 40px
+                rgba(0,0,0,.25);
+
         }
+
 
         .avatar {
 
             width:
-                48px;
+                72px !important;
 
             height:
-                48px;
+                72px !important;
+
+            min-width:
+                72px;
 
             border-radius:
                 50%;
@@ -152,14 +196,27 @@
             background:
                 #1e293b;
 
+            border:
+                2px solid
+                rgba(88,101,242,.55);
+
+            box-shadow:
+                0 0 20px
+                rgba(88,101,242,.25);
+
         }
+
 
         .account-name {
 
             font-weight:
                 700;
 
+            font-size:
+                1.05rem;
+
         }
+
 
         .account-role {
 
@@ -173,6 +230,7 @@
                 .9rem;
 
         }
+
 
         .status {
 
@@ -196,6 +254,7 @@
 
         }
 
+
         .status-dot {
 
             width:
@@ -216,6 +275,11 @@
 
         }
 
+
+        /* ==========================================
+           CHARGEMENT / ERREUR
+        ========================================== */
+
         .loading,
         .error {
 
@@ -234,6 +298,7 @@
 
         }
 
+
         .error {
 
             border-color:
@@ -244,6 +309,11 @@
 
         }
 
+
+        /* ==========================================
+           TITRES
+        ========================================== */
+
         .section-title {
 
             margin:
@@ -253,6 +323,11 @@
                 1.35rem;
 
         }
+
+
+        /* ==========================================
+           OUTILS
+        ========================================== */
 
         .tools-grid {
 
@@ -269,6 +344,7 @@
                 18px;
 
         }
+
 
         .tool-card {
 
@@ -299,6 +375,7 @@
 
         }
 
+
         .tool-card:hover {
 
             transform:
@@ -313,6 +390,7 @@
 
         }
 
+
         .tool-icon {
 
             font-size:
@@ -323,6 +401,7 @@
 
         }
 
+
         .tool-card h3 {
 
             margin:
@@ -332,6 +411,7 @@
                 1.05rem;
 
         }
+
 
         .tool-card p {
 
@@ -348,6 +428,11 @@
                 1.5;
 
         }
+
+
+        /* ==========================================
+           RÔLES
+        ========================================== */
 
         .role-box {
 
@@ -366,6 +451,7 @@
 
         }
 
+
         .roles {
 
             display:
@@ -378,6 +464,7 @@
                 10px;
 
         }
+
 
         .role {
 
@@ -402,6 +489,7 @@
 
         }
 
+
         .permission-count {
 
             color:
@@ -411,6 +499,11 @@
                 8px;
 
         }
+
+
+        /* ==========================================
+           DÉCONNEXION
+        ========================================== */
 
         .logout {
 
@@ -438,6 +531,7 @@
 
         }
 
+
         .logout:hover {
 
             background:
@@ -445,16 +539,25 @@
 
         }
 
+
+        /* ==========================================
+           MOBILE
+        ========================================== */
+
         @media (max-width:800px) {
 
             .dashboard {
 
-                padding-top:
-                    100px;
+                padding:
+                    95px 0 40px;
 
             }
 
-            .hero {
+
+            .dashboard .hero {
+
+                min-height:
+                    auto !important;
 
                 flex-direction:
                     column;
@@ -462,12 +565,36 @@
                 align-items:
                     stretch;
 
+                text-align:
+                    center;
+
+                gap:
+                    25px;
+
             }
+
 
             .account-card {
 
                 width:
                     100%;
+
+                justify-content:
+                    center;
+
+            }
+
+
+            .avatar {
+
+                width:
+                    64px !important;
+
+                height:
+                    64px !important;
+
+                min-width:
+                    64px;
 
             }
 
@@ -534,7 +661,7 @@
                 <img
                     id="avatar"
                     class="avatar"
-                    src=""
+                    src="https://cdn.discordapp.com/embed/avatars/0.png"
                     alt="Avatar Discord"
                 >
 
@@ -635,249 +762,117 @@ const API_URL =
 const TOOLS = [
 
     {
-        permission:
-            "dashboard",
-
-        icon:
-            "📊",
-
-        title:
-            "Tableau de bord",
-
-        description:
-            "Accéder à ton espace personnel.",
-
-        link:
-            "dashboard.html"
-
+        permission: "dashboard",
+        icon: "📊",
+        title: "Tableau de bord",
+        description: "Accéder à ton espace personnel.",
+        link: "dashboard.html"
     },
 
     {
-        permission:
-            "level_money",
-
-        icon:
-            "💰",
-
-        title:
-            "Niveau + argent",
-
-        description:
-            "Consulter les informations de niveau et d'argent."
-
+        permission: "level_money",
+        icon: "💰",
+        title: "Niveau + argent",
+        description: "Consulter les informations de niveau et d'argent."
     },
 
     {
-        permission:
-            "member_list",
-
-        icon:
-            "👥",
-
-        title:
-            "Liste des membres",
-
-        description:
-            "Consulter les membres du serveur.",
-
-        link:
-            "membres.html"
-
+        permission: "member_list",
+        icon: "👥",
+        title: "Liste des membres",
+        description: "Consulter les membres du serveur.",
+        link: "membres.html"
     },
 
     {
-        permission:
-            "temp_ban",
-
-        icon:
-            "⏳",
-
-        title:
-            "Ban temporaire",
-
-        description:
-            "Gérer les bannissements temporaires."
-
+        permission: "temp_ban",
+        icon: "⏳",
+        title: "Ban temporaire",
+        description: "Gérer les bannissements temporaires."
     },
 
     {
-        permission:
-            "perm_ban",
-
-        icon:
-            "🔨",
-
-        title:
-            "Ban définitif",
-
-        description:
-            "Gérer les bannissements définitifs."
-
+        permission: "perm_ban",
+        icon: "🔨",
+        title: "Ban définitif",
+        description: "Gérer les bannissements définitifs."
     },
 
     {
-        permission:
-            "manage_roles",
-
-        icon:
-            "🎭",
-
-        title:
-            "Gestion des rôles",
-
-        description:
-            "Ajouter ou retirer des rôles Discord."
-
+        permission: "manage_roles",
+        icon: "🎭",
+        title: "Gestion des rôles",
+        description: "Ajouter ou retirer des rôles Discord."
     },
 
     {
-        permission:
-            "sanctions_total",
-
-        icon:
-            "⚠️",
-
-        title:
-            "Sanctions",
-
-        description:
-            "Consulter les sanctions des membres."
-
+        permission: "sanctions_total",
+        icon: "⚠️",
+        title: "Sanctions",
+        description: "Consulter les sanctions des membres."
     },
 
     {
-        permission:
-            "view_own_sanctions",
-
-        icon:
-            "📋",
-
-        title:
-            "Mes sanctions",
-
-        description:
-            "Consulter tes propres sanctions."
-
+        permission: "view_own_sanctions",
+        icon: "📋",
+        title: "Mes sanctions",
+        description: "Consulter tes propres sanctions."
     },
 
     {
-        permission:
-            "own_card",
-
-        icon:
-            "🪪",
-
-        title:
-            "Ma carte",
-
-        description:
-            "Afficher ta carte membre."
-
+        permission: "own_card",
+        icon: "🪪",
+        title: "Ma carte",
+        description: "Afficher ta carte membre."
     },
 
     {
-        permission:
-            "discord_mobile",
-
-        icon:
-            "📱",
-
-        title:
-            "Discord mobile",
-
-        description:
-            "Accéder aux informations Discord mobile."
-
+        permission: "discord_mobile",
+        icon: "📱",
+        title: "Discord mobile",
+        description: "Accéder aux informations Discord mobile."
     },
 
     {
-        permission:
-            "discord_pc",
-
-        icon:
-            "💻",
-
-        title:
-            "Discord PC",
-
-        description:
-            "Accéder aux informations Discord PC."
-
+        permission: "discord_pc",
+        icon: "💻",
+        title: "Discord PC",
+        description: "Accéder aux informations Discord PC."
     },
 
     {
-        permission:
-            "server_logs",
-
-        icon:
-            "📜",
-
-        title:
-            "Logs du serveur",
-
-        description:
-            "Consulter les journaux du serveur."
-
+        permission: "server_logs",
+        icon: "📜",
+        title: "Logs du serveur",
+        description: "Consulter les journaux du serveur."
     },
 
     {
-        permission:
-            "create_event",
-
-        icon:
-            "📅",
-
-        title:
-            "Créer un événement",
-
-        description:
-            "Créer un nouvel événement Discord."
-
+        permission: "create_event",
+        icon: "📅",
+        title: "Créer un événement",
+        description: "Créer un nouvel événement Discord."
     },
 
     {
-        permission:
-            "create_announcement",
-
-        icon:
-            "📢",
-
-        title:
-            "Créer une annonce",
-
-        description:
-            "Créer une annonce pour la communauté."
-
+        permission: "create_announcement",
+        icon: "📢",
+        title: "Créer une annonce",
+        description: "Créer une annonce pour la communauté."
     },
 
     {
-        permission:
-            "deplexo_links",
-
-        icon:
-            "🔗",
-
-        title:
-            "Liens Deplexo",
-
-        description:
-            "Accéder aux liens et informations Deplexo."
-
+        permission: "deplexo_links",
+        icon: "🔗",
+        title: "Liens Deplexo",
+        description: "Accéder aux liens et informations Deplexo."
     },
 
     {
-        permission:
-            "bot_status",
-
-        icon:
-            "🤖",
-
-        title:
-            "Statut du bot",
-
-        description:
-            "Consulter l'état du bot Discord."
-
+        permission: "bot_status",
+        icon: "🤖",
+        title: "Statut du bot",
+        description: "Consulter l'état du bot Discord."
     }
 
 ];
@@ -887,49 +882,46 @@ function escapeHTML(value) {
 
     return String(value)
 
-        .replaceAll(
-            "&",
-            "&amp;"
-        )
-
-        .replaceAll(
-            "<",
-            "&lt;"
-        )
-
-        .replaceAll(
-            ">",
-            "&gt;"
-        )
-
-        .replaceAll(
-            '"',
-            "&quot;"
-        )
-
-        .replaceAll(
-            "'",
-            "&#039;"
-        );
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
+
+/*
+==================================================
+RÉCUPÉRATION DE L'AVATAR
+==================================================
+*/
 
 function getAvatarURL(user) {
 
-    if (!user.avatar) {
+    if (
+        user &&
+        user.avatar &&
+        user.id
+    ) {
 
-        return "https://cdn.discordapp.com/embed/avatars/0.png";
+        return (
+            "https://cdn.discordapp.com/avatars/" +
+            `${user.id}/${user.avatar}.png?size=256`
+        );
 
     }
 
-    return (
-        `https://cdn.discordapp.com/avatars/` +
-        `${user.id}/${user.avatar}.png?size=128`
-    );
+    return "https://cdn.discordapp.com/embed/avatars/0.png";
 
 }
 
+
+/*
+==================================================
+CHARGEMENT DU DASHBOARD
+==================================================
+*/
 
 async function loadDashboard() {
 
@@ -980,7 +972,6 @@ async function loadDashboard() {
             throw new Error(
 
                 data.error ||
-
                 "Impossible de récupérer les permissions."
 
             );
@@ -993,7 +984,9 @@ async function loadDashboard() {
         );
 
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.error(
             error
@@ -1008,46 +1001,50 @@ async function loadDashboard() {
 }
 
 
+/*
+==================================================
+AFFICHAGE
+==================================================
+*/
+
 function renderDashboard(
     data
 ) {
 
     document
-        .getElementById(
-            "loading"
-        )
-        .style.display =
-            "none";
+        .getElementById("loading")
+        .style.display = "none";
 
 
     document
-        .getElementById(
-            "content"
-        )
-        .style.display =
-            "block";
+        .getElementById("content")
+        .style.display = "block";
 
 
     const user =
-        data.user;
+        data.user || {};
 
 
     document
-        .getElementById(
-            "username"
-        )
+        .getElementById("username")
         .textContent =
-            user.username;
+            user.username || "Utilisateur Discord";
 
 
     document
-        .getElementById(
-            "avatar"
-        )
+        .getElementById("avatar")
         .src =
-            getAvatarURL(
-                user
-            );
+            getAvatarURL(user);
+
+
+    document
+        .getElementById("avatar")
+        .onerror = function () {
+
+            this.src =
+                "https://cdn.discordapp.com/embed/avatars/0.png";
+
+        };
 
 
     const roles =
@@ -1067,17 +1064,13 @@ function renderDashboard(
 
 
     document
-        .getElementById(
-            "mainRole"
-        )
+        .getElementById("mainRole")
         .textContent =
             mainRole;
 
 
     const rolesContainer =
-        document.getElementById(
-            "roles"
-        );
+        document.getElementById("roles");
 
 
     if (!roles.length) {
@@ -1085,39 +1078,35 @@ function renderDashboard(
         rolesContainer.innerHTML =
             `<span class="role">@everyone</span>`;
 
-    } else {
+    }
+
+    else {
 
         rolesContainer.innerHTML =
 
             roles
-
                 .map(
-                    role =>
-                        `<span class="role">
-                            ${escapeHTML(
-                                role.name
-                            )}
-                        </span>`
-                )
 
+                    role =>
+
+                        `<span class="role">
+                            ${escapeHTML(role.name)}
+                        </span>`
+
+                )
                 .join("");
 
     }
 
 
     document
-        .getElementById(
-            "permissionCount"
-        )
+        .getElementById("permissionCount")
         .textContent =
-
             `${permissions.length} permission(s) active(s)`;
 
 
     const toolsContainer =
-        document.getElementById(
-            "tools"
-        );
+        document.getElementById("tools");
 
 
     const allowedTools =
@@ -1141,6 +1130,7 @@ function renderDashboard(
 
                     <article
                         class="tool-card"
+
                         ${
                             tool.link
                                 ?
@@ -1152,27 +1142,15 @@ function renderDashboard(
                     >
 
                         <div class="tool-icon">
-
                             ${tool.icon}
-
                         </div>
 
-
                         <h3>
-
-                            ${escapeHTML(
-                                tool.title
-                            )}
-
+                            ${escapeHTML(tool.title)}
                         </h3>
 
-
                         <p>
-
-                            ${escapeHTML(
-                                tool.description
-                            )}
-
+                            ${escapeHTML(tool.description)}
                         </p>
 
                     </article>
@@ -1186,14 +1164,18 @@ function renderDashboard(
 }
 
 
+/*
+==================================================
+ERREUR
+==================================================
+*/
+
 function showError(
     message
 ) {
 
     const loading =
-        document.getElementById(
-            "loading"
-        );
+        document.getElementById("loading");
 
 
     loading.className =
@@ -1206,10 +1188,14 @@ function showError(
 }
 
 
+/*
+==================================================
+DÉCONNEXION
+==================================================
+*/
+
 document
-    .getElementById(
-        "logout"
-    )
+    .getElementById("logout")
     .addEventListener(
 
         "click",
@@ -1228,6 +1214,12 @@ document
 
     );
 
+
+/*
+==================================================
+DÉMARRAGE
+==================================================
+*/
 
 loadDashboard();
 
