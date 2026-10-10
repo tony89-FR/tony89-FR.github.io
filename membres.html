@@ -8,8 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/style.css?v=20261010">
+    <link rel="stylesheet" href="CSS/style.css?v=20261010">
 
     <style>
         .members-page {
@@ -64,16 +63,6 @@
             border: 1px solid rgba(255,255,255,.12);
             border-radius: 12px;
             font: inherit;
-            outline: none;
-        }
-
-        .members-search:focus {
-            border-color: #00d9ff;
-        }
-
-        .members-count {
-            opacity: .75;
-            font-size: .9rem;
         }
 
         .members-grid {
@@ -83,13 +72,13 @@
         }
 
         .member-card {
+            min-width: 0;
             padding: 22px;
             border-radius: 18px;
             background: rgba(255,255,255,.055);
             border: 1px solid rgba(255,255,255,.08);
             backdrop-filter: blur(12px);
             transition: transform .25s ease, border-color .25s ease;
-            min-width: 0;
         }
 
         .member-card:hover {
@@ -123,7 +112,8 @@
 
         .member-identity span {
             color: #00d9ff;
-            font-size: .85rem;
+            font-size: .8rem;
+            overflow-wrap: anywhere;
         }
 
         .member-id {
@@ -143,9 +133,10 @@
             margin-top: 15px;
         }
 
-        .member-action {
-            width: 100%;
-            border: none;
+        .member-action,
+        .members-button,
+        .dialog-button {
+            border: 1px solid rgba(255,255,255,.1);
             border-radius: 10px;
             padding: 10px 12px;
             color: white;
@@ -154,11 +145,22 @@
             font: inherit;
             font-size: .9rem;
             text-align: left;
-            transition: background .2s ease;
+            transition: background .2s ease, border-color .2s ease;
         }
 
-        .member-action:hover {
+        .member-action {
+            width: 100%;
+        }
+
+        .member-action:hover,
+        .members-button:hover,
+        .dialog-button:hover {
             background: rgba(0,217,255,.14);
+            border-color: rgba(0,217,255,.3);
+        }
+
+        .member-action.danger {
+            color: #ffabb5;
         }
 
         .member-no-action {
@@ -166,6 +168,11 @@
             margin-top: 15px;
             color: rgba(255,255,255,.55);
             font-size: .85rem;
+        }
+
+        .members-count {
+            opacity: .75;
+            font-size: .9rem;
         }
 
         .members-message {
@@ -181,18 +188,153 @@
             border: 1px solid rgba(255,70,90,.3);
         }
 
-        .members-button {
-            padding: 11px 16px;
-            border: 1px solid rgba(0,217,255,.3);
-            border-radius: 10px;
-            background: rgba(0,217,255,.1);
-            color: white;
-            cursor: pointer;
-            font: inherit;
+        .members-success {
+            color: #a8ffc0;
+            border: 1px solid rgba(70,255,120,.25);
         }
 
         [hidden] {
             display: none !important;
+        }
+
+        /* Fenêtre des actions */
+        .action-dialog {
+            width: min(560px, calc(100% - 28px));
+            max-height: 85vh;
+            margin: auto;
+            padding: 0;
+            overflow: auto;
+            color: white;
+            background: #111629;
+            border: 1px solid rgba(0,217,255,.25);
+            border-radius: 18px;
+            box-shadow: 0 25px 80px rgba(0,0,0,.6);
+        }
+
+        .action-dialog::backdrop {
+            background: rgba(0,0,0,.75);
+            backdrop-filter: blur(5px);
+        }
+
+        .dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 20px;
+            border-bottom: 1px solid rgba(255,255,255,.09);
+        }
+
+        .dialog-header h2 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .dialog-close {
+            border: 0;
+            color: white;
+            background: transparent;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .dialog-content {
+            padding: 20px;
+        }
+
+        .dialog-content p {
+            line-height: 1.6;
+            color: rgba(255,255,255,.75);
+            margin-bottom: 15px;
+        }
+
+        .dialog-label {
+            display: block;
+            margin: 14px 0 7px;
+            font-size: .9rem;
+            font-weight: 600;
+        }
+
+        .dialog-input,
+        .dialog-select,
+        .dialog-textarea {
+            width: 100%;
+            padding: 12px;
+            color: white;
+            background: #0a1020;
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 10px;
+            font: inherit;
+        }
+
+        .dialog-select option {
+            color: white;
+            background: #111629;
+        }
+
+        .dialog-textarea {
+            min-height: 85px;
+            resize: vertical;
+        }
+
+        .dialog-buttons {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dialog-button.primary {
+            background: #5865f2;
+        }
+
+        .dialog-button.danger {
+            background: #b72b45;
+        }
+
+        .dialog-button:disabled {
+            opacity: .55;
+            cursor: wait;
+        }
+
+        .role-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .role-name {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .role-status {
+            display: block;
+            margin-top: 4px;
+            color: rgba(255,255,255,.55);
+            font-size: .8rem;
+        }
+
+        .role-row button {
+            flex-shrink: 0;
+        }
+
+        .members-toast {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            z-index: 5000;
+            max-width: calc(100% - 36px);
+            padding: 14px 18px;
+            border: 1px solid rgba(0,217,255,.3);
+            border-radius: 12px;
+            color: white;
+            background: #111629;
+            box-shadow: 0 10px 30px rgba(0,0,0,.4);
         }
 
         @media (max-width: 600px) {
@@ -202,6 +344,15 @@
 
             .members-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .role-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .role-row button {
+                width: 100%;
             }
         }
     </style>
@@ -218,8 +369,8 @@
                 <p class="members-kicker">👥 ESPACE COMMUNAUTÉ</p>
                 <h1>Liste des membres</h1>
                 <p>
-                    Consulte les membres du serveur et les actions
-                    disponibles selon tes permissions Discord.
+                    Consulte les membres du serveur et effectue les
+                    actions autorisées par tes permissions Discord.
                 </p>
             </header>
 
@@ -227,36 +378,54 @@
                 ⏳ Chargement des membres...
             </div>
 
-            <div id="membersError" class="members-message members-error" hidden>
-            </div>
+            <div id="membersError"
+                 class="members-message members-error"
+                 hidden></div>
 
             <div id="membersContent" hidden>
                 <div class="members-toolbar">
                     <input
-                        type="search"
                         id="membersSearch"
                         class="members-search"
+                        type="search"
                         placeholder="🔎 Rechercher un membre..."
-                        aria-label="Rechercher un membre"
-                    >
+                        aria-label="Rechercher un membre">
 
                     <span id="membersCount" class="members-count"></span>
 
-                    <button id="membersRefresh" class="members-button" type="button">
+                    <button id="membersRefresh"
+                            class="members-button"
+                            type="button">
                         🔄 Actualiser
                     </button>
                 </div>
 
                 <div id="membersGrid" class="members-grid"></div>
             </div>
-
         </section>
     </main>
+
+    <dialog id="actionDialog" class="action-dialog">
+        <div class="dialog-header">
+            <h2 id="dialogTitle">Action</h2>
+            <button type="button"
+                    class="dialog-close"
+                    data-close
+                    aria-label="Fermer">×</button>
+        </div>
+        <div id="dialogContent" class="dialog-content"></div>
+    </dialog>
+
+    <div id="membersToast"
+         class="members-toast"
+         role="status"
+         hidden></div>
 
     <script src="js/navbar.js?v=20261010"></script>
 
     <script>
-        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+        const API_URL =
+            "https://la-communaute-live-bot.de.deplexo.com";
 
         const loading = document.getElementById("membersLoading");
         const errorBox = document.getElementById("membersError");
@@ -264,9 +433,15 @@
         const grid = document.getElementById("membersGrid");
         const searchInput = document.getElementById("membersSearch");
         const countElement = document.getElementById("membersCount");
+        const dialog = document.getElementById("actionDialog");
+        const dialogTitle = document.getElementById("dialogTitle");
+        const dialogContent = document.getElementById("dialogContent");
+        const toast = document.getElementById("membersToast");
 
         let permissions = [];
         let allMembers = [];
+        let activeMemberId = null;
+        let toastTimeout = null;
 
         function escapeHTML(value) {
             return String(value ?? "")
@@ -281,50 +456,88 @@
             return permissions.includes(permission);
         }
 
-        async function apiGet(path) {
+        function showToast(message) {
+            toast.textContent = message;
+            toast.hidden = false;
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.hidden = true;
+            }, 4500);
+        }
+
+        function openDialog(title, html) {
+            dialogTitle.textContent = title;
+            dialogContent.innerHTML = html;
+
+            if (!dialog.open) {
+                dialog.showModal();
+            }
+        }
+
+        function showDialogError(message) {
+            openDialog(
+                "Une erreur est survenue",
+                `
+                    <p>${escapeHTML(message)}</p>
+                    <div class="dialog-buttons">
+                        <button class="dialog-button primary"
+                                type="button"
+                                data-close>
+                            Fermer
+                        </button>
+                    </div>
+                `
+            );
+        }
+
+        async function apiRequest(path, options = {}) {
             const token = localStorage.getItem("discord_session");
 
             if (!token) {
                 throw new Error(
-                    "Tu n'es pas connecté. Connecte-toi avec Discord depuis le site."
+                    "Tu n'es pas connecté. Connecte-toi avec Discord."
                 );
             }
+
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                ...(options.body
+                    ? { "Content-Type": "application/json" }
+                    : {})
+            };
 
             const response = await fetch(`${API_URL}${path}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+                method: options.method || "GET",
+                headers,
+                ...(options.body
+                    ? { body: JSON.stringify(options.body) }
+                    : {})
             });
 
-            if (response.status === 401) {
-                throw new Error(
-                    "Ta session Discord a expiré. Reconnecte-toi depuis le site."
-                );
-            }
+            let data = {};
 
-            if (response.status === 403) {
-                throw new Error(
-                    "Tu n'as pas la permission de consulter cette page."
-                );
-            }
-
-            if (response.status === 404) {
-                throw new Error(`La route ${path} est introuvable sur le bot.`);
+            try {
+                data = await response.json();
+            } catch {
+                // Certains messages d'erreur du serveur peuvent ne pas être JSON.
             }
 
             if (!response.ok) {
-                throw new Error(`Erreur du serveur : ${response.status}.`);
+                throw new Error(
+                    data.error || `Erreur serveur : ${response.status}`
+                );
             }
 
-            return response.json();
+            return data;
         }
 
         async function loadPermissions() {
-            const data = await apiGet("/auth/permissions");
+            const data = await apiRequest("/auth/permissions");
 
             if (!data.connected || !Array.isArray(data.permissions)) {
                 throw new Error(
-                    "Impossible de vérifier ta session et tes permissions Discord."
+                    "Impossible de vérifier tes permissions Discord."
                 );
             }
 
@@ -332,13 +545,8 @@
         }
 
         async function loadMembers() {
-            const data = await apiGet("/members");
+            const data = await apiRequest("/members");
 
-            /*
-             * IMPORTANT :
-             * L'API du bot renvoie { count: ..., members: [...] }.
-             * On récupère donc data.members et non l'objet complet.
-             */
             const members = Array.isArray(data)
                 ? data
                 : data && Array.isArray(data.members)
@@ -346,9 +554,9 @@
                     : null;
 
             if (!members) {
-                console.error("Réponse reçue de /members :", data);
+                console.error("Réponse de l'API /members :", data);
                 throw new Error(
-                    "Le bot a renvoyé des données membres dans un format inattendu."
+                    "Le serveur a renvoyé un format de membres incorrect."
                 );
             }
 
@@ -356,14 +564,13 @@
         }
 
         function getMemberRole(member) {
-            if (Array.isArray(member.roles) && member.roles.length > 0) {
-                const roles = member.roles
-                    .map(role => typeof role === "string" ? role : role.name)
-                    .filter(Boolean);
-
-                if (roles.length) {
-                    return roles.join(" • ");
-                }
+            if (Array.isArray(member.roles) && member.roles.length) {
+                return member.roles
+                    .map(role =>
+                        typeof role === "string" ? role : role.name
+                    )
+                    .filter(Boolean)
+                    .join(" • ");
             }
 
             return member.role || "Membre";
@@ -375,8 +582,8 @@
             if (hasPermission("temp_ban")) {
                 actions.push(`
                     <button class="member-action"
-                        data-action="temp-ban"
-                        data-id="${escapeHTML(member.id)}">
+                            data-action="temp-ban"
+                            data-id="${escapeHTML(member.id)}">
                         ⏱️ Ban temporaire
                     </button>
                 `);
@@ -384,9 +591,9 @@
 
             if (hasPermission("perm_ban")) {
                 actions.push(`
-                    <button class="member-action"
-                        data-action="perm-ban"
-                        data-id="${escapeHTML(member.id)}">
+                    <button class="member-action danger"
+                            data-action="perm-ban"
+                            data-id="${escapeHTML(member.id)}">
                         🔨 Ban définitif
                     </button>
                 `);
@@ -395,35 +602,41 @@
             if (hasPermission("manage_roles")) {
                 actions.push(`
                     <button class="member-action"
-                        data-action="role"
-                        data-id="${escapeHTML(member.id)}">
+                            data-action="roles"
+                            data-id="${escapeHTML(member.id)}">
                         🛡️ Gérer les rôles
                     </button>
                 `);
             }
 
-            if (actions.length === 0) {
-                return `<span class="member-no-action">Aucune action disponible</span>`;
+            if (!actions.length) {
+                return `
+                    <span class="member-no-action">
+                        Aucune action disponible
+                    </span>
+                `;
             }
 
-            return `<div class="member-actions">${actions.join("")}</div>`;
+            return `
+                <div class="member-actions">
+                    ${actions.join("")}
+                </div>
+            `;
         }
 
-        function renderMembers(members) {
-            if (!Array.isArray(members)) {
-                throw new Error("Format de données membres incorrect.");
-            }
-
+        function renderMembers() {
             const query = searchInput.value.trim().toLowerCase();
 
-            const filtered = members.filter(member => {
-                const name = member.displayName ||
+            const filtered = allMembers.filter(member => {
+                const name =
+                    member.displayName ||
                     member.globalName ||
                     member.username ||
                     "Membre";
 
                 return (
                     String(name).toLowerCase().includes(query) ||
+                    String(member.username || "").toLowerCase().includes(query) ||
                     String(member.id || "").includes(query)
                 );
             });
@@ -431,7 +644,7 @@
             countElement.textContent =
                 `${filtered.length} membre${filtered.length > 1 ? "s" : ""}`;
 
-            if (filtered.length === 0) {
+            if (!filtered.length) {
                 grid.innerHTML = `
                     <div class="members-message">
                         👥 Aucun membre ne correspond à ta recherche.
@@ -455,7 +668,7 @@
                     "https://cdn.discordapp.com/embed/avatars/0.png"
                 );
 
-                const id = escapeHTML(member.id || "Inconnu");
+                const id = escapeHTML(member.id || "");
 
                 return `
                     <article class="member-card">
@@ -465,8 +678,7 @@
                                 alt=""
                                 class="member-avatar"
                                 loading="lazy"
-                                onerror="this.onerror=null;this.src='https://cdn.discordapp.com/embed/avatars/0.png';"
-                            >
+                                onerror="this.onerror=null;this.src='https://cdn.discordapp.com/embed/avatars/0.png';">
 
                             <div class="member-identity">
                                 <h2>${name}</h2>
@@ -474,15 +686,334 @@
                             </div>
                         </div>
 
-                        <div class="member-id">
-                            ID : ${id}
-                        </div>
+                        <div class="member-id">ID : ${id}</div>
 
                         ${getActions(member)}
                     </article>
                 `;
             }).join("");
         }
+
+        function openTempBan(memberId) {
+            activeMemberId = memberId;
+
+            openDialog(
+                "⏱️ Ban temporaire",
+                `
+                    <p>
+                        Le membre sera banni pendant la durée choisie.
+                        Le débannissement automatique de cette version
+                        dépend du fonctionnement continu du bot.
+                    </p>
+
+                    <form id="tempBanForm">
+                        <label class="dialog-label" for="banDuration">
+                            Durée du bannissement
+                        </label>
+
+                        <select class="dialog-select"
+                                id="banDuration"
+                                name="durationMinutes"
+                                required>
+                            <option value="10">10 minutes</option>
+                            <option value="60">1 heure</option>
+                            <option value="360">6 heures</option>
+                            <option value="1440">24 heures</option>
+                            <option value="4320">3 jours</option>
+                            <option value="10080">7 jours</option>
+                        </select>
+
+                        <label class="dialog-label" for="tempBanReason">
+                            Raison
+                        </label>
+
+                        <textarea class="dialog-textarea"
+                                  id="tempBanReason"
+                                  name="reason"
+                                  maxlength="450"
+                                  placeholder="Raison du bannissement"
+                                  required></textarea>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Annuler
+                            </button>
+
+                            <button class="dialog-button danger"
+                                    type="submit">
+                                Confirmer le ban
+                            </button>
+                        </div>
+                    </form>
+                `
+            );
+        }
+
+        function openPermanentBan(memberId) {
+            activeMemberId = memberId;
+
+            const member = allMembers.find(
+                item => item.id === memberId
+            );
+
+            const name = member
+                ? member.displayName ||
+                  member.globalName ||
+                  member.username
+                : memberId;
+
+            openDialog(
+                "🔨 Ban définitif",
+                `
+                    <p>
+                        Tu es sur le point de bannir définitivement
+                        <strong>${escapeHTML(name)}</strong>.
+                        Cette action empêche le membre de rejoindre
+                        le serveur jusqu'à un débannissement.
+                    </p>
+
+                    <form id="permBanForm">
+                        <label class="dialog-label" for="permBanReason">
+                            Raison du bannissement
+                        </label>
+
+                        <textarea class="dialog-textarea"
+                                  id="permBanReason"
+                                  name="reason"
+                                  maxlength="450"
+                                  placeholder="Indique la raison"
+                                  required></textarea>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Annuler
+                            </button>
+
+                            <button class="dialog-button danger"
+                                    type="submit">
+                                Confirmer le bannissement
+                            </button>
+                        </div>
+                    </form>
+                `
+            );
+        }
+
+        async function openRoleManager(memberId) {
+            activeMemberId = memberId;
+
+            openDialog(
+                "🛡️ Gestion des rôles",
+                "<p>Chargement des rôles Discord...</p>"
+            );
+
+            try {
+                const data = await apiRequest(
+                    `/moderation/roles?memberId=${encodeURIComponent(memberId)}`
+                );
+
+                const roles = Array.isArray(data.roles)
+                    ? data.roles
+                    : [];
+
+                let rows = "";
+
+                if (!roles.length) {
+                    rows = `
+                        <p>
+                            Aucun rôle modifiable n'est disponible pour toi
+                            sur ce membre. Les rôles protégés ou supérieurs
+                            à ceux que tu peux gérer ne sont pas affichés.
+                        </p>
+                    `;
+                } else {
+                    rows = roles.map(role => {
+                        const action = role.assigned ? "remove" : "add";
+                        const label = role.assigned
+                            ? "➖ Retirer"
+                            : "➕ Ajouter";
+
+                        return `
+                            <div class="role-row">
+                                <div class="role-name">
+                                    <strong>${escapeHTML(role.name)}</strong>
+                                    <span class="role-status">
+                                        ${role.assigned
+                                            ? "Rôle attribué"
+                                            : "Rôle non attribué"}
+                                    </span>
+                                </div>
+
+                                <button
+                                    class="dialog-button role-toggle"
+                                    type="button"
+                                    data-role-id="${escapeHTML(role.id)}"
+                                    data-role-action="${action}">
+                                    ${label}
+                                </button>
+                            </div>
+                        `;
+                    }).join("");
+                }
+
+                dialogTitle.textContent =
+                    `🛡️ Rôles — ${data.memberName || memberId}`;
+
+                dialogContent.innerHTML = `
+                    <p>
+                        Sélectionne une action. Discord et le bot
+                        vérifieront les permissions avant modification.
+                    </p>
+
+                    <div>${rows}</div>
+
+                    <div class="dialog-buttons">
+                        <button class="dialog-button"
+                                type="button"
+                                data-close>
+                            Fermer
+                        </button>
+                    </div>
+                `;
+            } catch (error) {
+                showDialogError(error.message);
+            }
+        }
+
+        async function handleFormSubmit(event) {
+            const form = event.target;
+
+            if (
+                form.id !== "tempBanForm" &&
+                form.id !== "permBanForm"
+            ) {
+                return;
+            }
+
+            event.preventDefault();
+
+            const submitButton = form.querySelector(
+                'button[type="submit"]'
+            );
+
+            submitButton.disabled = true;
+
+            try {
+                let data;
+
+                if (form.id === "tempBanForm") {
+                    data = await apiRequest(
+                        "/moderation/temp-ban",
+                        {
+                            method: "POST",
+                            body: {
+                                memberId: activeMemberId,
+                                durationMinutes: Number(
+                                    form.elements.durationMinutes.value
+                                ),
+                                reason: form.elements.reason.value.trim()
+                            }
+                        }
+                    );
+                } else {
+                    data = await apiRequest(
+                        "/moderation/perm-ban",
+                        {
+                            method: "POST",
+                            body: {
+                                memberId: activeMemberId,
+                                reason: form.elements.reason.value.trim()
+                            }
+                        }
+                    );
+                }
+
+                dialog.close();
+                showToast(`✅ ${data.message || "Action effectuée."}`);
+
+                await initMembers();
+            } catch (error) {
+                showDialogError(error.message);
+            } finally {
+                if (submitButton.isConnected) {
+                    submitButton.disabled = false;
+                }
+            }
+        }
+
+        async function handleRoleToggle(button) {
+            const roleId = button.dataset.roleId;
+            const action = button.dataset.roleAction;
+            const memberId = activeMemberId;
+
+            button.disabled = true;
+
+            try {
+                const data = await apiRequest(
+                    "/moderation/roles",
+                    {
+                        method: "POST",
+                        body: {
+                            memberId,
+                            roleId,
+                            action
+                        }
+                    }
+                );
+
+                showToast(`✅ ${data.message || "Rôle modifié."}`);
+
+                await openRoleManager(memberId);
+                await initMembers();
+            } catch (error) {
+                showDialogError(error.message);
+            } finally {
+                if (button.isConnected) {
+                    button.disabled = false;
+                }
+            }
+        }
+
+        grid.addEventListener("click", event => {
+            const button = event.target.closest(".member-action");
+
+            if (!button) return;
+
+            const memberId = button.dataset.id;
+            const action = button.dataset.action;
+
+            if (action === "temp-ban") {
+                openTempBan(memberId);
+            } else if (action === "perm-ban") {
+                openPermanentBan(memberId);
+            } else if (action === "roles") {
+                openRoleManager(memberId);
+            }
+        });
+
+        dialog.addEventListener("click", event => {
+            if (event.target.closest("[data-close]")) {
+                dialog.close();
+                return;
+            }
+
+            const roleButton = event.target.closest(".role-toggle");
+
+            if (roleButton) {
+                handleRoleToggle(roleButton);
+            }
+        });
+
+        dialog.addEventListener("submit", handleFormSubmit);
+
+        searchInput.addEventListener("input", renderMembers);
+
+        document.getElementById("membersRefresh")
+            .addEventListener("click", initMembers);
 
         async function initMembers() {
             loading.hidden = false;
@@ -495,7 +1026,7 @@
 
                 allMembers = await loadMembers();
 
-                renderMembers(allMembers);
+                renderMembers();
 
                 content.hidden = false;
             } catch (error) {
@@ -507,44 +1038,6 @@
                 loading.hidden = true;
             }
         }
-
-        searchInput.addEventListener("input", () => {
-            renderMembers(allMembers);
-        });
-
-        document.getElementById("membersRefresh").addEventListener("click", () => {
-            initMembers();
-        });
-
-        grid.addEventListener("click", event => {
-            const button = event.target.closest(".member-action");
-
-            if (!button) return;
-
-            const action = button.dataset.action;
-            const memberId = button.dataset.id;
-
-            if (action === "temp-ban") {
-                alert(
-                    "Ban temporaire sélectionné pour le membre " + memberId +
-                    ". Cette action n'est pas encore reliée à une commande Discord."
-                );
-            }
-
-            if (action === "perm-ban") {
-                alert(
-                    "Ban définitif sélectionné pour le membre " + memberId +
-                    ". Cette action n'est pas encore reliée à une commande Discord."
-                );
-            }
-
-            if (action === "role") {
-                alert(
-                    "Gestion des rôles sélectionnée pour le membre " + memberId +
-                    ". Cette action n'est pas encore reliée à une commande Discord."
-                );
-            }
-        });
 
         initMembers();
     </script>
