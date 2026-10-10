@@ -1,1044 +1,552 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>Membres - La communauté live</title>
 
-    <title>
-        Membres - La communauté live
-    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="CSS/style.css?v=20261010">
 
-    <!-- Google Font -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <style>
+        .members-page {
+            min-height: 100vh;
+            padding-top: 110px;
+        }
 
+        .members-section {
+            width: min(1200px, 92%);
+            margin: 0 auto;
+            padding: 35px 0 80px;
+        }
 
-    <!-- CSS PRINCIPAL -->
-    <link
-        rel="stylesheet"
-        href="css/style.css?v=20261008"
-    >
+        .members-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
 
+        .members-kicker {
+            color: #00d9ff;
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: .8rem;
+        }
+
+        .members-header h1 {
+            margin: 10px 0;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        .members-header p:last-child {
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: .75;
+        }
+
+        .members-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .members-search {
+            flex: 1;
+            min-width: 220px;
+            padding: 13px 16px;
+            color: white;
+            background: #101626;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 12px;
+            font: inherit;
+            outline: none;
+        }
+
+        .members-search:focus {
+            border-color: #00d9ff;
+        }
+
+        .members-count {
+            opacity: .75;
+            font-size: .9rem;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .member-card {
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(255,255,255,.08);
+            backdrop-filter: blur(12px);
+            transition: transform .25s ease, border-color .25s ease;
+            min-width: 0;
+        }
+
+        .member-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0,217,255,.35);
+        }
+
+        .member-card-top {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .member-avatar {
+            width: 64px;
+            height: 64px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .member-identity {
+            min-width: 0;
+        }
+
+        .member-identity h2 {
+            margin: 0 0 5px;
+            font-size: 1.1rem;
+            overflow-wrap: anywhere;
+        }
+
+        .member-identity span {
+            color: #00d9ff;
+            font-size: .85rem;
+        }
+
+        .member-id {
+            margin-top: 18px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,.2);
+            color: rgba(255,255,255,.6);
+            font-size: .75rem;
+            overflow-wrap: anywhere;
+        }
+
+        .member-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .member-action {
+            width: 100%;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: white;
+            background: rgba(255,255,255,.08);
+            cursor: pointer;
+            font: inherit;
+            font-size: .9rem;
+            text-align: left;
+            transition: background .2s ease;
+        }
+
+        .member-action:hover {
+            background: rgba(0,217,255,.14);
+        }
+
+        .member-no-action {
+            display: block;
+            margin-top: 15px;
+            color: rgba(255,255,255,.55);
+            font-size: .85rem;
+        }
+
+        .members-message {
+            padding: 25px;
+            text-align: center;
+            border-radius: 15px;
+            background: rgba(255,255,255,.05);
+            margin-bottom: 20px;
+        }
+
+        .members-error {
+            color: #ff9ca8;
+            border: 1px solid rgba(255,70,90,.3);
+        }
+
+        .members-button {
+            padding: 11px 16px;
+            border: 1px solid rgba(0,217,255,.3);
+            border-radius: 10px;
+            background: rgba(0,217,255,.1);
+            color: white;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .members-section {
+                padding-top: 25px;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
-
 <body>
-
-
-    <!-- ==========================================
-         PARTICULES
-    =========================================== -->
-
     <canvas id="particles"></canvas>
-
-
-    <!-- ==========================================
-         NAVBAR
-    =========================================== -->
-
-    <nav
-        class="navbar"
-        id="navbar"
-    ></nav>
-
-
-    <!-- ==========================================
-         CONTENU
-    =========================================== -->
+    <nav class="navbar" id="navbar"></nav>
 
     <main class="members-page">
-
         <section class="members-section">
 
-            <div class="members-header">
-
-                <p class="members-kicker">
-                    👥 ESPACE COMMUNAUTÉ
-                </p>
-
-                <h1>
-                    Liste des membres
-                </h1>
-
+            <header class="members-header">
+                <p class="members-kicker">👥 ESPACE COMMUNAUTÉ</p>
+                <h1>Liste des membres</h1>
                 <p>
-                    Consulte les membres du serveur
-                    et les actions disponibles selon
-                    tes permissions Discord.
+                    Consulte les membres du serveur et les actions
+                    disponibles selon tes permissions Discord.
                 </p>
+            </header>
 
-            </div>
-
-
-            <!-- ÉTAT CHARGEMENT -->
-
-            <div
-                id="membersLoading"
-                class="members-message"
-            >
+            <div id="membersLoading" class="members-message">
                 ⏳ Chargement des membres...
             </div>
 
+            <div id="membersError" class="members-message members-error" hidden>
+            </div>
 
-            <!-- ERREUR -->
+            <div id="membersContent" hidden>
+                <div class="members-toolbar">
+                    <input
+                        type="search"
+                        id="membersSearch"
+                        class="members-search"
+                        placeholder="🔎 Rechercher un membre..."
+                        aria-label="Rechercher un membre"
+                    >
 
-            <div
-                id="membersError"
-                class="members-message members-error"
-                hidden
-            ></div>
+                    <span id="membersCount" class="members-count"></span>
 
+                    <button id="membersRefresh" class="members-button" type="button">
+                        🔄 Actualiser
+                    </button>
+                </div>
 
-            <!-- LISTE -->
-
-            <div
-                id="membersGrid"
-                class="members-grid"
-            ></div>
+                <div id="membersGrid" class="members-grid"></div>
+            </div>
 
         </section>
-
     </main>
 
-
-    <!-- ==========================================
-         JAVASCRIPT NAVBAR
-    =========================================== -->
-
-    <script
-        src="js/navbar.js?v=20261008"
-    ></script>
-
-
-    <!-- ==========================================
-         JAVASCRIPT MEMBRES
-    =========================================== -->
+    <script src="js/navbar.js?v=20261010"></script>
 
     <script>
+        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
 
-        const API_URL =
-            "https://la-communaute-live-bot.de.deplexo.com";
-
-
-        const loading =
-            document.getElementById(
-                "membersLoading"
-            );
-
-
-        const errorBox =
-            document.getElementById(
-                "membersError"
-            );
-
-
-        const grid =
-            document.getElementById(
-                "membersGrid"
-            );
-
+        const loading = document.getElementById("membersLoading");
+        const errorBox = document.getElementById("membersError");
+        const content = document.getElementById("membersContent");
+        const grid = document.getElementById("membersGrid");
+        const searchInput = document.getElementById("membersSearch");
+        const countElement = document.getElementById("membersCount");
 
         let permissions = [];
-
-
-        /* =========================================
-           UTILITAIRE
-        ========================================= */
+        let allMembers = [];
 
         function escapeHTML(value) {
-
-            if (
-                value === null ||
-                value === undefined
-            ) {
-                return "";
-            }
-
-            return String(value)
+            return String(value ?? "")
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
-
         }
-
-
-        /* =========================================
-           PERMISSION
-        ========================================= */
 
         function hasPermission(permission) {
-
-            return permissions.includes(
-                permission
-            );
-
+            return permissions.includes(permission);
         }
 
-
-        /* =========================================
-           CHARGEMENT PERMISSIONS
-        ========================================= */
-
-        async function loadPermissions() {
-
-            const token =
-                localStorage.getItem(
-                    "discord_session"
-                );
-
+        async function apiGet(path) {
+            const token = localStorage.getItem("discord_session");
 
             if (!token) {
-
                 throw new Error(
-                    "Tu dois être connecté avec Discord."
+                    "Tu n'es pas connecté. Connecte-toi avec Discord depuis le site."
                 );
-
             }
 
+            const response = await fetch(`${API_URL}${path}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-            const response =
-                await fetch(
-                    `${API_URL}/auth/permissions`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    }
+            if (response.status === 401) {
+                throw new Error(
+                    "Ta session Discord a expiré. Reconnecte-toi depuis le site."
                 );
+            }
 
+            if (response.status === 403) {
+                throw new Error(
+                    "Tu n'as pas la permission de consulter cette page."
+                );
+            }
+
+            if (response.status === 404) {
+                throw new Error(`La route ${path} est introuvable sur le bot.`);
+            }
 
             if (!response.ok) {
-
-                throw new Error(
-                    "Impossible de récupérer tes permissions."
-                );
-
+                throw new Error(`Erreur du serveur : ${response.status}.`);
             }
 
-
-            const data =
-                await response.json();
-
-
-            if (
-                !data.connected ||
-                !Array.isArray(
-                    data.permissions
-                )
-            ) {
-
-                throw new Error(
-                    "Session Discord invalide."
-                );
-
-            }
-
-
-            permissions =
-                data.permissions;
-
+            return response.json();
         }
 
+        async function loadPermissions() {
+            const data = await apiGet("/auth/permissions");
 
-        /* =========================================
-           CHARGEMENT MEMBRES
-        ========================================= */
+            if (!data.connected || !Array.isArray(data.permissions)) {
+                throw new Error(
+                    "Impossible de vérifier ta session et tes permissions Discord."
+                );
+            }
+
+            permissions = data.permissions;
+        }
 
         async function loadMembers() {
+            const data = await apiGet("/members");
 
-            const token =
-                localStorage.getItem(
-                    "discord_session"
-                );
+            /*
+             * IMPORTANT :
+             * L'API du bot renvoie { count: ..., members: [...] }.
+             * On récupère donc data.members et non l'objet complet.
+             */
+            const members = Array.isArray(data)
+                ? data
+                : data && Array.isArray(data.members)
+                    ? data.members
+                    : null;
 
-
-            const response =
-                await fetch(
-                    `${API_URL}/members`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`
-                        }
-                    }
-                );
-
-
-            if (!response.ok) {
-
-                if (response.status === 403) {
-
-                    throw new Error(
-                        "Tu n'as pas la permission de voir la liste des membres."
-                    );
-
-                }
-
-                if (response.status === 404) {
-
-                    throw new Error(
-                        "La route /members n'est pas encore disponible sur le bot."
-                    );
-
-                }
-
+            if (!members) {
+                console.error("Réponse reçue de /members :", data);
                 throw new Error(
-                    "Impossible de charger les membres."
+                    "Le bot a renvoyé des données membres dans un format inattendu."
                 );
-
             }
 
-
-            return await response.json();
-
+            return members;
         }
 
+        function getMemberRole(member) {
+            if (Array.isArray(member.roles) && member.roles.length > 0) {
+                const roles = member.roles
+                    .map(role => typeof role === "string" ? role : role.name)
+                    .filter(Boolean);
 
-        /* =========================================
-           ACTIONS
-        ========================================= */
+                if (roles.length) {
+                    return roles.join(" • ");
+                }
+            }
+
+            return member.role || "Membre";
+        }
 
         function getActions(member) {
-
             const actions = [];
 
-
-            if (
-                hasPermission(
-                    "temp_ban"
-                )
-            ) {
-
+            if (hasPermission("temp_ban")) {
                 actions.push(`
-                    <button
-                        class="member-action temp-ban"
+                    <button class="member-action"
                         data-action="temp-ban"
-                        data-id="${escapeHTML(member.id)}"
-                    >
+                        data-id="${escapeHTML(member.id)}">
                         ⏱️ Ban temporaire
                     </button>
                 `);
-
             }
 
-
-            if (
-                hasPermission(
-                    "perm_ban"
-                )
-            ) {
-
+            if (hasPermission("perm_ban")) {
                 actions.push(`
-                    <button
-                        class="member-action perm-ban"
+                    <button class="member-action"
                         data-action="perm-ban"
-                        data-id="${escapeHTML(member.id)}"
-                    >
+                        data-id="${escapeHTML(member.id)}">
                         🔨 Ban définitif
                     </button>
                 `);
-
             }
 
-
-            if (
-                hasPermission(
-                    "manage_roles"
-                )
-            ) {
-
+            if (hasPermission("manage_roles")) {
                 actions.push(`
-                    <button
-                        class="member-action role-action"
+                    <button class="member-action"
                         data-action="role"
-                        data-id="${escapeHTML(member.id)}"
-                    >
+                        data-id="${escapeHTML(member.id)}">
                         🛡️ Gérer les rôles
                     </button>
                 `);
-
             }
 
-
-            if (
-                actions.length === 0
-            ) {
-
-                return `
-                    <span class="member-no-action">
-                        Aucune action disponible
-                    </span>
-                `;
-
+            if (actions.length === 0) {
+                return `<span class="member-no-action">Aucune action disponible</span>`;
             }
 
-
-            return `
-                <div class="member-actions">
-                    ${actions.join("")}
-                </div>
-            `;
-
+            return `<div class="member-actions">${actions.join("")}</div>`;
         }
-
-
-        /* =========================================
-           AFFICHAGE
-        ========================================= */
 
         function renderMembers(members) {
-
-            if (
-                !Array.isArray(members)
-            ) {
-
-                throw new Error(
-                    "Format de données membres incorrect."
-                );
-
+            if (!Array.isArray(members)) {
+                throw new Error("Format de données membres incorrect.");
             }
 
+            const query = searchInput.value.trim().toLowerCase();
 
-            if (
-                members.length === 0
-            ) {
+            const filtered = members.filter(member => {
+                const name = member.displayName ||
+                    member.globalName ||
+                    member.username ||
+                    "Membre";
 
+                return (
+                    String(name).toLowerCase().includes(query) ||
+                    String(member.id || "").includes(query)
+                );
+            });
+
+            countElement.textContent =
+                `${filtered.length} membre${filtered.length > 1 ? "s" : ""}`;
+
+            if (filtered.length === 0) {
                 grid.innerHTML = `
                     <div class="members-message">
-                        👥 Aucun membre trouvé.
+                        👥 Aucun membre ne correspond à ta recherche.
                     </div>
                 `;
-
                 return;
-
             }
 
+            grid.innerHTML = filtered.map(member => {
+                const name = escapeHTML(
+                    member.displayName ||
+                    member.globalName ||
+                    member.username ||
+                    "Membre"
+                );
 
-            grid.innerHTML =
-                members.map(
-                    (member) => {
+                const role = escapeHTML(getMemberRole(member));
 
-                        const avatar =
-                            member.avatar ||
-                            "https://cdn.discordapp.com/embed/avatars/0.png";
+                const avatar = escapeHTML(
+                    member.avatar ||
+                    "https://cdn.discordapp.com/embed/avatars/0.png"
+                );
 
+                const id = escapeHTML(member.id || "Inconnu");
 
-                        const username =
-                            escapeHTML(
-                                member.globalName ||
-                                member.username ||
-                                "Membre"
-                            );
-
-
-                        const role =
-                            escapeHTML(
-                                member.role ||
-                                "Membre"
-                            );
-
-
-                        return `
-
-                            <article
-                                class="member-card"
+                return `
+                    <article class="member-card">
+                        <div class="member-card-top">
+                            <img
+                                src="${avatar}"
+                                alt=""
+                                class="member-avatar"
+                                loading="lazy"
+                                onerror="this.onerror=null;this.src='https://cdn.discordapp.com/embed/avatars/0.png';"
                             >
 
-                                <div
-                                    class="member-card-top"
-                                >
+                            <div class="member-identity">
+                                <h2>${name}</h2>
+                                <span>${role}</span>
+                            </div>
+                        </div>
 
-                                    <img
-                                        src="${avatar}"
-                                        alt=""
-                                        class="member-avatar"
-                                        loading="lazy"
-                                    >
+                        <div class="member-id">
+                            ID : ${id}
+                        </div>
 
-                                    <div
-                                        class="member-identity"
-                                    >
-
-                                        <h2>
-                                            ${username}
-                                        </h2>
-
-                                        <span>
-                                            ${role}
-                                        </span>
-
-                                    </div>
-
-                                </div>
-
-
-                                <div
-                                    class="member-id"
-                                >
-                                    ID :
-                                    ${escapeHTML(member.id)}
-                                </div>
-
-
-                                ${getActions(member)}
-
-                            </article>
-
-                        `;
-
-                    }
-                )
-                .join("");
-
+                        ${getActions(member)}
+                    </article>
+                `;
+            }).join("");
         }
-
-
-        /* =========================================
-           ACTIONS
-        ========================================= */
-
-        document.addEventListener(
-            "click",
-            (event) => {
-
-                const button =
-                    event.target.closest(
-                        ".member-action"
-                    );
-
-
-                if (!button) {
-                    return;
-                }
-
-
-                const action =
-                    button.dataset.action;
-
-
-                const memberId =
-                    button.dataset.id;
-
-
-                /*
-                 * Pour le moment nous n'envoyons
-                 * aucune commande dangereuse au bot.
-                 *
-                 * Les permissions sont déjà contrôlées.
-                 * On branchera ensuite chaque action
-                 * sur une vraie route sécurisée.
-                 */
-
-                if (
-                    action === "temp-ban"
-                ) {
-
-                    alert(
-                        "Ban temporaire sélectionné pour le membre " +
-                        memberId +
-                        ".\n\nLa commande Discord sera branchée dans l'étape suivante."
-                    );
-
-                }
-
-
-                if (
-                    action === "perm-ban"
-                ) {
-
-                    alert(
-                        "Ban définitif sélectionné pour le membre " +
-                        memberId +
-                        ".\n\nLa commande Discord sera branchée dans l'étape suivante."
-                    );
-
-                }
-
-
-                if (
-                    action === "role"
-                ) {
-
-                    alert(
-                        "Gestion des rôles sélectionnée pour le membre " +
-                        memberId +
-                        ".\n\nLa commande Discord sera branchée dans l'étape suivante."
-                    );
-
-                }
-
-            }
-        );
-
-
-        /* =========================================
-           INITIALISATION
-        ========================================= */
 
         async function initMembers() {
+            loading.hidden = false;
+            errorBox.hidden = true;
+            content.hidden = true;
+            grid.innerHTML = "";
 
             try {
-
-                loading.hidden = false;
-
-                errorBox.hidden = true;
-
-                grid.innerHTML = "";
-
-
                 await loadPermissions();
 
+                allMembers = await loadMembers();
 
-                const members =
-                    await loadMembers();
+                renderMembers(allMembers);
 
+                content.hidden = false;
+            } catch (error) {
+                console.error("Erreur chargement des membres :", error);
 
-                renderMembers(
-                    members
-                );
-
-
-                loading.hidden = true;
-
-            }
-
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-
-                loading.hidden = true;
-
-                errorBox.textContent =
-                    "❌ " +
-                    error.message;
-
-
+                errorBox.textContent = `❌ ${error.message}`;
                 errorBox.hidden = false;
-
+            } finally {
+                loading.hidden = true;
             }
-
         }
 
+        searchInput.addEventListener("input", () => {
+            renderMembers(allMembers);
+        });
+
+        document.getElementById("membersRefresh").addEventListener("click", () => {
+            initMembers();
+        });
+
+        grid.addEventListener("click", event => {
+            const button = event.target.closest(".member-action");
+
+            if (!button) return;
+
+            const action = button.dataset.action;
+            const memberId = button.dataset.id;
+
+            if (action === "temp-ban") {
+                alert(
+                    "Ban temporaire sélectionné pour le membre " + memberId +
+                    ". Cette action n'est pas encore reliée à une commande Discord."
+                );
+            }
+
+            if (action === "perm-ban") {
+                alert(
+                    "Ban définitif sélectionné pour le membre " + memberId +
+                    ". Cette action n'est pas encore reliée à une commande Discord."
+                );
+            }
+
+            if (action === "role") {
+                alert(
+                    "Gestion des rôles sélectionnée pour le membre " + memberId +
+                    ". Cette action n'est pas encore reliée à une commande Discord."
+                );
+            }
+        });
 
         initMembers();
-
     </script>
-
-
-    <!-- ==========================================
-         STYLE LOCAL DE LA PAGE
-    =========================================== -->
-
-    <style>
-
-        .members-page {
-
-            min-height: 100vh;
-
-            padding-top: 110px;
-
-        }
-
-
-        .members-section {
-
-            width: min(
-                1200px,
-                92%
-            );
-
-            margin: 0 auto;
-
-            padding:
-                50px 0 80px;
-
-        }
-
-
-        .members-header {
-
-            text-align: center;
-
-            margin-bottom: 40px;
-
-        }
-
-
-        .members-kicker {
-
-            color:
-                #00d9ff;
-
-            font-weight: 700;
-
-            letter-spacing:
-                2px;
-
-            font-size:
-                0.8rem;
-
-        }
-
-
-        .members-header h1 {
-
-            margin:
-                10px 0;
-
-            font-size:
-                clamp(
-                    2rem,
-                    5vw,
-                    3.5rem
-                );
-
-        }
-
-
-        .members-header p:last-child {
-
-            max-width:
-                700px;
-
-            margin:
-                0 auto;
-
-            opacity:
-                0.75;
-
-        }
-
-
-        .members-grid {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(
-                        280px,
-                        1fr
-                    )
-                );
-
-            gap:
-                22px;
-
-        }
-
-
-        .member-card {
-
-            padding:
-                22px;
-
-            border-radius:
-                18px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.055
-                );
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.08
-                );
-
-            backdrop-filter:
-                blur(12px);
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease;
-
-        }
-
-
-        .member-card:hover {
-
-            transform:
-                translateY(-5px);
-
-            border-color:
-                rgba(
-                    0,
-                    217,
-                    255,
-                    0.35
-                );
-
-        }
-
-
-        .member-card-top {
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            gap:
-                15px;
-
-        }
-
-
-        .member-avatar {
-
-            width:
-                64px;
-
-            height:
-                64px;
-
-            border-radius:
-                50%;
-
-            object-fit:
-                cover;
-
-        }
-
-
-        .member-identity h2 {
-
-            margin:
-                0 0 5px;
-
-            font-size:
-                1.1rem;
-
-        }
-
-
-        .member-identity span {
-
-            color:
-                #00d9ff;
-
-            font-size:
-                0.85rem;
-
-        }
-
-
-        .member-id {
-
-            margin-top:
-                18px;
-
-            padding:
-                8px 10px;
-
-            border-radius:
-                8px;
-
-            background:
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.2
-                );
-
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.5
-                );
-
-            font-size:
-                0.75rem;
-
-            word-break:
-                break-all;
-
-        }
-
-
-        .member-actions {
-
-            display:
-                flex;
-
-            flex-direction:
-                column;
-
-            gap:
-                8px;
-
-            margin-top:
-                15px;
-
-        }
-
-
-        .member-action {
-
-            width:
-                100%;
-
-            border:
-                none;
-
-            border-radius:
-                10px;
-
-            padding:
-                10px 12px;
-
-            color:
-                white;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.08
-                );
-
-            cursor:
-                pointer;
-
-            font-family:
-                inherit;
-
-            text-align:
-                left;
-
-            transition:
-                background 0.2s ease,
-                transform 0.2s ease;
-
-        }
-
-
-        .member-action:hover {
-
-            transform:
-                translateX(3px);
-
-            background:
-                rgba(
-                    0,
-                    217,
-                    255,
-                    0.14
-                );
-
-        }
-
-
-        .members-message {
-
-            padding:
-                25px;
-
-            text-align:
-                center;
-
-            border-radius:
-                15px;
-
-            background:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.05
-                );
-
-        }
-
-
-        .members-error {
-
-            color:
-                #ff9ca8;
-
-            border:
-                1px solid
-                rgba(
-                    255,
-                    70,
-                    90,
-                    0.25
-                );
-
-        }
-
-
-        .member-no-action {
-
-            display:
-                block;
-
-            margin-top:
-                15px;
-
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.45
-                );
-
-            font-size:
-                0.85rem;
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .members-section {
-
-                padding-top:
-                    30px;
-
-            }
-
-            .members-grid {
-
-                grid-template-columns:
-                    1fr;
-
-            }
-
-        }
-
-    </style>
-
 </body>
-
 </html>
