@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +9,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20261010">
+    <link rel="stylesheet" href="css/style.css?v=20261011">
 
     <style>
         .members-page {
@@ -17,7 +18,7 @@
         }
 
         .members-section {
-            width: min(1200px, 92%);
+            width: min(1350px, 94%);
             margin: 0 auto;
             padding: 35px 0 80px;
         }
@@ -49,7 +50,6 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            justify-content: space-between;
             gap: 12px;
             margin-bottom: 24px;
         }
@@ -63,41 +63,65 @@
             border: 1px solid rgba(255,255,255,.12);
             border-radius: 12px;
             font: inherit;
+            outline: none;
+        }
+
+        .members-search:focus {
+            border-color: #00d9ff;
+        }
+
+        .members-count {
+            color: rgba(255,255,255,.7);
+            font-size: .9rem;
         }
 
         .members-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
+        /* Une ligne par membre */
         .member-card {
+            display: grid;
+            grid-template-columns:
+                minmax(210px, 1fr)
+                minmax(140px, .65fr)
+                minmax(300px, 1.5fr);
+            align-items: center;
+            gap: 20px;
             min-width: 0;
-            padding: 22px;
-            border-radius: 18px;
-            background: rgba(255,255,255,.055);
-            border: 1px solid rgba(255,255,255,.08);
+            padding: 17px 20px;
+            border-radius: 16px;
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.065),
+                rgba(255,255,255,.025)
+            );
+            border: 1px solid rgba(255,255,255,.09);
             backdrop-filter: blur(12px);
-            transition: transform .25s ease, border-color .25s ease;
+            transition: transform .2s ease, border-color .2s ease;
         }
 
         .member-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             border-color: rgba(0,217,255,.35);
         }
 
         .member-card-top {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 13px;
+            min-width: 0;
         }
 
         .member-avatar {
-            width: 64px;
-            height: 64px;
+            width: 54px;
+            height: 54px;
             flex-shrink: 0;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid rgba(0,217,255,.25);
         }
 
         .member-identity {
@@ -106,31 +130,70 @@
 
         .member-identity h2 {
             margin: 0 0 5px;
-            font-size: 1.1rem;
+            font-size: 1rem;
             overflow-wrap: anywhere;
         }
 
-        .member-identity span {
+        .member-roles {
             color: #00d9ff;
-            font-size: .8rem;
+            font-size: .78rem;
+            line-height: 1.5;
             overflow-wrap: anywhere;
+        }
+
+        .member-details {
+            min-width: 0;
         }
 
         .member-id {
-            margin-top: 18px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            background: rgba(0,0,0,.2);
-            color: rgba(255,255,255,.6);
-            font-size: .75rem;
+            color: rgba(255,255,255,.48);
+            font-size: .72rem;
             overflow-wrap: anywhere;
+        }
+
+        .member-presence {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 8px;
+            color: rgba(255,255,255,.72);
+            font-size: .8rem;
+        }
+
+        .presence-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: #7a8397;
+        }
+
+        .presence-online .presence-dot {
+            background: #3ba55d;
+            box-shadow: 0 0 9px rgba(59,165,93,.45);
+        }
+
+        .presence-idle .presence-dot {
+            background: #faa61a;
+        }
+
+        .presence-dnd .presence-dot {
+            background: #ed4245;
+        }
+
+        .presence-offline .presence-dot,
+        .presence-unknown .presence-dot {
+            background: #747f94;
         }
 
         .member-actions {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
             gap: 8px;
-            margin-top: 15px;
+            min-width: 0;
         }
 
         .member-action,
@@ -138,41 +201,38 @@
         .dialog-button {
             border: 1px solid rgba(255,255,255,.1);
             border-radius: 10px;
-            padding: 10px 12px;
+            padding: 9px 12px;
             color: white;
-            background: rgba(255,255,255,.08);
+            background: rgba(255,255,255,.07);
             cursor: pointer;
             font: inherit;
-            font-size: .9rem;
-            text-align: left;
+            font-size: .82rem;
+            text-align: center;
             transition: background .2s ease, border-color .2s ease;
-        }
-
-        .member-action {
-            width: 100%;
         }
 
         .member-action:hover,
         .members-button:hover,
         .dialog-button:hover {
             background: rgba(0,217,255,.14);
-            border-color: rgba(0,217,255,.3);
+            border-color: rgba(0,217,255,.35);
         }
 
-        .member-action.danger {
-            color: #ffabb5;
+        .member-action.danger,
+        .dialog-button.danger {
+            color: #ffb1bc;
+            border-color: rgba(255,75,95,.22);
+        }
+
+        .member-action.danger:hover,
+        .dialog-button.danger:hover {
+            background: rgba(255,70,90,.15);
+            border-color: rgba(255,75,95,.5);
         }
 
         .member-no-action {
-            display: block;
-            margin-top: 15px;
-            color: rgba(255,255,255,.55);
-            font-size: .85rem;
-        }
-
-        .members-count {
-            opacity: .75;
-            font-size: .9rem;
+            color: rgba(255,255,255,.45);
+            font-size: .82rem;
         }
 
         .members-message {
@@ -186,11 +246,6 @@
         .members-error {
             color: #ff9ca8;
             border: 1px solid rgba(255,70,90,.3);
-        }
-
-        .members-success {
-            color: #a8ffc0;
-            border: 1px solid rgba(70,255,120,.25);
         }
 
         [hidden] {
@@ -289,10 +344,6 @@
             background: #5865f2;
         }
 
-        .dialog-button.danger {
-            background: #b72b45;
-        }
-
         .dialog-button:disabled {
             opacity: .55;
             cursor: wait;
@@ -337,13 +388,32 @@
             box-shadow: 0 10px 30px rgba(0,0,0,.4);
         }
 
+        @media (max-width: 900px) {
+            .member-card {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
+            }
+
+            .member-actions {
+                justify-content: flex-start;
+            }
+
+            .member-action {
+                flex: 1 1 145px;
+            }
+        }
+
         @media (max-width: 600px) {
             .members-section {
                 padding-top: 25px;
             }
 
-            .members-grid {
-                grid-template-columns: 1fr;
+            .members-toolbar {
+                align-items: stretch;
+            }
+
+            .members-search {
+                flex-basis: 100%;
             }
 
             .role-row {
@@ -421,7 +491,7 @@
          role="status"
          hidden></div>
 
-    <script src="js/navbar.js?v=20261010"></script>
+    <script src="js/navbar.js?v=20261011"></script>
 
     <script>
         const API_URL =
@@ -461,6 +531,7 @@
             toast.hidden = false;
 
             clearTimeout(toastTimeout);
+
             toastTimeout = setTimeout(() => {
                 toast.hidden = true;
             }, 4500);
@@ -480,6 +551,7 @@
                 "Une erreur est survenue",
                 `
                     <p>${escapeHTML(message)}</p>
+
                     <div class="dialog-buttons">
                         <button class="dialog-button primary"
                                 type="button"
@@ -520,7 +592,7 @@
             try {
                 data = await response.json();
             } catch {
-                // Certains messages d'erreur du serveur peuvent ne pas être JSON.
+                // La réponse du serveur n'est pas toujours du JSON.
             }
 
             if (!response.ok) {
@@ -555,6 +627,7 @@
 
             if (!members) {
                 console.error("Réponse de l'API /members :", data);
+
                 throw new Error(
                     "Le serveur a renvoyé un format de membres incorrect."
                 );
@@ -576,6 +649,33 @@
             return member.role || "Membre";
         }
 
+        function getPresenceInfo(status) {
+            const statuses = {
+                online: {
+                    label: "En ligne",
+                    className: "presence-online"
+                },
+                idle: {
+                    label: "Absent",
+                    className: "presence-idle"
+                },
+                dnd: {
+                    label: "Ne pas déranger",
+                    className: "presence-dnd"
+                },
+                offline: {
+                    label: "Hors ligne",
+                    className: "presence-offline"
+                },
+                unknown: {
+                    label: "Statut inconnu",
+                    className: "presence-unknown"
+                }
+            };
+
+            return statuses[status] || statuses.unknown;
+        }
+
         function getActions(member) {
             const actions = [];
 
@@ -595,6 +695,26 @@
                             data-action="perm-ban"
                             data-id="${escapeHTML(member.id)}">
                         🔨 Ban définitif
+                    </button>
+                `);
+            }
+
+            if (hasPermission("kick_member")) {
+                actions.push(`
+                    <button class="member-action danger"
+                            data-action="kick"
+                            data-id="${escapeHTML(member.id)}">
+                        👢 Expulser
+                    </button>
+                `);
+            }
+
+            if (hasPermission("manage_nicknames")) {
+                actions.push(`
+                    <button class="member-action"
+                            data-action="nickname"
+                            data-id="${escapeHTML(member.id)}">
+                        ✏️ Modifier le pseudo
                     </button>
                 `);
             }
@@ -669,9 +789,11 @@
                 );
 
                 const id = escapeHTML(member.id || "");
+                const presence = getPresenceInfo(member.status);
 
                 return `
                     <article class="member-card">
+
                         <div class="member-card-top">
                             <img
                                 src="${avatar}"
@@ -682,17 +804,29 @@
 
                             <div class="member-identity">
                                 <h2>${name}</h2>
-                                <span>${role}</span>
+                                <div class="member-roles">${role}</div>
+
+                                <span class="member-presence ${presence.className}">
+                                    <span class="presence-dot"></span>
+                                    ${presence.label}
+                                </span>
                             </div>
                         </div>
 
-                        <div class="member-id">ID : ${id}</div>
+                        <div class="member-details">
+                            <div class="member-id">ID : ${id}</div>
+                        </div>
 
                         ${getActions(member)}
+
                     </article>
                 `;
             }).join("");
         }
+
+        // ==================================================
+        // FORMULAIRE BAN TEMPORAIRE
+        // ==================================================
 
         function openTempBan(memberId) {
             activeMemberId = memberId;
@@ -702,8 +836,8 @@
                 `
                     <p>
                         Le membre sera banni pendant la durée choisie.
-                        Le débannissement automatique de cette version
-                        dépend du fonctionnement continu du bot.
+                        Le débannissement automatique dépend du fonctionnement
+                        continu du bot.
                     </p>
 
                     <form id="tempBanForm">
@@ -751,6 +885,10 @@
             );
         }
 
+        // ==================================================
+        // FORMULAIRE BAN DÉFINITIF
+        // ==================================================
+
         function openPermanentBan(memberId) {
             activeMemberId = memberId;
 
@@ -770,8 +908,8 @@
                     <p>
                         Tu es sur le point de bannir définitivement
                         <strong>${escapeHTML(name)}</strong>.
-                        Cette action empêche le membre de rejoindre
-                        le serveur jusqu'à un débannissement.
+                        Cette action l'empêchera de rejoindre le serveur
+                        jusqu'à un débannissement.
                     </p>
 
                     <form id="permBanForm">
@@ -803,6 +941,126 @@
             );
         }
 
+        // ==================================================
+        // FORMULAIRE EXPULSION
+        // ==================================================
+
+        function openKickDialog(memberId) {
+            activeMemberId = memberId;
+
+            const member = allMembers.find(
+                item => item.id === memberId
+            );
+
+            const name = member
+                ? member.displayName ||
+                  member.globalName ||
+                  member.username
+                : memberId;
+
+            openDialog(
+                "👢 Expulser un membre",
+                `
+                    <p>
+                        Veux-tu vraiment expulser
+                        <strong>${escapeHTML(name)}</strong> ?
+                        Cette action le retirera du serveur sans le bannir.
+                    </p>
+
+                    <form id="kickForm">
+                        <label class="dialog-label" for="kickReason">
+                            Raison de l'expulsion
+                        </label>
+
+                        <textarea class="dialog-textarea"
+                                  id="kickReason"
+                                  name="reason"
+                                  maxlength="450"
+                                  placeholder="Indique la raison"
+                                  required></textarea>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Annuler
+                            </button>
+
+                            <button class="dialog-button danger"
+                                    type="submit">
+                                Confirmer l'expulsion
+                            </button>
+                        </div>
+                    </form>
+                `
+            );
+        }
+
+        // ==================================================
+        // FORMULAIRE MODIFICATION PSEUDO
+        // ==================================================
+
+        function openNicknameDialog(memberId) {
+            activeMemberId = memberId;
+
+            const member = allMembers.find(
+                item => item.id === memberId
+            );
+
+            const name = member
+                ? member.displayName ||
+                  member.globalName ||
+                  member.username
+                : memberId;
+
+            const nickname = member?.nickname || "";
+
+            openDialog(
+                "✏️ Modifier le pseudo",
+                `
+                    <p>
+                        Membre : <strong>${escapeHTML(name)}</strong>
+                    </p>
+
+                    <form id="nicknameForm">
+                        <label class="dialog-label" for="newNickname">
+                            Nouveau pseudo
+                        </label>
+
+                        <input
+                            class="dialog-input"
+                            id="newNickname"
+                            name="nickname"
+                            maxlength="32"
+                            value="${escapeHTML(nickname)}"
+                            placeholder="Saisis un nouveau pseudo">
+
+                        <p>
+                            Laisse le champ vide pour réinitialiser
+                            le pseudo personnalisé.
+                        </p>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Annuler
+                            </button>
+
+                            <button class="dialog-button primary"
+                                    type="submit">
+                                Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                `
+            );
+        }
+
+        // ==================================================
+        // GESTION DES RÔLES
+        // ==================================================
+
         async function openRoleManager(memberId) {
             activeMemberId = memberId;
 
@@ -825,9 +1083,8 @@
                 if (!roles.length) {
                     rows = `
                         <p>
-                            Aucun rôle modifiable n'est disponible pour toi
-                            sur ce membre. Les rôles protégés ou supérieurs
-                            à ceux que tu peux gérer ne sont pas affichés.
+                            Aucun rôle modifiable n'est disponible.
+                            Les rôles protégés ne sont pas affichés.
                         </p>
                     `;
                 } else {
@@ -865,8 +1122,8 @@
 
                 dialogContent.innerHTML = `
                     <p>
-                        Sélectionne une action. Discord et le bot
-                        vérifieront les permissions avant modification.
+                        Sélectionne une action. Les permissions seront
+                        vérifiées par le bot avant toute modification.
                     </p>
 
                     <div>${rows}</div>
@@ -884,13 +1141,21 @@
             }
         }
 
+        // ==================================================
+        // ENVOI DES FORMULAIRES AU BOT
+        // ==================================================
+
         async function handleFormSubmit(event) {
             const form = event.target;
 
-            if (
-                form.id !== "tempBanForm" &&
-                form.id !== "permBanForm"
-            ) {
+            const acceptedForms = [
+                "tempBanForm",
+                "permBanForm",
+                "kickForm",
+                "nicknameForm"
+            ];
+
+            if (!acceptedForms.includes(form.id)) {
                 return;
             }
 
@@ -919,7 +1184,7 @@
                             }
                         }
                     );
-                } else {
+                } else if (form.id === "permBanForm") {
                     data = await apiRequest(
                         "/moderation/perm-ban",
                         {
@@ -930,10 +1195,36 @@
                             }
                         }
                     );
+                } else if (form.id === "kickForm") {
+                    data = await apiRequest(
+                        "/moderation/kick",
+                        {
+                            method: "POST",
+                            body: {
+                                memberId: activeMemberId,
+                                reason: form.elements.reason.value.trim()
+                            }
+                        }
+                    );
+                } else if (form.id === "nicknameForm") {
+                    data = await apiRequest(
+                        "/moderation/nickname",
+                        {
+                            method: "POST",
+                            body: {
+                                memberId: activeMemberId,
+                                nickname: form.elements.nickname.value,
+                                reason: "Pseudo modifié depuis le dashboard"
+                            }
+                        }
+                    );
                 }
 
                 dialog.close();
-                showToast(`✅ ${data.message || "Action effectuée."}`);
+
+                showToast(
+                    `✅ ${data.message || "Action effectuée."}`
+                );
 
                 await initMembers();
             } catch (error) {
@@ -944,6 +1235,10 @@
                 }
             }
         }
+
+        // ==================================================
+        // AJOUT / RETRAIT D'UN RÔLE
+        // ==================================================
 
         async function handleRoleToggle(button) {
             const roleId = button.dataset.roleId;
@@ -965,7 +1260,9 @@
                     }
                 );
 
-                showToast(`✅ ${data.message || "Rôle modifié."}`);
+                showToast(
+                    `✅ ${data.message || "Rôle modifié."}`
+                );
 
                 await openRoleManager(memberId);
                 await initMembers();
@@ -978,10 +1275,16 @@
             }
         }
 
+        // ==================================================
+        // CLICS SUR LES BOUTONS
+        // ==================================================
+
         grid.addEventListener("click", event => {
             const button = event.target.closest(".member-action");
 
-            if (!button) return;
+            if (!button) {
+                return;
+            }
 
             const memberId = button.dataset.id;
             const action = button.dataset.action;
@@ -990,6 +1293,10 @@
                 openTempBan(memberId);
             } else if (action === "perm-ban") {
                 openPermanentBan(memberId);
+            } else if (action === "kick") {
+                openKickDialog(memberId);
+            } else if (action === "nickname") {
+                openNicknameDialog(memberId);
             } else if (action === "roles") {
                 openRoleManager(memberId);
             }
@@ -1015,6 +1322,10 @@
         document.getElementById("membersRefresh")
             .addEventListener("click", initMembers);
 
+        // ==================================================
+        // INITIALISATION DE LA PAGE
+        // ==================================================
+
         async function initMembers() {
             loading.hidden = false;
             errorBox.hidden = true;
@@ -1030,7 +1341,10 @@
 
                 content.hidden = false;
             } catch (error) {
-                console.error("Erreur chargement des membres :", error);
+                console.error(
+                    "Erreur chargement des membres :",
+                    error
+                );
 
                 errorBox.textContent = `❌ ${error.message}`;
                 errorBox.hidden = false;
@@ -1043,3 +1357,4 @@
     </script>
 </body>
 </html>
+```
