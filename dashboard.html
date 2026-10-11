@@ -14,7 +14,7 @@
 
     <link
         rel="stylesheet"
-        href="css/style.css?v=20261008"
+        href="css/style.css?v=20261011"
     >
 
     <style>
@@ -24,9 +24,7 @@
         }
 
         body {
-
             margin: 0;
-
             min-height: 100vh;
 
             background:
@@ -43,238 +41,106 @@
                 #080b14;
 
             color: #f8fafc;
-
-            font-family:
-                Arial,
-                Helvetica,
-                sans-serif;
-
+            font-family: Arial, Helvetica, sans-serif;
         }
-
 
         /* ==========================================
            DASHBOARD
         ========================================== */
 
         .dashboard {
-
-            width:
-                min(1400px, 92%);
-
-            margin:
-                0 auto;
-
-            padding:
-                110px 0 60px;
-
+            width: min(1400px, 92%);
+            margin: 0 auto;
+            padding: 110px 0 60px;
         }
-
 
         /* ==========================================
            HERO DU DASHBOARD
-           
-           IMPORTANT :
-           min-height: auto évite le conflit avec
-           le .hero global du site.
         ========================================== */
 
         .dashboard .hero {
-
             min-height: auto !important;
-
             height: auto !important;
-
             padding: 0 !important;
+            margin: 0 0 45px !important;
 
-            margin:
-                0 0 45px !important;
-
-            display:
-                flex;
-
-            flex-direction:
-                row;
-
-            justify-content:
-                space-between;
-
-            align-items:
-                center;
-
-            gap:
-                35px;
-
-            text-align:
-                left;
-
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 35px;
+            text-align: left;
         }
-
 
         .dashboard .hero h1 {
-
-            margin:
-                0 0 8px;
-
-            font-size:
-                clamp(2rem, 5vw, 3.2rem);
-
+            margin: 0 0 8px;
+            font-size: clamp(2rem, 5vw, 3.2rem);
         }
-
 
         .dashboard .hero p {
-
-            margin:
-                0;
-
-            color:
-                #94a3b8;
-
-            font-size:
-                1.05rem;
-
+            margin: 0;
+            color: #94a3b8;
+            font-size: 1.05rem;
         }
-
 
         /* ==========================================
            CARTE PROFIL
         ========================================== */
 
         .account-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            min-width: 280px;
+            padding: 16px 20px;
 
-            display:
-                flex;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgba(15,23,42,.82);
+            backdrop-filter: blur(12px);
+            border-radius: 18px;
 
-            align-items:
-                center;
-
-            gap:
-                16px;
-
-            min-width:
-                280px;
-
-            padding:
-                16px 20px;
-
-            border:
-                1px solid
-                rgba(255,255,255,.08);
-
-            background:
-                rgba(15,23,42,.82);
-
-            backdrop-filter:
-                blur(12px);
-
-            border-radius:
-                18px;
-
-            box-shadow:
-                0 15px 40px
-                rgba(0,0,0,.25);
-
+            box-shadow: 0 15px 40px rgba(0,0,0,.25);
         }
-
 
         .avatar {
+            width: 72px !important;
+            height: 72px !important;
+            min-width: 72px;
 
-            width:
-                72px !important;
-
-            height:
-                72px !important;
-
-            min-width:
-                72px;
-
-            border-radius:
-                50%;
-
-            object-fit:
-                cover;
-
-            background:
-                #1e293b;
-
-            border:
-                2px solid
-                rgba(88,101,242,.55);
-
-            box-shadow:
-                0 0 20px
-                rgba(88,101,242,.25);
-
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            border: 2px solid rgba(88,101,242,.55);
+            box-shadow: 0 0 20px rgba(88,101,242,.25);
         }
-
 
         .account-name {
-
-            font-weight:
-                700;
-
-            font-size:
-                1.05rem;
-
+            font-weight: 700;
+            font-size: 1.05rem;
         }
-
 
         .account-role {
-
-            margin-top:
-                4px;
-
-            color:
-                #60a5fa;
-
-            font-size:
-                .9rem;
-
+            margin-top: 4px;
+            color: #60a5fa;
+            font-size: .9rem;
         }
-
 
         .status {
-
-            display:
-                inline-flex;
-
-            align-items:
-                center;
-
-            gap:
-                7px;
-
-            margin-top:
-                5px;
-
-            color:
-                #4ade80;
-
-            font-size:
-                .8rem;
-
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 5px;
+            color: #4ade80;
+            font-size: .8rem;
         }
-
 
         .status-dot {
-
-            width:
-                8px;
-
-            height:
-                8px;
-
-            border-radius:
-                50%;
-
-            background:
-                #4ade80;
-
-            box-shadow:
-                0 0 10px
-                #4ade80;
-
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 10px #4ade80;
         }
-
 
         /* ==========================================
            CHARGEMENT / ERREUR
@@ -282,263 +148,124 @@
 
         .loading,
         .error {
-
-            padding:
-                25px;
-
-            border-radius:
-                18px;
-
-            background:
-                rgba(15,23,42,.8);
-
-            border:
-                1px solid
-                rgba(255,255,255,.08);
-
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(15,23,42,.8);
+            border: 1px solid rgba(255,255,255,.08);
         }
-
 
         .error {
-
-            border-color:
-                rgba(248,113,113,.3);
-
-            color:
-                #fca5a5;
-
+            border-color: rgba(248,113,113,.3);
+            color: #fca5a5;
         }
-
 
         /* ==========================================
            TITRES
         ========================================== */
 
         .section-title {
-
-            margin:
-                40px 0 18px;
-
-            font-size:
-                1.35rem;
-
+            margin: 40px 0 18px;
+            font-size: 1.35rem;
         }
-
 
         /* ==========================================
            OUTILS
         ========================================== */
 
         .tools-grid {
-
-            display:
-                grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fit,
-                    minmax(230px, 1fr)
-                );
-
-            gap:
-                18px;
-
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(230px, 1fr)
+            );
+            gap: 18px;
         }
-
 
         .tool-card {
+            position: relative;
+            min-height: 150px;
+            padding: 22px;
 
-            position:
-                relative;
+            border-radius: 20px;
+            background: rgba(15,23,42,.75);
+            border: 1px solid rgba(255,255,255,.07);
 
-            min-height:
-                150px;
-
-            padding:
-                22px;
-
-            border-radius:
-                20px;
-
-            background:
-                rgba(15,23,42,.75);
-
-            border:
-                1px solid
-                rgba(255,255,255,.07);
-
-            transition:
-                .25s ease;
-
-            overflow:
-                hidden;
-
+            transition: .25s ease;
+            overflow: hidden;
         }
-
 
         .tool-card:hover {
-
-            transform:
-                translateY(-5px);
-
-            border-color:
-                rgba(96,165,250,.35);
-
-            box-shadow:
-                0 15px 40px
-                rgba(0,0,0,.25);
-
+            transform: translateY(-5px);
+            border-color: rgba(96,165,250,.35);
+            box-shadow: 0 15px 40px rgba(0,0,0,.25);
         }
-
 
         .tool-icon {
-
-            font-size:
-                2rem;
-
-            margin-bottom:
-                12px;
-
+            font-size: 2rem;
+            margin-bottom: 12px;
         }
-
 
         .tool-card h3 {
-
-            margin:
-                0 0 8px;
-
-            font-size:
-                1.05rem;
-
+            margin: 0 0 8px;
+            font-size: 1.05rem;
         }
-
 
         .tool-card p {
-
-            margin:
-                0;
-
-            color:
-                #94a3b8;
-
-            font-size:
-                .9rem;
-
-            line-height:
-                1.5;
-
+            margin: 0;
+            color: #94a3b8;
+            font-size: .9rem;
+            line-height: 1.5;
         }
-
 
         /* ==========================================
            RÔLES
         ========================================== */
 
         .role-box {
-
-            padding:
-                22px;
-
-            border-radius:
-                20px;
-
-            background:
-                rgba(15,23,42,.75);
-
-            border:
-                1px solid
-                rgba(255,255,255,.07);
-
+            padding: 22px;
+            border-radius: 20px;
+            background: rgba(15,23,42,.75);
+            border: 1px solid rgba(255,255,255,.07);
         }
-
 
         .roles {
-
-            display:
-                flex;
-
-            flex-wrap:
-                wrap;
-
-            gap:
-                10px;
-
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-
 
         .role {
-
-            padding:
-                9px 13px;
-
-            border-radius:
-                999px;
-
-            background:
-                rgba(88,101,242,.15);
-
-            border:
-                1px solid
-                rgba(88,101,242,.25);
-
-            color:
-                #c7d2fe;
-
-            font-size:
-                .9rem;
-
+            padding: 9px 13px;
+            border-radius: 999px;
+            background: rgba(88,101,242,.15);
+            border: 1px solid rgba(88,101,242,.25);
+            color: #c7d2fe;
+            font-size: .9rem;
         }
-
 
         .permission-count {
-
-            color:
-                #94a3b8;
-
-            margin-top:
-                8px;
-
+            color: #94a3b8;
+            margin-top: 8px;
         }
-
 
         /* ==========================================
            DÉCONNEXION
         ========================================== */
 
         .logout {
+            margin-top: 35px;
+            padding: 12px 18px;
 
-            margin-top:
-                35px;
-
-            padding:
-                12px 18px;
-
-            border:
-                1px solid
-                rgba(248,113,113,.25);
-
-            border-radius:
-                12px;
-
-            background:
-                rgba(127,29,29,.18);
-
-            color:
-                #fca5a5;
-
-            cursor:
-                pointer;
-
+            border: 1px solid rgba(248,113,113,.25);
+            border-radius: 12px;
+            background: rgba(127,29,29,.18);
+            color: #fca5a5;
+            cursor: pointer;
         }
-
 
         .logout:hover {
-
-            background:
-                rgba(127,29,29,.3);
-
+            background: rgba(127,29,29,.3);
         }
-
 
         /* ==========================================
            MOBILE
@@ -547,94 +274,55 @@
         @media (max-width:800px) {
 
             .dashboard {
-
-                padding:
-                    95px 0 40px;
-
+                padding: 95px 0 40px;
             }
-
 
             .dashboard .hero {
-
-                min-height:
-                    auto !important;
-
-                flex-direction:
-                    column;
-
-                align-items:
-                    stretch;
-
-                text-align:
-                    center;
-
-                gap:
-                    25px;
-
+                min-height: auto !important;
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                gap: 25px;
             }
-
 
             .account-card {
-
-                width:
-                    100%;
-
-                justify-content:
-                    center;
-
+                width: 100%;
+                justify-content: center;
             }
-
 
             .avatar {
-
-                width:
-                    64px !important;
-
-                height:
-                    64px !important;
-
-                min-width:
-                    64px;
-
+                width: 64px !important;
+                height: 64px !important;
+                min-width: 64px;
             }
-
         }
 
     </style>
 
 </head>
 
-
 <body>
-
 
 <nav
     class="navbar"
     id="navbar"
 ></nav>
 
-
 <main class="dashboard">
-
 
     <div
         id="loading"
         class="loading"
     >
-
         🔄 Chargement de ton espace...
-
     </div>
-
 
     <div
         id="content"
         style="display:none;"
     >
 
-
         <section class="hero">
-
 
             <div>
 
@@ -643,20 +331,13 @@
                 </h1>
 
                 <p>
-
                     Bienvenue dans le tableau de bord de
-
-                    <strong>
-                        La communauté live
-                    </strong>.
-
+                    <strong>La communauté live</strong>.
                 </p>
 
             </div>
 
-
             <div class="account-card">
-
 
                 <img
                     id="avatar"
@@ -665,7 +346,6 @@
                     alt="Avatar Discord"
                 >
 
-
                 <div>
 
                     <div
@@ -673,91 +353,75 @@
                         class="account-name"
                     ></div>
 
-
                     <div
                         id="mainRole"
                         class="account-role"
                     ></div>
 
-
                     <div class="status">
-
-                        <span
-                            class="status-dot"
-                        ></span>
-
+                        <span class="status-dot"></span>
                         Connecté avec Discord
-
                     </div>
 
                 </div>
 
-
             </div>
 
-
         </section>
-
 
         <h2 class="section-title">
             🛠️ Tes outils
         </h2>
-
 
         <section
             id="tools"
             class="tools-grid"
         ></section>
 
-
         <h2 class="section-title">
             🛡️ Tes rôles Discord
         </h2>
 
-
         <section class="role-box">
-
 
             <div
                 id="roles"
                 class="roles"
             ></div>
 
-
             <div
                 id="permissionCount"
                 class="permission-count"
             ></div>
 
-
         </section>
-
 
         <button
             id="logout"
             class="logout"
+            type="button"
         >
-
             🚪 Se déconnecter
-
         </button>
-
 
     </div>
 
-
 </main>
 
-
-<script src="js/navbar.js?v=20261008"></script>
-
+<script src="js/navbar.js?v=20261011"></script>
 
 <script>
-
 
 const API_URL =
     "https://la-communaute-live-bot.de.deplexo.com";
 
+
+/* ==========================================
+   CARTES DU DASHBOARD
+
+   Les actions de modération restent dans
+   membres.html et ne sont plus affichées ici.
+========================================== */
 
 const TOOLS = [
 
@@ -782,27 +446,6 @@ const TOOLS = [
         title: "Liste des membres",
         description: "Consulter les membres du serveur.",
         link: "membres.html"
-    },
-
-    {
-        permission: "temp_ban",
-        icon: "⏳",
-        title: "Ban temporaire",
-        description: "Gérer les bannissements temporaires."
-    },
-
-    {
-        permission: "perm_ban",
-        icon: "🔨",
-        title: "Ban définitif",
-        description: "Gérer les bannissements définitifs."
-    },
-
-    {
-        permission: "manage_roles",
-        icon: "🎭",
-        title: "Gestion des rôles",
-        description: "Ajouter ou retirer des rôles Discord."
     },
 
     {
@@ -878,6 +521,10 @@ const TOOLS = [
 ];
 
 
+/* ==========================================
+   SÉCURISER LE TEXTE AFFICHÉ
+========================================== */
+
 function escapeHTML(value) {
 
     return String(value)
@@ -891,11 +538,9 @@ function escapeHTML(value) {
 }
 
 
-/*
-==================================================
-RÉCUPÉRATION DE L'AVATAR
-==================================================
-*/
+/* ==========================================
+   RÉCUPÉRATION DE L'AVATAR
+========================================== */
 
 function getAvatarURL(user) {
 
@@ -917,19 +562,14 @@ function getAvatarURL(user) {
 }
 
 
-/*
-==================================================
-CHARGEMENT DU DASHBOARD
-==================================================
-*/
+/* ==========================================
+   CHARGEMENT DU DASHBOARD
+========================================== */
 
 async function loadDashboard() {
 
     const token =
-        localStorage.getItem(
-            "discord_session"
-        );
-
+        localStorage.getItem("discord_session");
 
     if (!token) {
 
@@ -941,101 +581,64 @@ async function loadDashboard() {
 
     }
 
-
     try {
 
-        const response =
-            await fetch(
-
-                `${API_URL}/auth/permissions`,
-
-                {
-
-                    headers: {
-
-                        Authorization:
-                            `Bearer ${token}`
-
-                    }
-
+        const response = await fetch(
+            `${API_URL}/auth/permissions`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
+            }
+        );
 
-            );
-
-
-        const data =
-            await response.json();
-
+        const data = await response.json();
 
         if (!response.ok) {
 
             throw new Error(
-
                 data.error ||
                 "Impossible de récupérer les permissions."
-
             );
 
         }
 
+        renderDashboard(data);
 
-        renderDashboard(
-            data
-        );
+    } catch (error) {
 
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-        showError(
-            error.message
-        );
+        console.error(error);
+        showError(error.message);
 
     }
 
 }
 
 
-/*
-==================================================
-AFFICHAGE
-==================================================
-*/
+/* ==========================================
+   AFFICHAGE
+========================================== */
 
-function renderDashboard(
-    data
-) {
+function renderDashboard(data) {
 
     document
         .getElementById("loading")
         .style.display = "none";
 
-
     document
         .getElementById("content")
         .style.display = "block";
 
-
-    const user =
-        data.user || {};
-
+    const user = data.user || {};
 
     document
         .getElementById("username")
         .textContent =
             user.username || "Utilisateur Discord";
 
-
     document
         .getElementById("avatar")
-        .src =
-            getAvatarURL(user);
-
+        .src = getAvatarURL(user);
 
     document
         .getElementById("avatar")
@@ -1046,186 +649,126 @@ function renderDashboard(
 
         };
 
+    const roles = data.roles || [];
+    const permissions = data.permissions || [];
 
-    const roles =
-        data.roles || [];
-
-
-    const permissions =
-        data.permissions || [];
-
-
-    const mainRole =
-        roles.length
-            ?
-            roles[0].name
-            :
-            "@everyone";
-
+    const mainRole = roles.length
+        ? roles[0].name
+        : "@everyone";
 
     document
         .getElementById("mainRole")
-        .textContent =
-            mainRole;
-
+        .textContent = mainRole;
 
     const rolesContainer =
         document.getElementById("roles");
-
 
     if (!roles.length) {
 
         rolesContainer.innerHTML =
             `<span class="role">@everyone</span>`;
 
-    }
+    } else {
 
-    else {
-
-        rolesContainer.innerHTML =
-
-            roles
-                .map(
-
-                    role =>
-
-                        `<span class="role">
-                            ${escapeHTML(role.name)}
-                        </span>`
-
-                )
-                .join("");
+        rolesContainer.innerHTML = roles
+            .map(
+                role =>
+                    `<span class="role">
+                        ${escapeHTML(role.name)}
+                    </span>`
+            )
+            .join("");
 
     }
-
 
     document
         .getElementById("permissionCount")
         .textContent =
             `${permissions.length} permission(s) active(s)`;
 
-
     const toolsContainer =
         document.getElementById("tools");
 
+    const allowedTools = TOOLS.filter(
+        tool => permissions.includes(tool.permission)
+    );
 
-    const allowedTools =
-        TOOLS.filter(
+    toolsContainer.innerHTML = allowedTools
+        .map(tool => {
 
-            tool =>
-                permissions.includes(
-                    tool.permission
-                )
+            const card = `
+                <div class="tool-icon">
+                    ${tool.icon}
+                </div>
 
-        );
+                <h3>${escapeHTML(tool.title)}</h3>
 
+                <p>${escapeHTML(tool.description)}</p>
+            `;
 
-    toolsContainer.innerHTML =
+            if (tool.link) {
 
-        allowedTools
-
-            .map(
-
-                tool => `
-
-                    <article
+                return `
+                    <a
                         class="tool-card"
-
-                        ${
-                            tool.link
-                                ?
-                                `onclick="window.location.href='${tool.link}'"
-                                 style="cursor:pointer;"`
-                                :
-                                ""
-                        }
+                        href="${escapeHTML(tool.link)}"
+                        style="display:block;color:inherit;text-decoration:none;cursor:pointer;"
                     >
+                        ${card}
+                    </a>
+                `;
 
-                        <div class="tool-icon">
-                            ${tool.icon}
-                        </div>
+            }
 
-                        <h3>
-                            ${escapeHTML(tool.title)}
-                        </h3>
+            return `
+                <article class="tool-card">
+                    ${card}
+                </article>
+            `;
 
-                        <p>
-                            ${escapeHTML(tool.description)}
-                        </p>
-
-                    </article>
-
-                `
-
-            )
-
-            .join("");
+        })
+        .join("");
 
 }
 
 
-/*
-==================================================
-ERREUR
-==================================================
-*/
+/* ==========================================
+   ERREUR
+========================================== */
 
-function showError(
-    message
-) {
+function showError(message) {
 
     const loading =
         document.getElementById("loading");
 
-
-    loading.className =
-        "error";
-
-
-    loading.textContent =
-        `❌ ${message}`;
+    loading.className = "error";
+    loading.textContent = `❌ ${message}`;
 
 }
 
 
-/*
-==================================================
-DÉCONNEXION
-==================================================
-*/
+/* ==========================================
+   DÉCONNEXION
+========================================== */
 
 document
     .getElementById("logout")
-    .addEventListener(
+    .addEventListener("click", () => {
 
-        "click",
+        localStorage.removeItem("discord_session");
 
-        () => {
+        window.location.href = "index.html";
 
-            localStorage.removeItem(
-                "discord_session"
-            );
+    });
 
 
-            window.location.href =
-                "index.html";
-
-        }
-
-    );
-
-
-/*
-==================================================
-DÉMARRAGE
-==================================================
-*/
+/* ==========================================
+   DÉMARRAGE
+========================================== */
 
 loadDashboard();
 
 </script>
 
-
 </body>
-
 </html>
