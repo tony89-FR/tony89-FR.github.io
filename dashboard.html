@@ -1,24 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Tableau de bord — La communauté live</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css?v=20261011"
-    >
+    <link rel="stylesheet" href="css/style.css?v=20261013">
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -26,27 +15,13 @@
         body {
             margin: 0;
             min-height: 100vh;
-
             background:
-                radial-gradient(
-                    circle at top left,
-                    rgba(88,101,242,.18),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at bottom right,
-                    rgba(0,217,255,.10),
-                    transparent 35%
-                ),
+                radial-gradient(circle at top left, rgba(88,101,242,.18), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(0,217,255,.10), transparent 35%),
                 #080b14;
-
             color: #f8fafc;
             font-family: Arial, Helvetica, sans-serif;
         }
-
-        /* ==========================================
-           DASHBOARD
-        ========================================== */
 
         .dashboard {
             width: min(1400px, 92%);
@@ -54,16 +29,11 @@
             padding: 110px 0 60px;
         }
 
-        /* ==========================================
-           HERO DU DASHBOARD
-        ========================================== */
-
         .dashboard .hero {
             min-height: auto !important;
             height: auto !important;
             padding: 0 !important;
-            margin: 0 0 45px !important;
-
+            margin: 0 0 35px !important;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -83,22 +53,16 @@
             font-size: 1.05rem;
         }
 
-        /* ==========================================
-           CARTE PROFIL
-        ========================================== */
-
         .account-card {
             display: flex;
             align-items: center;
             gap: 16px;
             min-width: 280px;
             padding: 16px 20px;
-
             border: 1px solid rgba(255,255,255,.08);
             background: rgba(15,23,42,.82);
             backdrop-filter: blur(12px);
             border-radius: 18px;
-
             box-shadow: 0 15px 40px rgba(0,0,0,.25);
         }
 
@@ -106,7 +70,6 @@
             width: 72px !important;
             height: 72px !important;
             min-width: 72px;
-
             border-radius: 50%;
             object-fit: cover;
             background: #1e293b;
@@ -142,10 +105,6 @@
             box-shadow: 0 0 10px #4ade80;
         }
 
-        /* ==========================================
-           CHARGEMENT / ERREUR
-        ========================================== */
-
         .loading,
         .error {
             padding: 25px;
@@ -159,25 +118,130 @@
             color: #fca5a5;
         }
 
-        /* ==========================================
-           TITRES
-        ========================================== */
-
         .section-title {
-            margin: 40px 0 18px;
+            margin: 38px 0 18px;
             font-size: 1.35rem;
         }
 
-        /* ==========================================
-           OUTILS
-        ========================================== */
+        /* CARTE MEMBRE EN HAUT DU TABLEAU DE BORD */
+
+        .member-card-section {
+            margin: 0 0 35px;
+        }
+
+        .member-card-section[hidden] {
+            display: none !important;
+        }
+
+        .member-card-heading {
+            margin: 0 0 15px;
+            font-size: 1.35rem;
+        }
+
+        .member-card {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            overflow: hidden;
+            padding: 28px;
+            border: 1px solid rgba(129,140,248,.35);
+            border-radius: 22px;
+            background:
+                radial-gradient(circle at 90% 10%, rgba(0,217,255,.15), transparent 35%),
+                linear-gradient(120deg, #151b35, #0d1426 65%, #111b32);
+            box-shadow: 0 15px 45px rgba(0,0,0,.25);
+        }
+
+        .member-card::after {
+            content: "";
+            position: absolute;
+            right: -65px;
+            bottom: -100px;
+            width: 240px;
+            height: 240px;
+            border: 1px solid rgba(129,140,248,.14);
+            border-radius: 50%;
+            box-shadow: 0 0 0 25px rgba(129,140,248,.035),
+                        0 0 0 50px rgba(129,140,248,.025);
+            pointer-events: none;
+        }
+
+        .member-card-avatar {
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            width: 112px;
+            height: 112px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #1e293b;
+            border: 3px solid #7185ff;
+            box-shadow: 0 0 28px rgba(88,101,242,.3);
+        }
+
+        .member-card-info {
+            position: relative;
+            z-index: 1;
+            min-width: 0;
+            flex: 1;
+        }
+
+        .member-card-label {
+            margin: 0 0 8px;
+            color: #8fa7ff;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .member-card-info h3 {
+            margin: 0 0 8px;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            overflow-wrap: anywhere;
+        }
+
+        .member-card-role {
+            display: inline-block;
+            margin: 0 0 16px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            color: #c7d2fe;
+            background: rgba(88,101,242,.17);
+            border: 1px solid rgba(129,140,248,.3);
+            font-size: .85rem;
+        }
+
+        .member-card-roles {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .member-role {
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.08);
+            color: #cbd5e1;
+            font-size: .8rem;
+        }
+
+        .member-card-id {
+            position: relative;
+            z-index: 1;
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: .8rem;
+            overflow-wrap: anywhere;
+        }
+
+        /* GRILLE DES OUTILS */
 
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(
-                auto-fit,
-                minmax(230px, 1fr)
-            );
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 18px;
         }
 
@@ -185,11 +249,9 @@
             position: relative;
             min-height: 150px;
             padding: 22px;
-
             border-radius: 20px;
             background: rgba(15,23,42,.75);
             border: 1px solid rgba(255,255,255,.07);
-
             transition: .25s ease;
             overflow: hidden;
         }
@@ -217,9 +279,7 @@
             line-height: 1.5;
         }
 
-        /* ==========================================
-           RÔLES
-        ========================================== */
+        /* RÔLES DISCORD */
 
         .role-box {
             padding: 22px;
@@ -248,14 +308,11 @@
             margin-top: 8px;
         }
 
-        /* ==========================================
-           DÉCONNEXION
-        ========================================== */
+        /* DÉCONNEXION */
 
         .logout {
             margin-top: 35px;
             padding: 12px 18px;
-
             border: 1px solid rgba(248,113,113,.25);
             border-radius: 12px;
             background: rgba(127,29,29,.18);
@@ -267,12 +324,7 @@
             background: rgba(127,29,29,.3);
         }
 
-        /* ==========================================
-           MOBILE
-        ========================================== */
-
-        @media (max-width:800px) {
-
+        @media (max-width: 800px) {
             .dashboard {
                 padding: 95px 0 40px;
             }
@@ -288,6 +340,7 @@
             .account-card {
                 width: 100%;
                 justify-content: center;
+                min-width: 0;
             }
 
             .avatar {
@@ -295,50 +348,60 @@
                 height: 64px !important;
                 min-width: 64px;
             }
+
+            .member-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 18px;
+                padding: 22px;
+            }
+
+            .member-card-avatar {
+                width: 90px;
+                height: 90px;
+            }
+
+            .tools-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
         }
 
-    </style>
+        @media (max-width: 480px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
 
+            .member-card {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<nav
-    class="navbar"
-    id="navbar"
-></nav>
+<nav class="navbar" id="navbar"></nav>
 
 <main class="dashboard">
 
-    <div
-        id="loading"
-        class="loading"
-    >
+    <div id="loading" class="loading">
         🔄 Chargement de ton espace...
     </div>
 
-    <div
-        id="content"
-        style="display:none;"
-    >
+    <div id="content" style="display:none;">
+
+        <!-- ACCUEIL -->
 
         <section class="hero">
-
             <div>
-
-                <h1>
-                    👋 Bonjour !
-                </h1>
-
+                <h1>👋 Bonjour !</h1>
                 <p>
                     Bienvenue dans le tableau de bord de
                     <strong>La communauté live</strong>.
                 </p>
-
             </div>
 
             <div class="account-card">
-
                 <img
                     id="avatar"
                     class="avatar"
@@ -347,99 +410,98 @@
                 >
 
                 <div>
-
-                    <div
-                        id="username"
-                        class="account-name"
-                    ></div>
-
-                    <div
-                        id="mainRole"
-                        class="account-role"
-                    ></div>
+                    <div id="username" class="account-name"></div>
+                    <div id="mainRole" class="account-role"></div>
 
                     <div class="status">
                         <span class="status-dot"></span>
                         Connecté avec Discord
                     </div>
-
                 </div>
-
             </div>
-
         </section>
 
-        <h2 class="section-title">
-            🛠️ Tes outils
-        </h2>
+        <!-- MA CARTE : AFFICHÉE EN PREMIER -->
 
         <section
-            id="tools"
-            class="tools-grid"
-        ></section>
+            id="memberCardSection"
+            class="member-card-section"
+            hidden
+        >
+            <h2 class="member-card-heading">🪪 Ma carte membre</h2>
 
-        <h2 class="section-title">
-            🛡️ Tes rôles Discord
-        </h2>
+            <div class="member-card">
+                <img
+                    id="memberCardAvatar"
+                    class="member-card-avatar"
+                    src="https://cdn.discordapp.com/embed/avatars/0.png"
+                    alt="Avatar de la carte membre"
+                >
 
-        <section class="role-box">
+                <div class="member-card-info">
+                    <p class="member-card-label">
+                        La communauté live
+                    </p>
 
-            <div
-                id="roles"
-                class="roles"
-            ></div>
+                    <h3 id="memberCardUsername">Membre Discord</h3>
 
-            <div
-                id="permissionCount"
-                class="permission-count"
-            ></div>
+                    <p id="memberCardRole" class="member-card-role">
+                        Membre
+                    </p>
 
+                    <div
+                        id="memberCardRoles"
+                        class="member-card-roles"
+                    ></div>
+
+                    <div class="member-card-id">
+                        Identifiant Discord :
+                        <span id="memberCardId">Non disponible</span>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <button
-            id="logout"
-            class="logout"
-            type="button"
-        >
+        <!-- OUTILS : PAS DE BOUTONS TABLEAU DE BORD OU MA CARTE -->
+
+        <h2 class="section-title">🛠️ Tes outils</h2>
+
+        <section id="tools" class="tools-grid"></section>
+
+        <!-- RÔLES DISCORD -->
+
+        <h2 class="section-title">🛡️ Tes rôles Discord</h2>
+
+        <section class="role-box">
+            <div id="roles" class="roles"></div>
+            <div id="permissionCount" class="permission-count"></div>
+        </section>
+
+        <button id="logout" class="logout" type="button">
             🚪 Se déconnecter
         </button>
 
     </div>
-
 </main>
 
-<script src="js/navbar.js?v=20261011"></script>
+<script src="js/navbar.js?v=20261013"></script>
 
 <script>
+const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
 
-const API_URL =
-    "https://la-communaute-live-bot.de.deplexo.com";
-
-
-/* ==========================================
-   CARTES DU DASHBOARD
-
-   Les actions de modération restent dans
-   membres.html et ne sont plus affichées ici.
-========================================== */
+/*
+ * Les actions de modération restent dans membres.html.
+ * Les entrées "Tableau de bord" et "Ma carte" ont été retirées :
+ * la carte membre est maintenant affichée en haut de cette page.
+ */
 
 const TOOLS = [
-
-    {
-        permission: "dashboard",
-        icon: "📊",
-        title: "Tableau de bord",
-        description: "Accéder à ton espace personnel.",
-        link: "dashboard.html"
-    },
-
     {
         permission: "level_money",
         icon: "💰",
         title: "Niveau + argent",
         description: "Consulter les informations de niveau et d'argent."
     },
-
     {
         permission: "member_list",
         icon: "👥",
@@ -447,327 +509,249 @@ const TOOLS = [
         description: "Consulter les membres du serveur.",
         link: "membres.html"
     },
-
     {
         permission: "sanctions_total",
         icon: "⚠️",
         title: "Sanctions",
         description: "Consulter les sanctions des membres."
     },
-
     {
         permission: "view_own_sanctions",
         icon: "📋",
         title: "Mes sanctions",
         description: "Consulter tes propres sanctions."
     },
-
-    {
-        permission: "own_card",
-        icon: "🪪",
-        title: "Ma carte",
-        description: "Afficher ta carte membre."
-    },
-
     {
         permission: "discord_mobile",
         icon: "📱",
         title: "Discord mobile",
         description: "Accéder aux informations Discord mobile."
     },
-
     {
         permission: "discord_pc",
         icon: "💻",
         title: "Discord PC",
         description: "Accéder aux informations Discord PC."
     },
-
     {
         permission: "server_logs",
         icon: "📜",
         title: "Logs du serveur",
         description: "Consulter les journaux du serveur."
     },
-
     {
         permission: "create_event",
         icon: "📅",
         title: "Créer un événement",
         description: "Créer un nouvel événement Discord."
     },
-
     {
         permission: "create_announcement",
         icon: "📢",
         title: "Créer une annonce",
         description: "Créer une annonce pour la communauté."
     },
-
     {
         permission: "deplexo_links",
         icon: "🔗",
         title: "Liens Deplexo",
         description: "Accéder aux liens et informations Deplexo."
     },
-
     {
         permission: "bot_status",
         icon: "🤖",
         title: "Statut du bot",
         description: "Consulter l'état du bot Discord."
     }
-
 ];
 
 
-/* ==========================================
-   SÉCURISER LE TEXTE AFFICHÉ
-========================================== */
+/* PROTECTION DU TEXTE AFFICHÉ */
 
 function escapeHTML(value) {
-
-    return String(value)
-
+    return String(value ?? "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
-
 }
 
 
-/* ==========================================
-   RÉCUPÉRATION DE L'AVATAR
-========================================== */
+/* AVATAR DISCORD */
 
 function getAvatarURL(user) {
-
-    if (
-        user &&
-        user.avatar &&
-        user.id
-    ) {
-
-        return (
-            "https://cdn.discordapp.com/avatars/" +
-            `${user.id}/${user.avatar}.png?size=256`
-        );
-
+    if (user && user.avatar && user.id) {
+        return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
     }
 
     return "https://cdn.discordapp.com/embed/avatars/0.png";
-
 }
 
 
-/* ==========================================
-   CHARGEMENT DU DASHBOARD
-========================================== */
+/* CHARGEMENT DU TABLEAU DE BORD */
 
 async function loadDashboard() {
-
-    const token =
-        localStorage.getItem("discord_session");
+    const token = localStorage.getItem("discord_session");
 
     if (!token) {
-
-        showError(
-            "Tu dois être connecté avec Discord."
-        );
-
+        showError("Tu dois être connecté avec Discord.");
         return;
-
     }
 
     try {
-
-        const response = await fetch(
-            `${API_URL}/auth/permissions`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
+        const response = await fetch(`${API_URL}/auth/permissions`, {
+            headers: {
+                Authorization: `Bearer ${token}`
             }
-        );
+        });
 
         const data = await response.json();
 
         if (!response.ok) {
-
             throw new Error(
-                data.error ||
-                "Impossible de récupérer les permissions."
+                data.error || "Impossible de récupérer les permissions."
             );
-
         }
 
         renderDashboard(data);
 
     } catch (error) {
-
         console.error(error);
-        showError(error.message);
-
+        showError(error.message || "Une erreur est survenue.");
     }
-
 }
 
 
-/* ==========================================
-   AFFICHAGE
-========================================== */
+/* AFFICHAGE DES INFORMATIONS */
 
 function renderDashboard(data) {
-
-    document
-        .getElementById("loading")
-        .style.display = "none";
-
-    document
-        .getElementById("content")
-        .style.display = "block";
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("content").style.display = "block";
 
     const user = data.user || {};
-
-    document
-        .getElementById("username")
-        .textContent =
-            user.username || "Utilisateur Discord";
-
-    document
-        .getElementById("avatar")
-        .src = getAvatarURL(user);
-
-    document
-        .getElementById("avatar")
-        .onerror = function () {
-
-            this.src =
-                "https://cdn.discordapp.com/embed/avatars/0.png";
-
-        };
-
     const roles = data.roles || [];
     const permissions = data.permissions || [];
 
-    const mainRole = roles.length
-        ? roles[0].name
-        : "@everyone";
+    const username = user.username || "Utilisateur Discord";
+    const avatarURL = getAvatarURL(user);
+    const mainRole = roles.length ? roles[0].name : "@everyone";
 
-    document
-        .getElementById("mainRole")
-        .textContent = mainRole;
+    /* Profil en haut à droite */
 
-    const rolesContainer =
-        document.getElementById("roles");
+    document.getElementById("username").textContent = username;
+    document.getElementById("mainRole").textContent = mainRole;
+
+    const avatar = document.getElementById("avatar");
+    avatar.src = avatarURL;
+    avatar.onerror = function () {
+        this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+    };
+
+    /* Carte membre placée au-dessus de la grille */
+
+    const memberCardSection = document.getElementById("memberCardSection");
+
+    memberCardSection.hidden = !permissions.includes("own_card");
+
+    document.getElementById("memberCardUsername").textContent = username;
+    document.getElementById("memberCardRole").textContent = mainRole;
+    document.getElementById("memberCardId").textContent = user.id || "Non disponible";
+
+    const memberCardAvatar = document.getElementById("memberCardAvatar");
+    memberCardAvatar.src = avatarURL;
+    memberCardAvatar.onerror = function () {
+        this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+    };
+
+    const memberCardRoles = document.getElementById("memberCardRoles");
 
     if (!roles.length) {
-
-        rolesContainer.innerHTML =
-            `<span class="role">@everyone</span>`;
-
+        memberCardRoles.innerHTML =
+            '<span class="member-role">@everyone</span>';
     } else {
-
-        rolesContainer.innerHTML = roles
-            .map(
-                role =>
-                    `<span class="role">
-                        ${escapeHTML(role.name)}
-                    </span>`
+        memberCardRoles.innerHTML = roles
+            .map(role =>
+                `<span class="member-role">${escapeHTML(role.name)}</span>`
             )
             .join("");
-
     }
 
-    document
-        .getElementById("permissionCount")
-        .textContent =
-            `${permissions.length} permission(s) active(s)`;
+    /* Rôles Discord dans la section du bas */
 
-    const toolsContainer =
-        document.getElementById("tools");
+    const rolesContainer = document.getElementById("roles");
 
-    const allowedTools = TOOLS.filter(
-        tool => permissions.includes(tool.permission)
+    if (!roles.length) {
+        rolesContainer.innerHTML =
+            '<span class="role">@everyone</span>';
+    } else {
+        rolesContainer.innerHTML = roles
+            .map(role =>
+                `<span class="role">${escapeHTML(role.name)}</span>`
+            )
+            .join("");
+    }
+
+    document.getElementById("permissionCount").textContent =
+        `${permissions.length} permission(s) active(s)`;
+
+    /* Outils autorisés par les permissions Discord */
+
+    const toolsContainer = document.getElementById("tools");
+
+    const allowedTools = TOOLS.filter(tool =>
+        permissions.includes(tool.permission)
     );
 
-    toolsContainer.innerHTML = allowedTools
-        .map(tool => {
+    toolsContainer.innerHTML = allowedTools.map(tool => {
+        const card = `
+            <div class="tool-icon">${tool.icon}</div>
+            <h3>${escapeHTML(tool.title)}</h3>
+            <p>${escapeHTML(tool.description)}</p>
+        `;
 
-            const card = `
-                <div class="tool-icon">
-                    ${tool.icon}
-                </div>
-
-                <h3>${escapeHTML(tool.title)}</h3>
-
-                <p>${escapeHTML(tool.description)}</p>
-            `;
-
-            if (tool.link) {
-
-                return `
-                    <a
-                        class="tool-card"
-                        href="${escapeHTML(tool.link)}"
-                        style="display:block;color:inherit;text-decoration:none;cursor:pointer;"
-                    >
-                        ${card}
-                    </a>
-                `;
-
-            }
-
+        if (tool.link) {
             return `
-                <article class="tool-card">
+                <a
+                    class="tool-card"
+                    href="${escapeHTML(tool.link)}"
+                    style="display:block;color:inherit;text-decoration:none;cursor:pointer;"
+                >
                     ${card}
-                </article>
+                </a>
             `;
+        }
 
-        })
-        .join("");
-
+        return `
+            <article class="tool-card">
+                ${card}
+            </article>
+        `;
+    }).join("");
 }
 
 
-/* ==========================================
-   ERREUR
-========================================== */
+/* ERREURS */
 
 function showError(message) {
-
-    const loading =
-        document.getElementById("loading");
+    const loading = document.getElementById("loading");
 
     loading.className = "error";
     loading.textContent = `❌ ${message}`;
-
 }
 
 
-/* ==========================================
-   DÉCONNEXION
-========================================== */
+/* DÉCONNEXION */
 
-document
-    .getElementById("logout")
-    .addEventListener("click", () => {
-
-        localStorage.removeItem("discord_session");
-
-        window.location.href = "index.html";
-
-    });
+document.getElementById("logout").addEventListener("click", () => {
+    localStorage.removeItem("discord_session");
+    window.location.href = "index.html";
+});
 
 
-/* ==========================================
-   DÉMARRAGE
-========================================== */
+/* DÉMARRAGE */
 
 loadDashboard();
-
 </script>
 
 </body>
