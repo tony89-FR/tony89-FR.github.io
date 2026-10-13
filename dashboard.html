@@ -1,222 +1,189 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Tableau de bord — La communauté live</title>
     <link rel="stylesheet" href="css/style.css?v=20261013">
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
             min-height: 100vh;
-            background:
-                radial-gradient(circle at top left, rgba(88,101,242,.18), transparent 35%),
-                radial-gradient(circle at bottom right, rgba(0,217,255,.10), transparent 35%),
-                #080b14;
             color: #f8fafc;
             font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(ellipse at 8% 5%, rgba(88,101,242,.20), transparent 35%),
+                radial-gradient(ellipse at 95% 90%, rgba(0,217,255,.08), transparent 35%),
+                #080b14;
         }
 
         .dashboard {
-            width: min(1400px, 92%);
+            width: min(1200px, 92%);
             margin: 0 auto;
-            padding: 110px 0 60px;
+            padding: 95px 0 55px;
         }
 
-        .dashboard .hero {
-            min-height: auto !important;
-            height: auto !important;
-            padding: 0 !important;
-            margin: 0 0 35px !important;
+        .hero {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
             align-items: center;
-            gap: 35px;
-            text-align: left;
+            justify-content: space-between;
+            gap: 24px;
+            margin: 0 0 28px;
         }
 
-        .dashboard .hero h1 {
+        .hero h1 {
             margin: 0 0 8px;
-            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-size: clamp(2rem, 5vw, 3rem);
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .dashboard .hero p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: 1.05rem;
-        }
+        .hero p { margin: 0; color: #9aabc5; line-height: 1.6; }
 
         .account-card {
             display: flex;
             align-items: center;
-            gap: 16px;
-            min-width: 280px;
-            padding: 16px 20px;
-            border: 1px solid rgba(255,255,255,.08);
-            background: rgba(15,23,42,.82);
-            backdrop-filter: blur(12px);
-            border-radius: 18px;
-            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+            gap: 13px;
+            min-width: 250px;
+            padding: 13px 17px;
+            background: rgba(15,23,42,.85);
+            border: 1px solid #25314a;
+            border-radius: 16px;
         }
 
         .avatar {
-            width: 72px !important;
-            height: 72px !important;
-            min-width: 72px;
-            border-radius: 50%;
+            width: 60px !important;
+            height: 60px !important;
+            min-width: 60px;
             object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #6577ff;
             background: #1e293b;
-            border: 2px solid rgba(88,101,242,.55);
-            box-shadow: 0 0 20px rgba(88,101,242,.25);
         }
 
-        .account-name {
-            font-weight: 700;
-            font-size: 1.05rem;
-        }
-
-        .account-role {
-            margin-top: 4px;
-            color: #60a5fa;
-            font-size: .9rem;
-        }
+        .account-name { font-weight: 700; }
+        .account-role { color: #7db6ff; font-size: .85rem; margin-top: 5px; }
 
         .status {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 7px;
-            margin-top: 5px;
+            gap: 6px;
             color: #4ade80;
-            font-size: .8rem;
+            font-size: .75rem;
+            margin-top: 6px;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #4ade80;
-            box-shadow: 0 0 10px #4ade80;
+            box-shadow: 0 0 8px #4ade80;
         }
 
-        .loading,
-        .error {
-            padding: 25px;
-            border-radius: 18px;
-            background: rgba(15,23,42,.8);
-            border: 1px solid rgba(255,255,255,.08);
+        .loading, .error {
+            padding: 20px;
+            border-radius: 14px;
+            background: #10182a;
+            border: 1px solid #26324a;
         }
 
-        .error {
-            border-color: rgba(248,113,113,.3);
-            color: #fca5a5;
-        }
-
-        .section-title {
-            margin: 38px 0 18px;
-            font-size: 1.35rem;
-        }
-
-        /* CARTE MEMBRE EN HAUT DU TABLEAU DE BORD */
+        .error { color: #fca5a5; }
 
         .member-card-section {
-            margin: 0 0 35px;
+            margin: 0 0 30px;
         }
 
-        .member-card-section[hidden] {
-            display: none !important;
+        .member-card-section[hidden] { display: none !important; }
+
+        .section-title {
+            margin: 28px 0 15px;
+            font-size: 1.2rem;
         }
 
-        .member-card-heading {
-            margin: 0 0 15px;
-            font-size: 1.35rem;
-        }
+        /* Carte membre améliorée */
 
         .member-card {
             position: relative;
+            isolation: isolate;
             display: flex;
             align-items: center;
             gap: 24px;
             overflow: hidden;
-            padding: 28px;
-            border: 1px solid rgba(129,140,248,.35);
+            padding: 27px;
+            min-height: 205px;
+            border: 1px solid rgba(129,140,248,.5);
             border-radius: 22px;
             background:
-                radial-gradient(circle at 90% 10%, rgba(0,217,255,.15), transparent 35%),
-                linear-gradient(120deg, #151b35, #0d1426 65%, #111b32);
-            box-shadow: 0 15px 45px rgba(0,0,0,.25);
+                radial-gradient(circle at 90% 20%, rgba(0,217,255,.18), transparent 33%),
+                linear-gradient(125deg, #171e3a, #0c1325 65%, #111c35);
+            box-shadow: 0 18px 45px rgba(0,0,0,.22);
         }
 
-        .member-card::after {
+        .member-card::before {
             content: "";
             position: absolute;
-            right: -65px;
-            bottom: -100px;
-            width: 240px;
-            height: 240px;
-            border: 1px solid rgba(129,140,248,.14);
+            z-index: -1;
+            width: 250px;
+            height: 250px;
+            right: -85px;
+            bottom: -155px;
             border-radius: 50%;
-            box-shadow: 0 0 0 25px rgba(129,140,248,.035),
-                        0 0 0 50px rgba(129,140,248,.025);
-            pointer-events: none;
+            border: 1px solid rgba(129,140,248,.28);
+            box-shadow:
+                0 0 0 22px rgba(129,140,248,.04),
+                0 0 0 45px rgba(129,140,248,.035);
         }
 
         .member-card-avatar {
-            position: relative;
-            z-index: 1;
             flex-shrink: 0;
             width: 112px;
             height: 112px;
-            border-radius: 50%;
             object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #8291ff;
             background: #1e293b;
-            border: 3px solid #7185ff;
-            box-shadow: 0 0 28px rgba(88,101,242,.3);
+            box-shadow: 0 0 0 8px rgba(99,102,241,.10),
+                        0 0 30px rgba(88,101,242,.22);
         }
 
-        .member-card-info {
-            position: relative;
-            z-index: 1;
-            min-width: 0;
-            flex: 1;
-        }
+        .member-card-info { flex: 1; min-width: 0; }
 
         .member-card-label {
-            margin: 0 0 8px;
-            color: #8fa7ff;
-            font-size: .75rem;
-            font-weight: 700;
+            color: #93a9ff;
+            font-size: .72rem;
+            font-weight: 800;
             letter-spacing: 2px;
-            text-transform: uppercase;
+            margin: 0 0 8px;
         }
 
-        .member-card-info h3 {
-            margin: 0 0 8px;
-            font-size: clamp(1.4rem, 3vw, 2rem);
+        .member-card-info h2 {
             overflow-wrap: anywhere;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin: 0 0 10px;
         }
 
         .member-card-role {
-            display: inline-block;
-            margin: 0 0 16px;
+            display: inline-flex;
             padding: 7px 12px;
             border-radius: 999px;
-            color: #c7d2fe;
-            background: rgba(88,101,242,.17);
-            border: 1px solid rgba(129,140,248,.3);
-            font-size: .85rem;
+            font-size: .82rem;
+            color: #dbeafe;
+            background: rgba(99,102,241,.2);
+            border: 1px solid rgba(129,140,248,.4);
+            margin: 0 0 13px;
         }
 
         .member-card-roles {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 7px;
         }
 
         .member-role {
@@ -225,282 +192,160 @@
             background: rgba(255,255,255,.06);
             border: 1px solid rgba(255,255,255,.08);
             color: #cbd5e1;
-            font-size: .8rem;
+            font-size: .78rem;
         }
 
         .member-card-id {
-            position: relative;
-            z-index: 1;
-            margin-top: 18px;
-            color: #94a3b8;
-            font-size: .8rem;
+            margin-top: 14px;
+            color: #91a3c2;
+            font-size: .76rem;
             overflow-wrap: anywhere;
         }
 
-        /* GRILLE DES OUTILS */
-
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
         }
 
         .tool-card {
-            position: relative;
-            min-height: 150px;
-            padding: 22px;
-            border-radius: 20px;
-            background: rgba(15,23,42,.75);
-            border: 1px solid rgba(255,255,255,.07);
-            transition: .25s ease;
-            overflow: hidden;
+            display: block;
+            min-width: 0;
+            min-height: 138px;
+            padding: 19px;
+            border-radius: 17px;
+            background: linear-gradient(145deg, rgba(17,26,45,.96), rgba(12,19,34,.96));
+            border: 1px solid #202b40;
+            color: inherit;
+            text-decoration: none;
+            transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
         }
 
         .tool-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(96,165,250,.35);
-            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+            transform: translateY(-3px);
+            border-color: rgba(129,140,248,.6);
+            box-shadow: 0 12px 30px rgba(0,0,0,.2);
         }
 
-        .tool-icon {
-            font-size: 2rem;
-            margin-bottom: 12px;
-        }
-
-        .tool-card h3 {
-            margin: 0 0 8px;
-            font-size: 1.05rem;
-        }
-
-        .tool-card p {
-            margin: 0;
-            color: #94a3b8;
-            font-size: .9rem;
-            line-height: 1.5;
-        }
-
-        /* RÔLES DISCORD */
+        .tool-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .tool-card h3 { margin: 0 0 7px; font-size: .98rem; }
+        .tool-card p { margin: 0; color: #9aabc5; font-size: .84rem; line-height: 1.5; }
 
         .role-box {
-            padding: 22px;
-            border-radius: 20px;
-            background: rgba(15,23,42,.75);
-            border: 1px solid rgba(255,255,255,.07);
+            padding: 20px;
+            border-radius: 17px;
+            background: rgba(15,23,42,.8);
+            border: 1px solid #202b40;
         }
 
-        .roles {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+        .roles { display: flex; flex-wrap: wrap; gap: 8px; }
 
         .role {
-            padding: 9px 13px;
+            padding: 8px 12px;
             border-radius: 999px;
             background: rgba(88,101,242,.15);
-            border: 1px solid rgba(88,101,242,.25);
+            border: 1px solid rgba(88,101,242,.3);
             color: #c7d2fe;
-            font-size: .9rem;
+            font-size: .85rem;
         }
 
-        .permission-count {
-            color: #94a3b8;
-            margin-top: 8px;
-        }
-
-        /* DÉCONNEXION */
+        .permission-count { color: #94a3b8; margin-top: 10px; font-size: .85rem; }
 
         .logout {
-            margin-top: 35px;
-            padding: 12px 18px;
-            border: 1px solid rgba(248,113,113,.25);
-            border-radius: 12px;
+            margin-top: 25px;
+            padding: 11px 16px;
+            border: 1px solid rgba(248,113,113,.3);
+            border-radius: 10px;
             background: rgba(127,29,29,.18);
             color: #fca5a5;
             cursor: pointer;
         }
 
-        .logout:hover {
-            background: rgba(127,29,29,.3);
+        .logout:hover { background: rgba(127,29,29,.3); }
+
+        @media (max-width: 950px) {
+            .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
 
-        @media (max-width: 800px) {
-            .dashboard {
-                padding: 95px 0 40px;
-            }
-
-            .dashboard .hero {
-                min-height: auto !important;
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-                gap: 25px;
-            }
-
-            .account-card {
-                width: 100%;
-                justify-content: center;
-                min-width: 0;
-            }
-
-            .avatar {
-                width: 64px !important;
-                height: 64px !important;
-                min-width: 64px;
-            }
-
-            .member-card {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 18px;
-                padding: 22px;
-            }
-
-            .member-card-avatar {
-                width: 90px;
-                height: 90px;
-            }
-
-            .tools-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
-        }
-
-        @media (max-width: 480px) {
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .member-card {
-                padding: 18px;
-            }
+        @media (max-width: 650px) {
+            .dashboard { padding-top: 82px; }
+            .hero { flex-direction: column; align-items: stretch; }
+            .account-card { min-width: 0; }
+            .member-card { flex-direction: column; align-items: flex-start; padding: 22px; gap: 20px; }
+            .member-card-avatar { width: 92px; height: 92px; }
+            .tools-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 
 <body>
-
 <nav class="navbar" id="navbar"></nav>
 
 <main class="dashboard">
+    <div id="loading" class="loading">🔄 Chargement de ton espace...</div>
 
-    <div id="loading" class="loading">
-        🔄 Chargement de ton espace...
-    </div>
-
-    <div id="content" style="display:none;">
-
-        <!-- ACCUEIL -->
-
+    <div id="content" style="display:none">
         <section class="hero">
             <div>
                 <h1>👋 Bonjour !</h1>
-                <p>
-                    Bienvenue dans le tableau de bord de
-                    <strong>La communauté live</strong>.
-                </p>
+                <p>Bienvenue dans le tableau de bord de <strong>La communauté live</strong>.</p>
             </div>
 
             <div class="account-card">
-                <img
-                    id="avatar"
-                    class="avatar"
-                    src="https://cdn.discordapp.com/embed/avatars/0.png"
-                    alt="Avatar Discord"
-                >
-
+                <img id="avatar" class="avatar"
+                     src="https://cdn.discordapp.com/embed/avatars/0.png"
+                     alt="Avatar Discord">
                 <div>
                     <div id="username" class="account-name"></div>
                     <div id="mainRole" class="account-role"></div>
-
-                    <div class="status">
-                        <span class="status-dot"></span>
-                        Connecté avec Discord
-                    </div>
+                    <div class="status"><span class="status-dot"></span>Connecté avec Discord</div>
                 </div>
             </div>
         </section>
 
-        <!-- MA CARTE : AFFICHÉE EN PREMIER -->
-
-        <section
-            id="memberCardSection"
-            class="member-card-section"
-            hidden
-        >
-            <h2 class="member-card-heading">🪪 Ma carte membre</h2>
-
+        <section id="memberCardSection" class="member-card-section" hidden>
+            <h2 class="section-title">🪪 Ma carte membre</h2>
             <div class="member-card">
-                <img
-                    id="memberCardAvatar"
-                    class="member-card-avatar"
-                    src="https://cdn.discordapp.com/embed/avatars/0.png"
-                    alt="Avatar de la carte membre"
-                >
+                <img id="memberCardAvatar" class="member-card-avatar"
+                     src="https://cdn.discordapp.com/embed/avatars/0.png"
+                     alt="Photo du membre">
 
                 <div class="member-card-info">
-                    <p class="member-card-label">
-                        La communauté live
-                    </p>
-
-                    <h3 id="memberCardUsername">Membre Discord</h3>
-
-                    <p id="memberCardRole" class="member-card-role">
-                        Membre
-                    </p>
-
-                    <div
-                        id="memberCardRoles"
-                        class="member-card-roles"
-                    ></div>
-
+                    <p class="member-card-label">LA COMMUNAUTÉ LIVE · CARTE MEMBRE</p>
+                    <h2 id="memberCardUsername">Membre Discord</h2>
+                    <div id="memberCardRole" class="member-card-role">Membre</div>
+                    <div id="memberCardRoles" class="member-card-roles"></div>
                     <div class="member-card-id">
-                        Identifiant Discord :
-                        <span id="memberCardId">Non disponible</span>
+                        ID Discord : <span id="memberCardId">Non disponible</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- OUTILS : PAS DE BOUTONS TABLEAU DE BORD OU MA CARTE -->
-
         <h2 class="section-title">🛠️ Tes outils</h2>
-
         <section id="tools" class="tools-grid"></section>
 
-        <!-- RÔLES DISCORD -->
-
         <h2 class="section-title">🛡️ Tes rôles Discord</h2>
-
         <section class="role-box">
             <div id="roles" class="roles"></div>
             <div id="permissionCount" class="permission-count"></div>
         </section>
 
-        <button id="logout" class="logout" type="button">
-            🚪 Se déconnecter
-        </button>
-
+        <button id="logout" class="logout" type="button">🚪 Se déconnecter</button>
     </div>
 </main>
 
 <script src="js/navbar.js?v=20261013"></script>
-
 <script>
 const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
-
-/*
- * Les actions de modération restent dans membres.html.
- * Les entrées "Tableau de bord" et "Ma carte" ont été retirées :
- * la carte membre est maintenant affichée en haut de cette page.
- */
 
 const TOOLS = [
     {
         permission: "level_money",
         icon: "💰",
         title: "Niveau + argent",
-        description: "Consulter les informations de niveau et d'argent."
+        description: "Voir ton niveau, ton XP et ton solde.",
+        link: "niveau-argent.html"
     },
     {
         permission: "member_list",
@@ -565,9 +410,6 @@ const TOOLS = [
     }
 ];
 
-
-/* PROTECTION DU TEXTE AFFICHÉ */
-
 function escapeHTML(value) {
     return String(value ?? "")
         .replaceAll("&", "&amp;")
@@ -577,19 +419,29 @@ function escapeHTML(value) {
         .replaceAll("'", "&#039;");
 }
 
-
-/* AVATAR DISCORD */
-
+/* Le backend renvoie déjà une URL complète pour user.avatar.
+   On accepte aussi un hash au cas où le format changerait. */
 function getAvatarURL(user) {
-    if (user && user.avatar && user.id) {
-        return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=256`;
+    const avatar = user?.avatarURL || user?.avatar_url || user?.avatar;
+
+    if (typeof avatar === "string" && /^https?:\/\//i.test(avatar)) {
+        return avatar;
+    }
+
+    if (typeof avatar === "string" && avatar && user?.id) {
+        return `https://cdn.discordapp.com/avatars/${user.id}/${avatar}.png?size=256`;
     }
 
     return "https://cdn.discordapp.com/embed/avatars/0.png";
 }
 
-
-/* CHARGEMENT DU TABLEAU DE BORD */
+function setAvatar(element, url) {
+    element.onerror = function () {
+        this.onerror = null;
+        this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
+    };
+    element.src = url;
+}
 
 async function loadDashboard() {
     const token = localStorage.getItem("discord_session");
@@ -601,29 +453,21 @@ async function loadDashboard() {
 
     try {
         const response = await fetch(`${API_URL}/auth/permissions`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+            headers: { Authorization: `Bearer ${token}` }
         });
 
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(
-                data.error || "Impossible de récupérer les permissions."
-            );
+            throw new Error(data.error || "Impossible de récupérer les permissions.");
         }
 
         renderDashboard(data);
-
     } catch (error) {
         console.error(error);
         showError(error.message || "Une erreur est survenue.");
     }
 }
-
-
-/* AFFICHAGE DES INFORMATIONS */
 
 function renderDashboard(data) {
     document.getElementById("loading").style.display = "none";
@@ -632,127 +476,62 @@ function renderDashboard(data) {
     const user = data.user || {};
     const roles = data.roles || [];
     const permissions = data.permissions || [];
-
-    const username = user.username || "Utilisateur Discord";
+    const username = user.globalName || user.global_name || user.username || "Utilisateur Discord";
     const avatarURL = getAvatarURL(user);
     const mainRole = roles.length ? roles[0].name : "@everyone";
 
-    /* Profil en haut à droite */
-
-    document.getElementById("username").textContent = username;
+    document.getElementById("username").textContent = user.username || username;
     document.getElementById("mainRole").textContent = mainRole;
+    setAvatar(document.getElementById("avatar"), avatarURL);
 
-    const avatar = document.getElementById("avatar");
-    avatar.src = avatarURL;
-    avatar.onerror = function () {
-        this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
-    };
-
-    /* Carte membre placée au-dessus de la grille */
-
-    const memberCardSection = document.getElementById("memberCardSection");
-
-    memberCardSection.hidden = !permissions.includes("own_card");
+    const cardSection = document.getElementById("memberCardSection");
+    cardSection.hidden = !permissions.includes("own_card");
 
     document.getElementById("memberCardUsername").textContent = username;
     document.getElementById("memberCardRole").textContent = mainRole;
     document.getElementById("memberCardId").textContent = user.id || "Non disponible";
+    setAvatar(document.getElementById("memberCardAvatar"), avatarURL);
 
-    const memberCardAvatar = document.getElementById("memberCardAvatar");
-    memberCardAvatar.src = avatarURL;
-    memberCardAvatar.onerror = function () {
-        this.src = "https://cdn.discordapp.com/embed/avatars/0.png";
-    };
+    document.getElementById("memberCardRoles").innerHTML = roles.length
+        ? roles.map(role => `<span class="member-role">${escapeHTML(role.name)}</span>`).join("")
+        : '<span class="member-role">@everyone</span>';
 
-    const memberCardRoles = document.getElementById("memberCardRoles");
-
-    if (!roles.length) {
-        memberCardRoles.innerHTML =
-            '<span class="member-role">@everyone</span>';
-    } else {
-        memberCardRoles.innerHTML = roles
-            .map(role =>
-                `<span class="member-role">${escapeHTML(role.name)}</span>`
-            )
-            .join("");
-    }
-
-    /* Rôles Discord dans la section du bas */
-
-    const rolesContainer = document.getElementById("roles");
-
-    if (!roles.length) {
-        rolesContainer.innerHTML =
-            '<span class="role">@everyone</span>';
-    } else {
-        rolesContainer.innerHTML = roles
-            .map(role =>
-                `<span class="role">${escapeHTML(role.name)}</span>`
-            )
-            .join("");
-    }
+    document.getElementById("roles").innerHTML = roles.length
+        ? roles.map(role => `<span class="role">${escapeHTML(role.name)}</span>`).join("")
+        : '<span class="role">@everyone</span>';
 
     document.getElementById("permissionCount").textContent =
         `${permissions.length} permission(s) active(s)`;
 
-    /* Outils autorisés par les permissions Discord */
+    const allowedTools = TOOLS.filter(tool => permissions.includes(tool.permission));
 
-    const toolsContainer = document.getElementById("tools");
-
-    const allowedTools = TOOLS.filter(tool =>
-        permissions.includes(tool.permission)
-    );
-
-    toolsContainer.innerHTML = allowedTools.map(tool => {
-        const card = `
+    document.getElementById("tools").innerHTML = allowedTools.map(tool => {
+        const contents = `
             <div class="tool-icon">${tool.icon}</div>
             <h3>${escapeHTML(tool.title)}</h3>
             <p>${escapeHTML(tool.description)}</p>
         `;
 
         if (tool.link) {
-            return `
-                <a
-                    class="tool-card"
-                    href="${escapeHTML(tool.link)}"
-                    style="display:block;color:inherit;text-decoration:none;cursor:pointer;"
-                >
-                    ${card}
-                </a>
-            `;
+            return `<a class="tool-card" href="${escapeHTML(tool.link)}">${contents}</a>`;
         }
 
-        return `
-            <article class="tool-card">
-                ${card}
-            </article>
-        `;
+        return `<article class="tool-card">${contents}</article>`;
     }).join("");
 }
 
-
-/* ERREURS */
-
 function showError(message) {
     const loading = document.getElementById("loading");
-
     loading.className = "error";
     loading.textContent = `❌ ${message}`;
 }
-
-
-/* DÉCONNEXION */
 
 document.getElementById("logout").addEventListener("click", () => {
     localStorage.removeItem("discord_session");
     window.location.href = "index.html";
 });
 
-
-/* DÉMARRAGE */
-
 loadDashboard();
 </script>
-
 </body>
 </html>
