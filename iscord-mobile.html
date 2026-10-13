@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Discord mobile — La communauté live</title>
+    <link rel="stylesheet" href="css/style.css?v=20261013">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dc-bg: #0b0e16;
+            --dc-panel: #111723;
+            --dc-panel-light: #182233;
+            --dc-border: #273247;
+            --dc-text: #f1f5f9;
+            --dc-muted: #94a3b8;
+            --dc-blue: #7185ff;
+            --dc-purple: #9b7bff;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--dc-text);
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(
+                    ellipse at 10% 0%,
+                    rgba(88,101,242,.15),
+                    transparent 35%
+                ),
+                var(--dc-bg);
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .chat-page {
+            width: min(1450px, 96%);
+            margin: 0 auto;
+            padding: 90px 0 25px;
+        }
+
+        .chat-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 16px 19px;
+            margin-bottom: 16px;
+            border: 1px solid var(--dc-border);
+            border-radius: 17px;
+            background: rgba(17,23,35,.95);
+        }
+
+        .chat-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .chat-brand-icon {
+            display: grid;
+            place-items: center;
+            width: 45px;
+            height: 45px;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #5865f2, #9b7bff);
+            box-shadow: 0 7px 22px rgba(88,101,242,.25);
+        }
+
+        .chat-brand h1 {
+            margin: 0;
+            font-size: 1.15rem;
+            overflow-wrap: anywhere;
+        }
+
+        .chat-brand p {
+            margin: 5px 0 0;
+            color: var(--dc-muted);
+            font-size: .82rem;
+        }
+
+        .top-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chat-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 13px;
+            border: 1px solid var(--dc-border);
+            border-radius: 10px;
+            color: var(--dc-text);
+            background: var(--dc-panel-light);
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .chat-button:hover {
+            border-color: var(--dc-blue);
+            background: #202b40;
+        }
+
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 285px minmax(0, 1fr);
+            min-height: 600px;
+            height: min(74vh, 850px);
+            overflow: hidden;
+            border: 1px solid var(--dc-border);
+            border-radius: 18px;
+            background: var(--dc-panel);
+            box-shadow: 0 20px 55px rgba(0,0,0,.22);
+        }
+
+        /* LISTE DES SALONS */
+
+        .channel-sidebar {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            overflow: hidden;
+            background: rgba(12,17,28,.95);
+            border-right: 1px solid var(--dc-border);
+        }
+
+        .sidebar-heading {
+            padding: 19px 17px 14px;
+            border-bottom: 1px solid var(--dc-border);
+        }
+
+        .sidebar-heading h2 {
+            margin: 0;
+            font-size: .98rem;
+        }
+
+        .sidebar-description {
+            margin-top: 6px;
+            color: var(--dc-muted);
+            font-size: .78rem;
+        }
+
+        .channel-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .channel-category {
+            margin: 12px 0 7px;
+            padding: 0 9px;
+            color: #8292ad;
+            font-size: .7rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            overflow-wrap: anywhere;
+        }
+
+        .channel-button {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            width: 100%;
+            padding: 11px 12px;
+            margin-bottom: 4px;
+            text-align: left;
+            color: #b8c3d5;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            overflow-wrap: anywhere;
+        }
+
+        .channel-button:hover {
+            color: white;
+            background: rgba(255,255,255,.045);
+        }
+
+        .channel-button.active {
+            color: white;
+            background: rgba(99,102,241,.18);
+            border-color: rgba(129,140,248,.3);
+        }
+
+        .channel-symbol {
+            flex-shrink: 0;
+            color: #8696b2;
+            font-size: 1.1rem;
+        }
+
+        .channel-button.active .channel-symbol {
+            color: #a5b4fc;
+        }
+
+        .channel-name {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        /* CONVERSATION */
+
+        .conversation {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            background:
+                radial-gradient(
+                    ellipse at top right,
+                    rgba(88,101,242,.055),
+                    transparent 40%
+                ),
+                #101622;
+        }
+
+        .conversation-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            min-height: 66px;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--dc-border);
+            background: rgba(17,23,35,.9);
+        }
+
+        .conversation-title {
+            min-width: 0;
+        }
+
+        .conversation-title h2 {
+            margin: 0;
+            font-size: 1.05rem;
+            overflow-wrap: anywhere;
+        }
+
+        .conversation-title p {
+            margin: 5px 0 0;
+            color: var(--dc-muted);
+            font-size: .78rem;
+        }
+
+        .messages {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 16px 19px 25px;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 11px 9px;
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .message:hover {
+            background: rgba(255,255,255,.025);
+        }
+
+        .message-avatar {
+            flex-shrink: 0;
+            width: 39px;
+            height: 39px;
+            object-fit: cover;
+            border-radius: 50%;
+            background: #25314a;
+        }
+
+        .message-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .message-heading {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .message-author {
+            color: #e5eaff;
+            font-size: .9rem;
+            font-weight: 700;
+        }
+
+        .message-author.bot {
+            color: #a5b4fc;
+        }
+
+        .bot-badge {
+            padding: 2px 5px;
+            border-radius: 4px;
+            color: white;
+            background: #5865f2;
+            font-size: .63rem;
+            font-weight: 800;
+        }
+
+        .message-time {
+            color: #77859d;
+            font-size: .7rem;
+        }
+
+        .message-content {
+            color: #d3dbea;
+            font-size: .92rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .message-attachments {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .attachment {
+            display: inline-block;
+            max-width: 100%;
+            padding: 8px 10px;
+            color: #bfcaff;
+            background: rgba(88,101,242,.1);
+            border: 1px solid rgba(129,140,248,.25);
+            border-radius: 8px;
+            font-size: .8rem;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .attachment:hover {
+            background: rgba(88,101,242,.2);
+        }
+
+        /* ÉTATS DE CHARGEMENT ET D'ERREUR */
+
+        .chat-state {
+            display: grid;
+            place-content: center;
+            gap: 11px;
+            min-height: 220px;
+            padding: 24px;
+            text-align: center;
+            color: var(--dc-muted);
+            line-height: 1.6;
+        }
+
+        .chat-state strong {
+            color: #e6edff;
+        }
+
+        .state-icon {
+            font-size: 2rem;
+        }
+
+        .chat-state.error {
+            color: #fca5a5;
+        }
+
+        .chat-state .chat-button {
+            justify-self: center;
+        }
+
+        .mobile-only {
+            display: none;
+        }
+
+        .chat-footer {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 17px;
+            border-top: 1px solid var(--dc-border);
+            color: #8190a8;
+            font-size: .75rem;
+        }
+
+        .footer-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4ade80;
+            box-shadow: 0 0 8px rgba(74,222,128,.5);
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        @media (max-width: 850px) {
+            .chat-page {
+                width: 96%;
+                padding-top: 82px;
+            }
+
+            .chat-layout {
+                position: relative;
+                display: block;
+                height: calc(100dvh - 190px);
+                min-height: 420px;
+            }
+
+            .channel-sidebar {
+                display: none;
+                position: absolute;
+                z-index: 5;
+                inset: 0 auto 0 0;
+                width: min(320px, 88%);
+                border-right: 1px solid var(--dc-border);
+                box-shadow: 12px 0 35px rgba(0,0,0,.4);
+            }
+
+            .chat-layout.sidebar-open .channel-sidebar {
+                display: flex;
+            }
+
+            .conversation {
+                height: 100%;
+                width: 100%;
+            }
+
+            .mobile-only {
+                display: inline-flex;
+            }
+
+            .conversation-header {
+                padding: 12px;
+            }
+
+            .messages {
+                padding: 12px 7px 20px;
+            }
+
+            .message {
+                gap: 9px;
+                padding: 10px 5px;
+            }
+
+            .message-avatar {
+                width: 35px;
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .chat-page {
+                width: 100%;
+                padding: 72px 0 0;
+            }
+
+            .chat-topbar {
+                gap: 8px;
+                padding: 12px;
+                margin: 0 10px 10px;
+                border-radius: 13px;
+            }
+
+            .chat-brand {
+                gap: 9px;
+            }
+
+            .chat-brand-icon {
+                width: 38px;
+                height: 38px;
+                font-size: 1.2rem;
+                border-radius: 11px;
+            }
+
+            .chat-brand h1 {
+                font-size: .98rem;
+            }
+
+            .chat-brand p {
+                font-size: .72rem;
+            }
+
+            .top-actions {
+                gap: 5px;
+            }
+
+            .top-actions .chat-button {
+                padding: 9px;
+                font-size: .8rem;
+            }
+
+            .chat-layout {
+                height: calc(100dvh - 145px);
+                min-height: 400px;
+                border-left: 0;
+                border-right: 0;
+                border-radius: 0;
+            }
+
+            .conversation-title h2 {
+                font-size: .95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar" id="navbar"></nav>
+
+<main class="chat-page">
+
+    <header class="chat-topbar">
+        <div class="chat-brand">
+            <div class="chat-brand-icon">💬</div>
+
+            <div>
+                <h1>La Communauté Live</h1>
+                <p>Mini-Discord · Lecture des messages</p>
+            </div>
+        </div>
+
+        <div class="top-actions">
+            <button
+                id="toggleChannels"
+                class="chat-button mobile-only"
+                type="button"
+            >
+                ☰ Salons
+            </button>
+
+            <button
+                id="refreshButton"
+                class="chat-button"
+                type="button"
+                title="Actualiser les messages"
+            >
+                ↻ <span class="refresh-label">Actualiser</span>
+            </button>
+
+            <a class="chat-button" href="dashboard.html">
+                ← <span class="back-label">Retour</span>
+            </a>
+        </div>
+    </header>
+
+    <div id="chatLayout" class="chat-layout">
+
+        <aside class="channel-sidebar">
+            <div class="sidebar-heading">
+                <h2>📚 Salons du serveur</h2>
+                <div id="channelCount" class="sidebar-description">
+                    Chargement des salons...
+                </div>
+            </div>
+
+            <div id="channelList" class="channel-list">
+                <div class="chat-state">
+                    <span class="state-icon">⏳</span>
+                    Chargement des salons...
+                </div>
+            </div>
+        </aside>
+
+        <section class="conversation">
+
+            <header class="conversation-header">
+                <div class="conversation-title">
+                    <h2 id="currentChannel">Choisis un salon</h2>
+                    <p id="conversationSubtitle">
+                        Sélectionne un salon pour lire ses messages.
+                    </p>
+                </div>
+            </header>
+
+            <div id="messages" class="messages">
+                <div class="chat-state">
+                    <span class="state-icon">💬</span>
+                    <strong>Bienvenue dans la mini-interface</strong>
+                    Choisis un salon dans la liste pour afficher ses messages.
+                </div>
+            </div>
+
+            <footer class="chat-footer">
+                <span class="footer-dot"></span>
+                <span id="connectionStatus">
+                    Connecté au serveur du site
+                </span>
+            </footer>
+
+        </section>
+    </div>
+</main>
+
+<script src="js/navbar.js?v=20261013"></script>
+
+<script>
+const API_URL =
+    "https://la-communaute-live-bot.de.deplexo.com";
+
+const DEFAULT_AVATAR =
+    "https://cdn.discordapp.com/embed/avatars/0.png";
+
+let discordToken = null;
+let channels = [];
+let selectedChannelId = null;
+let refreshTimer = null;
+let isLoadingMessages = false;
+let latestMessageId = null;
+
+
+/* ==================================================
+   SÉCURITÉ ET OUTILS
+================================================== */
+
+function escapeHTML(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+function formatDate(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit"
+    }).format(date);
+}
+
+function safeHttpUrl(value) {
+    try {
+        const url = new URL(value);
+
+        if (url.protocol === "https:" || url.protocol === "http:") {
+            return url.href;
+        }
+    } catch {
+        // URL invalide : ne pas l'utiliser.
+    }
+
+    return null;
+}
+
+function setState(container, icon, title, description, error = false) {
+    container.innerHTML = `
+        <div class="chat-state ${error ? "error" : ""}">
+            <span class="state-icon">${icon}</span>
+            <strong>${escapeHTML(title)}</strong>
+            <span>${escapeHTML(description)}</span>
+        </div>
+    `;
+}
+
+async function apiRequest(path) {
+    const response = await fetch(`${API_URL}${path}`, {
+        headers: {
+            Authorization: `Bearer ${discordToken}`
+        }
+    });
+
+    let data = {};
+
+    try {
+        data = await response.json();
+    } catch {
+        // Une réponse non JSON sera traitée comme une erreur HTTP.
+    }
+
+    if (!response.ok) {
+        throw new Error(
+            data.error || `Erreur du serveur (${response.status}).`
+        );
+    }
+
+    return data;
+}
+
+
+/* ==================================================
+   CHARGEMENT DES SALONS
+================================================== */
+
+async function loadChannels() {
+    const channelList = document.getElementById("channelList");
+
+    setState(
+        channelList,
+        "⏳",
+        "Chargement des salons",
+        "Récupération des salons autorisés..."
+    );
+
+    try {
+        const data = await apiRequest("/chat/channels");
+
+        channels = Array.isArray(data.channels)
+            ? data.channels
+            : [];
+
+        document.getElementById("channelCount").textContent =
+            `${channels.length} salon${channels.length > 1 ? "s" : ""} accessible${channels.length > 1 ? "s" : ""}`;
+
+        if (!channels.length) {
+            setState(
+                channelList,
+                "📭",
+                "Aucun salon disponible",
+                "Vérifie les permissions de ton compte et du bot."
+            );
+
+            return;
+        }
+
+        renderChannels();
+
+        // Ouvrir automatiquement le premier salon disponible.
+        await selectChannel(channels[0].id);
+
+    } catch (error) {
+        console.error("Erreur chargement salons :", error);
+
+        setState(
+            channelList,
+            "⚠️",
+            "Impossible de charger les salons",
+            error.message,
+            true
+        );
+
+        document.getElementById("connectionStatus").textContent =
+            "Erreur de connexion";
+    }
+}
+
+function renderChannels() {
+    const channelList = document.getElementById("channelList");
+
+    const categories = new Map();
+
+    for (const channel of channels) {
+        const category =
+            channel.categoryName || "Salons sans catégorie";
+
+        if (!categories.has(category)) {
+            categories.set(category, []);
+        }
+
+        categories.get(category).push(channel);
+    }
+
+    channelList.innerHTML = [...categories.entries()]
+        .map(([categoryName, categoryChannels]) => `
+            <div class="channel-category">
+                ${escapeHTML(categoryName)}
+            </div>
+
+            ${categoryChannels.map(channel => `
+                <button
+                    type="button"
+                    class="channel-button ${channel.id === selectedChannelId ? "active" : ""}"
+                    data-channel-id="${escapeHTML(channel.id)}"
+                >
+                    <span class="channel-symbol">
+                        ${channel.type === "annonce" ? "📢" : "#"}
+                    </span>
+
+                    <span class="channel-name">
+                        ${escapeHTML(channel.name)}
+                    </span>
+                </button>
+            `).join("")}
+        `)
+        .join("");
+
+    channelList.querySelectorAll("[data-channel-id]").forEach(button => {
+        button.addEventListener("click", () => {
+            selectChannel(button.dataset.channelId);
+        });
+    });
+}
+
+
+/* ==================================================
+   SÉLECTION D'UN SALON
+================================================== */
+
+async function selectChannel(channelId) {
+    selectedChannelId = channelId;
+    latestMessageId = null;
+
+    const channel = channels.find(item => item.id === channelId);
+
+    if (!channel) {
+        return;
+    }
+
+    renderChannels();
+
+    document.getElementById("currentChannel").textContent =
+        `${channel.type === "annonce" ? "📢" : "#"} ${channel.name}`;
+
+    document.getElementById("conversationSubtitle").textContent =
+        `${channel.categoryName || "Salons du serveur"} · Derniers messages`;
+
+    document.getElementById("chatLayout").classList.remove("sidebar-open");
+
+    if (refreshTimer) {
+        clearInterval(refreshTimer);
+    }
+
+    await loadMessages(true);
+
+    // Actualiser les messages toutes les 20 secondes.
+    refreshTimer = setInterval(() => {
+        if (selectedChannelId) {
+            loadMessages(false);
+        }
+    }, 20000);
+}
+
+
+/* ==================================================
+   CHARGEMENT DES MESSAGES
+================================================== */
+
+async function loadMessages(scrollToBottom = false) {
+    if (!selectedChannelId || isLoadingMessages) {
+        return;
+    }
+
+    isLoadingMessages = true;
+
+    const messagesContainer = document.getElementById("messages");
+
+    const wasNearBottom =
+        messagesContainer.scrollHeight -
+        messagesContainer.scrollTop -
+        messagesContainer.clientHeight < 120;
+
+    if (scrollToBottom || !latestMessageId) {
+        setState(
+            messagesContainer,
+            "⏳",
+            "Chargement des messages",
+            "Récupération de la conversation..."
+        );
+    }
+
+    try {
+        const data = await apiRequest(
+            `/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`
+        );
+
+        if (selectedChannelId !== data.channel?.id) {
+            return;
+        }
+
+        const receivedMessages = Array.isArray(data.messages)
+            ? data.messages
+            : [];
+
+        latestMessageId = receivedMessages.length
+            ? receivedMessages[receivedMessages.length - 1].id
+            : null;
+
+        renderMessages(receivedMessages);
+
+        document.getElementById("connectionStatus").textContent =
+            "Messages actualisés automatiquement";
+
+        if (scrollToBottom || wasNearBottom) {
+            messagesContainer.scrollTop =
+                messagesContainer.scrollHeight;
+        }
+
+    } catch (error) {
+        console.error("Erreur chargement messages :", error);
+
+        setState(
+            messagesContainer,
+            "⚠️",
+            "Impossible de charger les messages",
+            error.message,
+            true
+        );
+
+        document.getElementById("connectionStatus").textContent =
+            "Erreur de lecture";
+    } finally {
+        isLoadingMessages = false;
+    }
+}
+
+function renderMessages(messages) {
+    const container = document.getElementById("messages");
+
+    if (!messages.length) {
+        setState(
+            container,
+            "💭",
+            "Aucun message à afficher",
+            "Ce salon ne contient pas encore de message, ou son historique est vide."
+        );
+
+        return;
+    }
+
+    container.innerHTML = messages.map(message => {
+        const author = message.author || {};
+        const avatar = safeHttpUrl(author.avatar) || DEFAULT_AVATAR;
+
+        const attachments = Array.isArray(message.attachments)
+            ? message.attachments
+            : [];
+
+        const attachmentHTML = attachments.map(attachment => {
+            const url = safeHttpUrl(attachment.url);
+
+            if (!url) {
+                return "";
+            }
+
+            return `
+                <a
+                    class="attachment"
+                    href="${escapeHTML(url)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    📎 ${escapeHTML(attachment.name || "Pièce jointe")}
+                </a>
+            `;
+        }).join("");
+
+        return `
+            <article class="message">
+                <img
+                    class="message-avatar"
+                    src="${escapeHTML(avatar)}"
+                    alt=""
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}'"
+                >
+
+                <div class="message-main">
+                    <div class="message-heading">
+                        <span class="message-author ${author.bot ? "bot" : ""}">
+                            ${escapeHTML(author.displayName || author.username || "Membre")}
+                        </span>
+
+                        ${author.bot ? '<span class="bot-badge">BOT</span>' : ""}
+
+                        <time class="message-time">
+                            ${escapeHTML(formatDate(message.timestamp))}
+                        </time>
+                    </div>
+
+                    ${message.content
+                        ? `<div class="message-content">${escapeHTML(message.content)}</div>`
+                        : attachments.length
+                            ? ""
+                            : '<div class="message-content" style="color:#718096;font-style:italic">Message sans texte</div>'
+                    }
+
+                    ${attachmentHTML
+                        ? `<div class="message-attachments">${attachmentHTML}</div>`
+                        : ""
+                    }
+                </div>
+            </article>
+        `;
+    }).join("");
+}
+
+
+/* ==================================================
+   BOUTONS
+================================================== */
+
+document.getElementById("refreshButton").addEventListener("click", async () => {
+    const button = document.getElementById("refreshButton");
+
+    button.disabled = true;
+
+    try {
+        if (!channels.length) {
+            await loadChannels();
+        } else {
+            await loadMessages(false);
+        }
+    } finally {
+        button.disabled = false;
+    }
+});
+
+document.getElementById("toggleChannels").addEventListener("click", () => {
+    document.getElementById("chatLayout").classList.toggle("sidebar-open");
+});
+
+
+/* ==================================================
+   DÉMARRAGE
+================================================== */
+
+async function initMiniDiscord() {
+    discordToken = localStorage.getItem("discord_session");
+
+    if (!discordToken) {
+        document.getElementById("loading")?.remove();
+
+        document.getElementById("channelList").innerHTML = "";
+
+        setState(
+            document.getElementById("channelList"),
+            "🔒",
+            "Connexion nécessaire",
+            "Connecte-toi depuis le site pour accéder aux salons."
+        );
+
+        document.getElementById("messages").innerHTML = `
+            <div class="chat-state">
+                <span class="state-icon">🔐</span>
+                <strong>Tu n'es pas connecté</strong>
+                <span>Retourne au site pour te connecter avec Discord.</span>
+                <a class="chat-button" href="index.html">Se connecter</a>
+            </div>
+        `;
+
+        document.getElementById("connectionStatus").textContent =
+            "Session absente";
+
+        return;
+    }
+
+    await loadChannels();
+}
+
+initMiniDiscord();
+</script>
+</body>
+</html>
