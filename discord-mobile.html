@@ -2,1069 +2,536 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Discord mobile — La communauté live</title>
-    <link rel="stylesheet" href="css/style.css?v=20261013">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Discord mobile — La Communauté Live</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
         :root {
-            --dc-bg: #0b0e16;
-            --dc-panel: #111723;
-            --dc-panel-light: #182233;
-            --dc-border: #273247;
-            --dc-text: #f1f5f9;
-            --dc-muted: #94a3b8;
-            --dc-blue: #7185ff;
-            --dc-purple: #9b7bff;
+            color-scheme: dark;
+            --background: #1e1f22;
+            --sidebar: #2b2d31;
+            --chat: #313338;
+            --field: #383a40;
+            --muted: #b5bac1;
+            --text: #f2f3f5;
+            --accent: #5865f2;
+            --border: #242529;
         }
-
+        * { box-sizing: border-box; }
         body {
             margin: 0;
-            min-height: 100vh;
-            color: var(--dc-text);
+            height: 100dvh;
+            overflow: hidden;
+            color: var(--text);
+            background: var(--background);
             font-family: Arial, Helvetica, sans-serif;
-            background:
-                radial-gradient(
-                    ellipse at 10% 0%,
-                    rgba(88,101,242,.15),
-                    transparent 35%
-                ),
-                var(--dc-bg);
         }
-
-        button {
-            font: inherit;
-        }
-
-        .chat-page {
-            width: min(1450px, 96%);
-            margin: 0 auto;
-            padding: 90px 0 25px;
-        }
-
-        .chat-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 16px 19px;
-            margin-bottom: 16px;
-            border: 1px solid var(--dc-border);
-            border-radius: 17px;
-            background: rgba(17,23,35,.95);
-        }
-
-        .chat-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
-        }
-
-        .chat-brand-icon {
-            display: grid;
-            place-items: center;
-            width: 45px;
-            height: 45px;
-            flex-shrink: 0;
-            font-size: 1.5rem;
-            border-radius: 14px;
-            background: linear-gradient(135deg, #5865f2, #9b7bff);
-            box-shadow: 0 7px 22px rgba(88,101,242,.25);
-        }
-
-        .chat-brand h1 {
-            margin: 0;
-            font-size: 1.15rem;
-            overflow-wrap: anywhere;
-        }
-
-        .chat-brand p {
-            margin: 5px 0 0;
-            color: var(--dc-muted);
-            font-size: .82rem;
-        }
-
-        .top-actions {
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .chat-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 7px;
-            padding: 10px 13px;
-            border: 1px solid var(--dc-border);
-            border-radius: 10px;
-            color: var(--dc-text);
-            background: var(--dc-panel-light);
-            text-decoration: none;
-            cursor: pointer;
-            transition: .2s ease;
-        }
-
-        .chat-button:hover {
-            border-color: var(--dc-blue);
-            background: #202b40;
-        }
-
-        .chat-layout {
-            display: grid;
-            grid-template-columns: 285px minmax(0, 1fr);
-            min-height: 600px;
-            height: min(74vh, 850px);
-            overflow: hidden;
-            border: 1px solid var(--dc-border);
-            border-radius: 18px;
-            background: var(--dc-panel);
-            box-shadow: 0 20px 55px rgba(0,0,0,.22);
-        }
-
-        /* LISTE DES SALONS */
-
-        .channel-sidebar {
+        button, textarea { font: inherit; }
+        button { cursor: pointer; }
+        .app { display: flex; height: 100dvh; width: 100%; }
+        .sidebar {
             display: flex;
             flex-direction: column;
-            min-width: 0;
-            overflow: hidden;
-            background: rgba(12,17,28,.95);
-            border-right: 1px solid var(--dc-border);
+            width: 275px;
+            min-width: 230px;
+            background: var(--sidebar);
+            border-right: 1px solid #191a1c;
         }
-
-        .sidebar-heading {
-            padding: 19px 17px 14px;
-            border-bottom: 1px solid var(--dc-border);
-        }
-
-        .sidebar-heading h2 {
-            margin: 0;
-            font-size: .98rem;
-        }
-
-        .sidebar-description {
-            margin-top: 6px;
-            color: var(--dc-muted);
-            font-size: .78rem;
-        }
-
-        .channel-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-
-        .channel-category {
-            margin: 12px 0 7px;
-            padding: 0 9px;
-            color: #8292ad;
-            font-size: .7rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            overflow-wrap: anywhere;
-        }
-
-        .channel-button {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            width: 100%;
-            padding: 11px 12px;
-            margin-bottom: 4px;
-            text-align: left;
-            color: #b8c3d5;
-            background: transparent;
-            border: 1px solid transparent;
-            border-radius: 10px;
-            cursor: pointer;
-            overflow-wrap: anywhere;
-        }
-
-        .channel-button:hover {
-            color: white;
-            background: rgba(255,255,255,.045);
-        }
-
-        .channel-button.active {
-            color: white;
-            background: rgba(99,102,241,.18);
-            border-color: rgba(129,140,248,.3);
-        }
-
-        .channel-symbol {
-            flex-shrink: 0;
-            color: #8696b2;
-            font-size: 1.1rem;
-        }
-
-        .channel-button.active .channel-symbol {
-            color: #a5b4fc;
-        }
-
-        .channel-name {
-            min-width: 0;
-            overflow-wrap: anywhere;
-        }
-
-        /* CONVERSATION */
-
-        .conversation {
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            min-height: 0;
-            background:
-                radial-gradient(
-                    ellipse at top right,
-                    rgba(88,101,242,.055),
-                    transparent 40%
-                ),
-                #101622;
-        }
-
-        .conversation-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            min-height: 66px;
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--dc-border);
-            background: rgba(17,23,35,.9);
-        }
-
-        .conversation-title {
-            min-width: 0;
-        }
-
-        .conversation-title h2 {
-            margin: 0;
-            font-size: 1.05rem;
-            overflow-wrap: anywhere;
-        }
-
-        .conversation-title p {
-            margin: 5px 0 0;
-            color: var(--dc-muted);
-            font-size: .78rem;
-        }
-
-        .messages {
-            flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            padding: 16px 19px 25px;
-            scroll-behavior: smooth;
-        }
-
-        .message {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 11px 9px;
-            border-radius: 12px;
-            overflow-wrap: anywhere;
-        }
-
-        .message:hover {
-            background: rgba(255,255,255,.025);
-        }
-
-        .message-avatar {
-            flex-shrink: 0;
-            width: 39px;
-            height: 39px;
-            object-fit: cover;
-            border-radius: 50%;
-            background: #25314a;
-        }
-
-        .message-main {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .message-heading {
-            display: flex;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 5px;
-        }
-
-        .message-author {
-            color: #e5eaff;
-            font-size: .9rem;
+        .server-title {
+            padding: 20px 16px;
+            font-size: 17px;
             font-weight: 700;
+            border-bottom: 1px solid var(--border);
         }
-
-        .message-author.bot {
-            color: #a5b4fc;
+        .sidebar-heading {
+            padding: 19px 14px 7px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-
-        .bot-badge {
-            padding: 2px 5px;
-            border-radius: 4px;
-            color: white;
-            background: #5865f2;
-            font-size: .63rem;
-            font-weight: 800;
+        #channelList { flex: 1; padding: 0 8px 12px; overflow-y: auto; }
+        .category-name {
+            margin: 15px 8px 5px;
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
-
-        .message-time {
-            color: #77859d;
-            font-size: .7rem;
-        }
-
-        .message-content {
-            color: #d3dbea;
-            font-size: .92rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
+        .channel-button {
+            width: 100%;
+            margin: 2px 0;
+            padding: 9px 10px;
+            border: 0;
+            border-radius: 5px;
+            background: transparent;
+            color: var(--muted);
+            text-align: left;
             overflow-wrap: anywhere;
         }
-
-        .message-attachments {
+        .channel-button:hover, .channel-button.active {
+            background: #404249;
+            color: #fff;
+        }
+        .sidebar-bottom {
+            padding: 12px;
+            color: var(--muted);
+            background: #232428;
+            font-size: 12px;
+        }
+        .chat { display: flex; flex: 1; min-width: 0; flex-direction: column; background: var(--chat); }
+        .topbar {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .attachment {
-            display: inline-block;
-            max-width: 100%;
-            padding: 8px 10px;
-            color: #bfcaff;
-            background: rgba(88,101,242,.1);
-            border: 1px solid rgba(129,140,248,.25);
-            border-radius: 8px;
-            font-size: .8rem;
-            text-decoration: none;
-            overflow-wrap: anywhere;
-        }
-
-        .attachment:hover {
-            background: rgba(88,101,242,.2);
-        }
-
-        /* ÉTATS DE CHARGEMENT ET D'ERREUR */
-
-        .chat-state {
-            display: grid;
-            place-content: center;
-            gap: 11px;
-            min-height: 220px;
-            padding: 24px;
-            text-align: center;
-            color: var(--dc-muted);
-            line-height: 1.6;
-        }
-
-        .chat-state strong {
-            color: #e6edff;
-        }
-
-        .state-icon {
-            font-size: 2rem;
-        }
-
-        .chat-state.error {
-            color: #fca5a5;
-        }
-
-        .chat-state .chat-button {
-            justify-self: center;
-        }
-
-        .mobile-only {
-            display: none;
-        }
-
-        .chat-footer {
-            display: flex;
+            min-height: 62px;
             align-items: center;
-            gap: 9px;
-            padding: 11px 17px;
-            border-top: 1px solid var(--dc-border);
-            color: #8190a8;
-            font-size: .75rem;
+            gap: 12px;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 2px 5px #0002;
         }
-
-        .footer-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #4ade80;
-            box-shadow: 0 0 8px rgba(74,222,128,.5);
+        .topbar h1 { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
+        .hash { color: var(--muted); font-size: 23px; }
+        .menu-button {
+            display: none;
+            border: 0;
+            border-radius: 5px;
+            padding: 8px 11px;
+            color: white;
+            background: #404249;
         }
-
-        [hidden] {
-            display: none !important;
+        .messages { flex: 1; padding: 18px 22px; overflow-y: auto; }
+        .state-message { padding: 28px 12px; color: var(--muted); text-align: center; line-height: 1.6; }
+        .message { display: flex; gap: 12px; padding: 9px 0; }
+        .message:hover { background: #0000000a; }
+        .avatar { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; object-fit: cover; background: #404249; }
+        .message-main { flex: 1; min-width: 0; }
+        .message-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 5px; }
+        .author { font-size: 14px; font-weight: 700; }
+        .bot-tag { color: #c9cdfb; background: #5865f244; padding: 2px 4px; border-radius: 3px; font-size: 10px; text-transform: uppercase; }
+        .time { color: var(--muted); font-size: 11px; }
+        .message-content { font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; white-space: normal; }
+        .mention { padding: 1px 3px; border-radius: 3px; color: #c9cdfb; background: #5865f244; font-weight: 600; }
+        .attachment { display: inline-block; margin-top: 6px; color: #00a8fc; overflow-wrap: anywhere; }
+        .composer-wrap { position: relative; padding: 0 18px 17px; }
+        .composer { display: flex; align-items: flex-end; gap: 10px; padding: 10px; border-radius: 9px; background: var(--field); }
+        #messageInput {
+            flex: 1;
+            width: 100%;
+            min-height: 40px;
+            max-height: 180px;
+            resize: vertical;
+            padding: 10px 4px;
+            border: 0;
+            outline: none;
+            color: white;
+            background: transparent;
+            line-height: 1.45;
         }
-
-        @media (max-width: 850px) {
-            .chat-page {
-                width: 96%;
-                padding-top: 82px;
-            }
-
-            .chat-layout {
-                position: relative;
-                display: block;
-                height: calc(100dvh - 190px);
-                min-height: 420px;
-            }
-
-            .channel-sidebar {
-                display: none;
-                position: absolute;
-                z-index: 5;
+        #sendButton { min-height: 40px; padding: 10px 15px; border: 0; border-radius: 6px; color: white; background: var(--accent); font-weight: 700; }
+        #sendButton:disabled { cursor: wait; opacity: .55; }
+        .hint { margin: 8px 2px 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+        #status { min-height: 18px; padding: 0 18px 8px; color: var(--muted); font-size: 12px; }
+        #status.error { color: #ff7777; }
+        #status.success { color: #57f287; }
+        #mentionSuggestions {
+            position: absolute;
+            z-index: 5;
+            right: 18px;
+            bottom: 100%;
+            left: 18px;
+            max-height: 250px;
+            margin-bottom: 6px;
+            overflow-y: auto;
+            border: 1px solid #454750;
+            border-radius: 8px;
+            background: #232428;
+            box-shadow: 0 8px 24px #0005;
+        }
+        .suggestion { display: flex; width: 100%; align-items: center; gap: 10px; padding: 9px 12px; border: 0; color: white; background: transparent; text-align: left; }
+        .suggestion:hover, .suggestion:focus { background: #404249; }
+        .suggestion img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .suggestion small { display: block; margin-top: 3px; color: var(--muted); }
+        @media (max-width: 700px) {
+            .sidebar {
+                position: fixed;
+                z-index: 10;
                 inset: 0 auto 0 0;
-                width: min(320px, 88%);
-                border-right: 1px solid var(--dc-border);
-                box-shadow: 12px 0 35px rgba(0,0,0,.4);
+                width: min(300px, 85vw);
+                min-width: 0;
+                transform: translateX(-105%);
+                transition: transform .2s ease;
+                box-shadow: 6px 0 24px #0006;
             }
-
-            .chat-layout.sidebar-open .channel-sidebar {
-                display: flex;
-            }
-
-            .conversation {
-                height: 100%;
-                width: 100%;
-            }
-
-            .mobile-only {
-                display: inline-flex;
-            }
-
-            .conversation-header {
-                padding: 12px;
-            }
-
-            .messages {
-                padding: 12px 7px 20px;
-            }
-
-            .message {
-                gap: 9px;
-                padding: 10px 5px;
-            }
-
-            .message-avatar {
-                width: 35px;
-                height: 35px;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .chat-page {
-                width: 100%;
-                padding: 72px 0 0;
-            }
-
-            .chat-topbar {
-                gap: 8px;
-                padding: 12px;
-                margin: 0 10px 10px;
-                border-radius: 13px;
-            }
-
-            .chat-brand {
-                gap: 9px;
-            }
-
-            .chat-brand-icon {
-                width: 38px;
-                height: 38px;
-                font-size: 1.2rem;
-                border-radius: 11px;
-            }
-
-            .chat-brand h1 {
-                font-size: .98rem;
-            }
-
-            .chat-brand p {
-                font-size: .72rem;
-            }
-
-            .top-actions {
-                gap: 5px;
-            }
-
-            .top-actions .chat-button {
-                padding: 9px;
-                font-size: .8rem;
-            }
-
-            .chat-layout {
-                height: calc(100dvh - 145px);
-                min-height: 400px;
-                border-left: 0;
-                border-right: 0;
-                border-radius: 0;
-            }
-
-            .conversation-title h2 {
-                font-size: .95rem;
-            }
+            .sidebar.open { transform: translateX(0); }
+            .menu-button { display: inline-block; }
+            .topbar { padding: 10px 12px; }
+            .messages { padding: 13px 11px; }
+            .composer-wrap { padding: 0 9px 10px; }
+            #mentionSuggestions { right: 9px; left: 9px; }
+            #sendButton { padding: 10px 12px; }
         }
     </style>
 </head>
-
 <body>
+<div class="app">
+    <aside class="sidebar" id="sidebar">
+        <div class="server-title">🌐 La Communauté Live</div>
+        <div class="sidebar-heading">Salons accessibles</div>
+        <nav id="channelList"><div class="state-message">Chargement des salons…</div></nav>
+        <div class="sidebar-bottom">Mini-interface Discord du site</div>
+    </aside>
 
-<nav class="navbar" id="navbar"></nav>
-
-<main class="chat-page">
-
-    <header class="chat-topbar">
-        <div class="chat-brand">
-            <div class="chat-brand-icon">💬</div>
-
-            <div>
-                <h1>La Communauté Live</h1>
-                <p>Mini-Discord · Lecture des messages</p>
-            </div>
-        </div>
-
-        <div class="top-actions">
-            <button
-                id="toggleChannels"
-                class="chat-button mobile-only"
-                type="button"
-            >
-                ☰ Salons
-            </button>
-
-            <button
-                id="refreshButton"
-                class="chat-button"
-                type="button"
-                title="Actualiser les messages"
-            >
-                ↻ <span class="refresh-label">Actualiser</span>
-            </button>
-
-            <a class="chat-button" href="dashboard.html">
-                ← <span class="back-label">Retour</span>
-            </a>
-        </div>
-    </header>
-
-    <div id="chatLayout" class="chat-layout">
-
-        <aside class="channel-sidebar">
-            <div class="sidebar-heading">
-                <h2>📚 Salons du serveur</h2>
-                <div id="channelCount" class="sidebar-description">
-                    Chargement des salons...
-                </div>
-            </div>
-
-            <div id="channelList" class="channel-list">
-                <div class="chat-state">
-                    <span class="state-icon">⏳</span>
-                    Chargement des salons...
-                </div>
-            </div>
-        </aside>
-
-        <section class="conversation">
-
-            <header class="conversation-header">
-                <div class="conversation-title">
-                    <h2 id="currentChannel">Choisis un salon</h2>
-                    <p id="conversationSubtitle">
-                        Sélectionne un salon pour lire ses messages.
-                    </p>
-                </div>
-            </header>
-
-            <div id="messages" class="messages">
-                <div class="chat-state">
-                    <span class="state-icon">💬</span>
-                    <strong>Bienvenue dans la mini-interface</strong>
-                    Choisis un salon dans la liste pour afficher ses messages.
-                </div>
-            </div>
-
-            <footer class="chat-footer">
-                <span class="footer-dot"></span>
-                <span id="connectionStatus">
-                    Connecté au serveur du site
-                </span>
-            </footer>
-
+    <main class="chat">
+        <header class="topbar">
+            <button class="menu-button" id="menuButton" type="button" aria-label="Ouvrir les salons">☰</button>
+            <span class="hash">#</span>
+            <h1 id="channelTitle">Choisis un salon</h1>
+        </header>
+        <section class="messages" id="messages" aria-live="polite">
+            <div class="state-message">Sélectionne un salon pour voir les messages.</div>
         </section>
-    </div>
-</main>
-
-<script src="js/navbar.js?v=20261013"></script>
+        <div id="status" role="status"></div>
+        <div class="composer-wrap">
+            <div id="mentionSuggestions" hidden></div>
+            <form class="composer" id="messageForm">
+                <textarea id="messageInput" maxlength="2000" rows="1" disabled placeholder="Sélectionne d'abord un salon…"></textarea>
+                <button id="sendButton" type="submit" disabled>Envoyer</button>
+            </form>
+            <p class="hint">Tape <strong>@</strong> puis un pseudo et sélectionne la personne dans la liste. Les messages envoyés depuis cette page seront publiés par le bot.</p>
+        </div>
+    </main>
+</div>
 
 <script>
-const API_URL =
-    "https://la-communaute-live-bot.de.deplexo.com";
+"use strict";
 
-const DEFAULT_AVATAR =
-    "https://cdn.discordapp.com/embed/avatars/0.png";
+const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+const channelList = document.getElementById("channelList");
+const messagesElement = document.getElementById("messages");
+const channelTitle = document.getElementById("channelTitle");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const messageForm = document.getElementById("messageForm");
+const statusElement = document.getElementById("status");
+const suggestionsElement = document.getElementById("mentionSuggestions");
+const sidebar = document.getElementById("sidebar");
 
-let discordToken = null;
 let channels = [];
 let selectedChannelId = null;
-let refreshTimer = null;
-let isLoadingMessages = false;
-let latestMessageId = null;
-
-
-/* ==================================================
-   SÉCURITÉ ET OUTILS
-================================================== */
+let selectedMentionIds = new Set();
+let suggestionQuery = "";
+let loadingMessages = false;
+let sendingMessage = false;
+let messageRefreshTimer = null;
+let latestSearchNumber = 0;
 
 function escapeHTML(value) {
     return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
 
-function formatDate(value) {
-    const date = new Date(value);
+function safeImageURL(value) {
+    return typeof value === "string" && value.startsWith("https://")
+        ? value
+        : "https://cdn.discordapp.com/embed/avatars/0.png";
+}
 
-    if (Number.isNaN(date.getTime())) {
-        return "";
+function setStatus(message = "", type = "") {
+    statusElement.textContent = message;
+    statusElement.className = type;
+}
+
+async function apiRequest(path, options = {}) {
+    const token = localStorage.getItem("discord_session");
+    if (!token) {
+        throw new Error("Tu n'es pas connecté. Connecte-toi d'abord avec Discord sur le site.");
     }
 
-    return new Intl.DateTimeFormat("fr-FR", {
-        day: "2-digit",
-        month: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit"
-    }).format(date);
-}
-
-function safeHttpUrl(value) {
-    try {
-        const url = new URL(value);
-
-        if (url.protocol === "https:" || url.protocol === "http:") {
-            return url.href;
-        }
-    } catch {
-        // URL invalide : ne pas l'utiliser.
-    }
-
-    return null;
-}
-
-function setState(container, icon, title, description, error = false) {
-    container.innerHTML = `
-        <div class="chat-state ${error ? "error" : ""}">
-            <span class="state-icon">${icon}</span>
-            <strong>${escapeHTML(title)}</strong>
-            <span>${escapeHTML(description)}</span>
-        </div>
-    `;
-}
-
-async function apiRequest(path) {
-    const response = await fetch(`${API_URL}${path}`, {
+    const response = await fetch(API_URL + path, {
+        method: options.method || "GET",
         headers: {
-            Authorization: `Bearer ${discordToken}`
-        }
+            Authorization: `Bearer ${token}`,
+            ...(options.body ? { "Content-Type": "application/json" } : {})
+        },
+        ...(options.body ? { body: JSON.stringify(options.body) } : {})
     });
 
     let data = {};
-
-    try {
-        data = await response.json();
-    } catch {
-        // Une réponse non JSON sera traitée comme une erreur HTTP.
-    }
-
+    try { data = await response.json(); } catch { /* réponse non JSON */ }
     if (!response.ok) {
-        throw new Error(
-            data.error || `Erreur du serveur (${response.status}).`
-        );
+        throw new Error(data.error || `Erreur serveur : ${response.status}`);
     }
-
     return data;
 }
 
-
-/* ==================================================
-   CHARGEMENT DES SALONS
-================================================== */
-
-async function loadChannels() {
-    const channelList = document.getElementById("channelList");
-
-    setState(
-        channelList,
-        "⏳",
-        "Chargement des salons",
-        "Récupération des salons autorisés..."
-    );
-
-    try {
-        const data = await apiRequest("/chat/channels");
-
-        channels = Array.isArray(data.channels)
-            ? data.channels
-            : [];
-
-        document.getElementById("channelCount").textContent =
-            `${channels.length} salon${channels.length > 1 ? "s" : ""} accessible${channels.length > 1 ? "s" : ""}`;
-
-        if (!channels.length) {
-            setState(
-                channelList,
-                "📭",
-                "Aucun salon disponible",
-                "Vérifie les permissions de ton compte et du bot."
-            );
-
-            return;
-        }
-
-        renderChannels();
-
-        // Ouvrir automatiquement le premier salon disponible.
-        await selectChannel(channels[0].id);
-
-    } catch (error) {
-        console.error("Erreur chargement salons :", error);
-
-        setState(
-            channelList,
-            "⚠️",
-            "Impossible de charger les salons",
-            error.message,
-            true
-        );
-
-        document.getElementById("connectionStatus").textContent =
-            "Erreur de connexion";
-    }
-}
-
 function renderChannels() {
-    const channelList = document.getElementById("channelList");
-
-    const categories = new Map();
-
-    for (const channel of channels) {
-        const category =
-            channel.categoryName || "Salons sans catégorie";
-
-        if (!categories.has(category)) {
-            categories.set(category, []);
-        }
-
-        categories.get(category).push(channel);
+    if (!channels.length) {
+        channelList.innerHTML = '<div class="state-message">Aucun salon accessible avec tes permissions.</div>';
+        return;
     }
 
-    channelList.innerHTML = [...categories.entries()]
-        .map(([categoryName, categoryChannels]) => `
-            <div class="channel-category">
-                ${escapeHTML(categoryName)}
-            </div>
+    let lastCategory = null;
+    let html = "";
+    for (const channel of channels) {
+        const category = channel.categoryName || "Salons sans catégorie";
+        if (category !== lastCategory) {
+            html += `<div class="category-name">${escapeHTML(category)}</div>`;
+            lastCategory = category;
+        }
+        html += `<button class="channel-button ${channel.id === selectedChannelId ? "active" : ""}" type="button" data-channel-id="${escapeHTML(channel.id)}"># ${escapeHTML(channel.name)}</button>`;
+    }
 
-            ${categoryChannels.map(channel => `
-                <button
-                    type="button"
-                    class="channel-button ${channel.id === selectedChannelId ? "active" : ""}"
-                    data-channel-id="${escapeHTML(channel.id)}"
-                >
-                    <span class="channel-symbol">
-                        ${channel.type === "annonce" ? "📢" : "#"}
-                    </span>
-
-                    <span class="channel-name">
-                        ${escapeHTML(channel.name)}
-                    </span>
-                </button>
-            `).join("")}
-        `)
-        .join("");
-
+    channelList.innerHTML = html;
     channelList.querySelectorAll("[data-channel-id]").forEach(button => {
         button.addEventListener("click", () => {
-            selectChannel(button.dataset.channelId);
+            const channel = channels.find(item => item.id === button.dataset.channelId);
+            if (channel) selectChannel(channel);
         });
     });
 }
 
+function formatContent(content, mentions) {
+    const users = new Map((mentions?.users || []).map(item => [item.id, item.name]));
+    const roles = new Map((mentions?.roles || []).map(item => [item.id, item.name]));
+    const mentionedChannels = new Map((mentions?.channels || []).map(item => [item.id, item.name]));
+    const pattern = /<@!?(\d{17,20})>|<@&(\d{17,20})>|<#(\d{17,20})>/g;
+    const text = String(content || "");
+    let result = "";
+    let lastIndex = 0;
+    let match;
 
-/* ==================================================
-   SÉLECTION D'UN SALON
-================================================== */
-
-async function selectChannel(channelId) {
-    selectedChannelId = channelId;
-    latestMessageId = null;
-
-    const channel = channels.find(item => item.id === channelId);
-
-    if (!channel) {
-        return;
+    while ((match = pattern.exec(text)) !== null) {
+        result += escapeHTML(text.slice(lastIndex, match.index)).replace(/\n/g, "<br>");
+        let label;
+        if (match[1]) label = "@" + (users.get(match[1]) || "utilisateur");
+        else if (match[2]) label = "@" + (roles.get(match[2]) || "rôle");
+        else label = "#" + (mentionedChannels.get(match[3]) || "salon");
+        result += `<span class="mention">${escapeHTML(label)}</span>`;
+        lastIndex = pattern.lastIndex;
     }
 
-    renderChannels();
-
-    document.getElementById("currentChannel").textContent =
-        `${channel.type === "annonce" ? "📢" : "#"} ${channel.name}`;
-
-    document.getElementById("conversationSubtitle").textContent =
-        `${channel.categoryName || "Salons du serveur"} · Derniers messages`;
-
-    document.getElementById("chatLayout").classList.remove("sidebar-open");
-
-    if (refreshTimer) {
-        clearInterval(refreshTimer);
-    }
-
-    await loadMessages(true);
-
-    // Actualiser les messages toutes les 20 secondes.
-    refreshTimer = setInterval(() => {
-        if (selectedChannelId) {
-            loadMessages(false);
-        }
-    }, 20000);
-}
-
-
-/* ==================================================
-   CHARGEMENT DES MESSAGES
-================================================== */
-
-async function loadMessages(scrollToBottom = false) {
-    if (!selectedChannelId || isLoadingMessages) {
-        return;
-    }
-
-    isLoadingMessages = true;
-
-    const messagesContainer = document.getElementById("messages");
-
-    const wasNearBottom =
-        messagesContainer.scrollHeight -
-        messagesContainer.scrollTop -
-        messagesContainer.clientHeight < 120;
-
-    if (scrollToBottom || !latestMessageId) {
-        setState(
-            messagesContainer,
-            "⏳",
-            "Chargement des messages",
-            "Récupération de la conversation..."
-        );
-    }
-
-    try {
-        const data = await apiRequest(
-            `/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`
-        );
-
-        if (selectedChannelId !== data.channel?.id) {
-            return;
-        }
-
-        const receivedMessages = Array.isArray(data.messages)
-            ? data.messages
-            : [];
-
-        latestMessageId = receivedMessages.length
-            ? receivedMessages[receivedMessages.length - 1].id
-            : null;
-
-        renderMessages(receivedMessages);
-
-        document.getElementById("connectionStatus").textContent =
-            "Messages actualisés automatiquement";
-
-        if (scrollToBottom || wasNearBottom) {
-            messagesContainer.scrollTop =
-                messagesContainer.scrollHeight;
-        }
-
-    } catch (error) {
-        console.error("Erreur chargement messages :", error);
-
-        setState(
-            messagesContainer,
-            "⚠️",
-            "Impossible de charger les messages",
-            error.message,
-            true
-        );
-
-        document.getElementById("connectionStatus").textContent =
-            "Erreur de lecture";
-    } finally {
-        isLoadingMessages = false;
-    }
+    result += escapeHTML(text.slice(lastIndex)).replace(/\n/g, "<br>");
+    return result;
 }
 
 function renderMessages(messages) {
-    const container = document.getElementById("messages");
-
     if (!messages.length) {
-        setState(
-            container,
-            "💭",
-            "Aucun message à afficher",
-            "Ce salon ne contient pas encore de message, ou son historique est vide."
-        );
-
+        messagesElement.innerHTML = '<div class="state-message">Aucun message dans ce salon pour le moment.</div>';
         return;
     }
 
-    container.innerHTML = messages.map(message => {
+    messagesElement.innerHTML = messages.map(message => {
         const author = message.author || {};
-        const avatar = safeHttpUrl(author.avatar) || DEFAULT_AVATAR;
+        const authorName = message.authorName || author.displayName || author.username || message.authorUsername || "Utilisateur";
+        const authorAvatar = message.authorAvatar || author.avatar;
+        const date = new Date(message.timestamp);
+        const time = Number.isNaN(date.getTime()) ? "" : date.toLocaleString("fr-FR", {
+            day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
+        });
 
-        const attachments = Array.isArray(message.attachments)
-            ? message.attachments
-            : [];
+        const attachments = (message.attachments || []).filter(file =>
+            file && typeof file.url === "string" && file.url.startsWith("https://")
+        ).map(file => `<div>📎 <a class="attachment" href="${escapeHTML(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(file.name || "Fichier joint")}</a></div>`).join("");
 
-        const attachmentHTML = attachments.map(attachment => {
-            const url = safeHttpUrl(attachment.url);
-
-            if (!url) {
-                return "";
-            }
-
-            return `
-                <a
-                    class="attachment"
-                    href="${escapeHTML(url)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    📎 ${escapeHTML(attachment.name || "Pièce jointe")}
-                </a>
-            `;
-        }).join("");
-
-        return `
-            <article class="message">
-                <img
-                    class="message-avatar"
-                    src="${escapeHTML(avatar)}"
-                    alt=""
-                    loading="lazy"
-                    onerror="this.onerror=null;this.src='${DEFAULT_AVATAR}'"
-                >
-
-                <div class="message-main">
-                    <div class="message-heading">
-                        <span class="message-author ${author.bot ? "bot" : ""}">
-                            ${escapeHTML(author.displayName || author.username || "Membre")}
-                        </span>
-
-                        ${author.bot ? '<span class="bot-badge">BOT</span>' : ""}
-
-                        <time class="message-time">
-                            ${escapeHTML(formatDate(message.timestamp))}
-                        </time>
-                    </div>
-
-                    ${message.content
-                        ? `<div class="message-content">${escapeHTML(message.content)}</div>`
-                        : attachments.length
-                            ? ""
-                            : '<div class="message-content" style="color:#718096;font-style:italic">Message sans texte</div>'
-                    }
-
-                    ${attachmentHTML
-                        ? `<div class="message-attachments">${attachmentHTML}</div>`
-                        : ""
-                    }
+        return `<article class="message">
+            <img class="avatar" src="${escapeHTML(safeImageURL(authorAvatar))}" alt="" loading="lazy">
+            <div class="message-main">
+                <div class="message-meta">
+                    <span class="author">${escapeHTML(authorName)}</span>
+                    ${author.bot ? '<span class="bot-tag">Bot</span>' : ''}
+                    <time class="time">${escapeHTML(time)}</time>
                 </div>
-            </article>
-        `;
+                <div class="message-content">${formatContent(message.content, message.mentions)}</div>
+                ${attachments}
+            </div>
+        </article>`;
     }).join("");
+
+    messagesElement.scrollTop = messagesElement.scrollHeight;
 }
 
+async function loadMessages({ silent = false } = {}) {
+    if (!selectedChannelId || loadingMessages) return;
+    loadingMessages = true;
+    const channelId = selectedChannelId;
 
-/* ==================================================
-   BOUTONS
-================================================== */
-
-document.getElementById("refreshButton").addEventListener("click", async () => {
-    const button = document.getElementById("refreshButton");
-
-    button.disabled = true;
+    if (!silent) messagesElement.innerHTML = '<div class="state-message">Chargement des messages…</div>';
 
     try {
-        if (!channels.length) {
-            await loadChannels();
-        } else {
-            await loadMessages(false);
+        const data = await apiRequest(`/chat/channels/${encodeURIComponent(channelId)}/messages`);
+        if (selectedChannelId !== channelId) return;
+        renderMessages(Array.isArray(data.messages) ? data.messages : []);
+        if (!silent) setStatus();
+    } catch (error) {
+        if (selectedChannelId === channelId) {
+            messagesElement.innerHTML = `<div class="state-message">${escapeHTML(error.message)}</div>`;
+            setStatus(error.message, "error");
         }
     } finally {
-        button.disabled = false;
+        loadingMessages = false;
     }
-});
+}
 
-document.getElementById("toggleChannels").addEventListener("click", () => {
-    document.getElementById("chatLayout").classList.toggle("sidebar-open");
-});
+function selectChannel(channel) {
+    selectedChannelId = channel.id;
+    channelTitle.textContent = channel.name;
+    messageInput.disabled = false;
+    messageInput.placeholder = `Écrire dans #${channel.name}`;
+    sendButton.disabled = false;
+    selectedMentionIds.clear();
+    suggestionsElement.hidden = true;
+    setStatus();
+    sidebar.classList.remove("open");
+    renderChannels();
+    loadMessages();
+}
 
+async function loadChannels() {
+    try {
+        const data = await apiRequest("/chat/channels");
+        channels = Array.isArray(data.channels) ? data.channels : [];
+        channels.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+        renderChannels();
+        if (channels.length) selectChannel(channels[0]);
+        else messagesElement.innerHTML = '<div class="state-message">Aucun salon disponible.</div>';
+    } catch (error) {
+        channelList.innerHTML = `<div class="state-message">${escapeHTML(error.message)}</div>`;
+        setStatus(error.message, "error");
+    }
+}
 
-/* ==================================================
-   DÉMARRAGE
-================================================== */
+function hideSuggestions() {
+    suggestionsElement.hidden = true;
+    suggestionsElement.innerHTML = "";
+    suggestionQuery = "";
+}
 
-async function initMiniDiscord() {
-    discordToken = localStorage.getItem("discord_session");
+messageInput.addEventListener("input", async () => {
+    // Si l'utilisateur modifie le texte après avoir choisi une mention,
+    // ne garder que les identifiants dont le pseudo reste présent.
+    const content = messageInput.value;
+    for (const userId of [...selectedMentionIds]) {
+        // Le backend vérifiera aussi que le @pseudo figure encore dans le texte.
+        if (!content.includes("@")) selectedMentionIds.delete(userId);
+    }
 
-    if (!discordToken) {
-        document.getElementById("loading")?.remove();
-
-        document.getElementById("channelList").innerHTML = "";
-
-        setState(
-            document.getElementById("channelList"),
-            "🔒",
-            "Connexion nécessaire",
-            "Connecte-toi depuis le site pour accéder aux salons."
-        );
-
-        document.getElementById("messages").innerHTML = `
-            <div class="chat-state">
-                <span class="state-icon">🔐</span>
-                <strong>Tu n'es pas connecté</strong>
-                <span>Retourne au site pour te connecter avec Discord.</span>
-                <a class="chat-button" href="index.html">Se connecter</a>
-            </div>
-        `;
-
-        document.getElementById("connectionStatus").textContent =
-            "Session absente";
-
+    const cursor = messageInput.selectionStart;
+    const beforeCursor = content.slice(0, cursor);
+    const match = beforeCursor.match(/@([a-zA-Z0-9_.]{1,32})$/);
+    if (!match) {
+        hideSuggestions();
         return;
     }
 
-    await loadChannels();
-}
+    const query = match[1];
+    if (query === suggestionQuery) return;
+    suggestionQuery = query;
+    const searchNumber = ++latestSearchNumber;
 
-initMiniDiscord();
+    try {
+        const data = await apiRequest(`/chat/members?q=${encodeURIComponent(query)}`);
+        if (searchNumber !== latestSearchNumber) return;
+        const latestBeforeCursor = messageInput.value.slice(0, messageInput.selectionStart);
+        const latestMatch = latestBeforeCursor.match(/@([a-zA-Z0-9_.]{1,32})$/);
+        if (!latestMatch || latestMatch[1] !== query) return;
+
+        const members = Array.isArray(data.members) ? data.members : [];
+        if (!members.length) {
+            suggestionsElement.innerHTML = '<div class="state-message">Aucun membre trouvé.</div>';
+            suggestionsElement.hidden = false;
+            return;
+        }
+
+        suggestionsElement.innerHTML = members.map(member => `<button class="suggestion" type="button" data-user-id="${escapeHTML(member.id)}" data-username="${escapeHTML(member.username)}">
+            <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
+            <span>${escapeHTML(member.displayName || member.username)}<small>@${escapeHTML(member.username)}</small></span>
+        </button>`).join("");
+        suggestionsElement.hidden = false;
+
+        suggestionsElement.querySelectorAll("[data-user-id]").forEach(button => {
+            button.addEventListener("click", () => {
+                const userId = button.dataset.userId;
+                const username = button.dataset.username;
+                const text = messageInput.value;
+                const currentCursor = messageInput.selectionStart;
+                const prefix = text.slice(0, currentCursor);
+                const atIndex = prefix.lastIndexOf("@");
+                if (atIndex < 0) return;
+
+                const start = text.slice(0, atIndex);
+                const end = text.slice(currentCursor);
+                const inserted = `@${username} `;
+                messageInput.value = start + inserted + end;
+                const newCursor = start.length + inserted.length;
+                messageInput.focus();
+                messageInput.setSelectionRange(newCursor, newCursor);
+                selectedMentionIds.add(userId);
+                hideSuggestions();
+            });
+        });
+    } catch (error) {
+        hideSuggestions();
+        setStatus(error.message, "error");
+    }
+});
+
+messageForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const content = messageInput.value.trim();
+    if (!selectedChannelId || !content || sendingMessage) return;
+
+    sendingMessage = true;
+    sendButton.disabled = true;
+    setStatus("Envoi du message…");
+
+    try {
+        await apiRequest(`/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`, {
+            method: "POST",
+            body: {
+                content,
+                mentionUserIds: [...selectedMentionIds]
+            }
+        });
+        messageInput.value = "";
+        selectedMentionIds.clear();
+        hideSuggestions();
+        setStatus("Message envoyé par le bot.", "success");
+        await loadMessages();
+    } catch (error) {
+        setStatus(error.message, "error");
+    } finally {
+        sendingMessage = false;
+        sendButton.disabled = !selectedChannelId;
+        messageInput.focus();
+    }
+});
+
+// Ctrl+Entrée envoie le message, Entrée seule permet d'aller à la ligne.
+messageInput.addEventListener("keydown", event => {
+    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        messageForm.requestSubmit();
+    }
+    if (event.key === "Escape") hideSuggestions();
+});
+
+document.getElementById("menuButton").addEventListener("click", () => {
+    sidebar.classList.toggle("open");
+});
+
+document.addEventListener("click", event => {
+    if (!suggestionsElement.contains(event.target) && event.target !== messageInput) {
+        hideSuggestions();
+    }
+});
+
+loadChannels();
+messageRefreshTimer = setInterval(() => {
+    if (selectedChannelId) loadMessages({ silent: true });
+}, 20000);
 </script>
 </body>
 </html>
