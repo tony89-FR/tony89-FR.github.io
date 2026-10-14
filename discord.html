@@ -297,7 +297,7 @@
             <div class="top-channel-icon" id="topChannelIcon">#</div>
             <div class="top-copy">
                 <h2 id="channelTitle">Choisis un salon</h2>
-                <p id="channelSubtitle">Historique des conversations · écris dans Discord</p>
+                <p id="channelSubtitle">Historique et messages attribués au membre connecté</p>
             </div>
             <div class="top-actions">
                 <span class="pill"><span class="online-dot"></span> Connecté au serveur</span>
@@ -317,14 +317,18 @@
                 </section>
                 <div id="status" role="status"></div>
                 <div class="composer-area" id="composerArea">
-                    <div class="discord-write-card">
-                        <div>
-                            <strong>Écrire avec ton compte Discord</strong>
-                            <p>Ouvre le salon officiel dans Discord pour écrire sous ton compte personnel. Aucun message ne sera envoyé par le bot depuis cette page.</p>
-                        </div>
-                        <a class="discord-open-button disabled" id="openDiscordText" href="https://discord.com/app" target="_blank" rel="noopener noreferrer">↗ Ouvrir dans Discord</a>
+                    <div class="composer-topline">
+                        <span>Identité indiquée par le bot : <strong id="writeAsName">Compte Discord</strong></span>
+                        <span id="charCount">0 / 1900</span>
                     </div>
-                    <p class="hint">Connecte-toi à ton compte dans Discord Web ou dans l’application Discord. L’historique reste consultable sur le site, mais l’écriture se fait dans Discord.</p>
+                    <div id="mentionSuggestions" hidden></div>
+                    <form class="composer" id="messageForm">
+                        <textarea id="messageInput" maxlength="1900" rows="1" disabled
+                            placeholder="Sélectionne un salon texte pour écrire…"
+                            aria-label="Écrire un message"></textarea>
+                        <button id="sendButton" type="submit" disabled>Envoyer ↗</button>
+                    </form>
+                    <p class="hint">Le bot publie le message et ajoute « ✍️ Message de [ton pseudo] » pour montrer clairement qui l’a rédigé. Tape @ puis quelques lettres pour rechercher une personne et la mentionner.</p>
                 </div>
             </div>
 
@@ -366,12 +370,21 @@ const mobileOverlay = document.getElementById("mobileOverlay");
 const textWorkspace = document.getElementById("textWorkspace");
 const voicePanel = document.getElementById("voicePanel");
 const welcomeBanner = document.getElementById("welcomeBanner");
+const messageForm = document.getElementById("messageForm");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
+const mentionSuggestions = document.getElementById("mentionSuggestions");
+const charCount = document.getElementById("charCount");
+const writeAsName = document.getElementById("writeAsName");
 
 let channels = [];
 let selectedChannelId = null;
 let selectedVoiceChannelId = null;
 let loadingMessages = false;
+let sendingMessage = false;
 let activeMessageRequest = 0;
+let activeMentionQuery = "";
+const selectedMentionIds = new Set();
 
 function escapeHTML(value) {
     return String(value ?? "")
@@ -614,8 +627,11 @@ function selectTextChannel(channel) {
     welcomeBanner.classList.add("hidden");
     channelTitle.textContent = channel.name;
     channelSubtitle.textContent = channel.type === 5
-        ? "Salon d’annonces · écriture dans Discord"
-        : "Conversation du serveur · écriture dans Discord";
+        ? "Salon d’annonces · messages attribués par le bot"
+        : "Conversation du serveur · messages attribués par le bot";
+    messageInput.disabled = false;
+    messageInput.placeholder = `Écrire dans #${channel.name}…`;
+    updateCharacterCount();
     topChannelIcon.textContent = iconForChannel(channel);
     updateDiscordOpenLinks(channel);
     setStatus();
@@ -690,6 +706,7 @@ async function loadConnectedAccount() {
         const avatar = user.avatar;
         document.getElementById("footerUsername").textContent = name;
         document.getElementById("footerCaption").textContent = "Compte connecté";
+        writeAsName.textContent = name;
         if (typeof avatar === "string" && avatar.startsWith("https://")) {
             document.getElementById("footerAvatar").src = avatar;
         }
@@ -742,6 +759,140 @@ async function loadChannels({ silent = false } = {}) {
 }
 
 
+// -----------------------------------------------------
+// ENVOI DES MESSAGES AVEC ATTRIBUTION DU MEMBRE CONNECTÉ
+// -----------------------------------------------------
+
+function updateCharacterCount() {
+    charCount.textContent = `${messageInput.value.length} / 1900`;
+    sendButton.disabled = !selectedChannelId || !messageInput.value.trim() || sendingMessage;
+}
+
+async function searchMentionSuggestions() {
+    const cursor = messageInput.selectionStart;
+    const beforeCursor = messageInput.value.slice(0, cursor);
+    const match = beforeCursor.match(/@([\p{L}\p{N}_.-]{1,32})$/u);
+
+    if (!match) {
+        mentionSuggestions.hidden = true;
+        mentionSuggestions.innerHTML = "";
+        activeMentionQuery = "";
+        return;
+    }
+
+    const query = match[1];
+    if (query === activeMentionQuery) return;
+    activeMentionQuery = query;
+
+    try {
+        const data = await apiRequest(`/chat/members?q=${encodeURIComponent(query)}`);
+        const latestBeforeCursor = messageInput.value.slice(0, messageInput.selectionStart);
+        const latestMatch = latestBeforeCursor.match(/@([\p{L}\p{N}_.-]{1,32})$/u);
+        if (!latestMatch || latestMatch[1] !== query) return;
+
+        const members = Array.isArray(data.members) ? data.members : [];
+        if (!members.length) {
+            mentionSuggestions.hidden = true;
+            mentionSuggestions.innerHTML = "";
+            return;
+        }
+
+        mentionSuggestions.innerHTML = members.map(member => `
+            <button class="suggestion" type="button"
+                data-user-id="${escapeHTML(member.id)}"
+                data-username="${escapeHTML(member.username)}">
+                <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
+                <span>${escapeHTML(member.displayName || member.username)}
+                    <small>@${escapeHTML(member.username)}</small>
+                </span>
+            </button>
+        `).join("");
+        mentionSuggestions.hidden = false;
+
+        mentionSuggestions.querySelectorAll("[data-user-id]").forEach(button => {
+            button.addEventListener("mousedown", event => event.preventDefault());
+            button.addEventListener("click", () => {
+                const start = messageInput.selectionStart;
+                const end = messageInput.selectionEnd;
+                const before = messageInput.value.slice(0, start);
+                const after = messageInput.value.slice(end);
+                const atPosition = before.lastIndexOf("@");
+                if (atPosition < 0) return;
+
+                const replacement = `@${button.dataset.username} `;
+                messageInput.value = before.slice(0, atPosition) + replacement + after;
+                const newCursor = atPosition + replacement.length;
+                messageInput.focus();
+                messageInput.setSelectionRange(newCursor, newCursor);
+                selectedMentionIds.add(button.dataset.userId);
+                mentionSuggestions.hidden = true;
+                activeMentionQuery = "";
+                updateCharacterCount();
+            });
+        });
+    } catch (error) {
+        mentionSuggestions.hidden = true;
+        setStatus(error.message, "error");
+    }
+}
+
+messageInput.addEventListener("input", () => {
+    updateCharacterCount();
+    searchMentionSuggestions();
+});
+
+messageInput.addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        if (!sendButton.disabled) messageForm.requestSubmit();
+    }
+    if (event.key === "Escape") mentionSuggestions.hidden = true;
+});
+
+messageForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const content = messageInput.value.trim();
+    if (!selectedChannelId || !content || sendingMessage) return;
+
+    sendingMessage = true;
+    updateCharacterCount();
+    setStatus("Envoi du message avec ton attribution…");
+
+    try {
+        const data = await apiRequest(
+            `/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`,
+            {
+                method: "POST",
+                body: {
+                    content,
+                    mentionUserIds: [...selectedMentionIds]
+                }
+            }
+        );
+
+        messageInput.value = "";
+        selectedMentionIds.clear();
+        mentionSuggestions.hidden = true;
+        activeMentionQuery = "";
+        setStatus(data.message || "Message envoyé avec attribution.", "success");
+        updateCharacterCount();
+        await loadMessages({ silent: true });
+    } catch (error) {
+        setStatus(error.message, "error");
+    } finally {
+        sendingMessage = false;
+        updateCharacterCount();
+        messageInput.focus();
+    }
+});
+
+// Fermer les suggestions lorsqu'on clique ailleurs.
+document.addEventListener("click", event => {
+    if (event.target !== messageInput && !mentionSuggestions.contains(event.target)) {
+        mentionSuggestions.hidden = true;
+    }
+});
+
 function closeMobileSidebar() {
     sidebar.classList.remove("open");
     mobileOverlay.classList.remove("visible");
@@ -770,6 +921,7 @@ clearSearchButton.addEventListener("click", () => {
 });
 
 updateDiscordOpenLinks(null);
+updateCharacterCount();
 loadConnectedAccount();
 loadChannels();
 setInterval(() => {
