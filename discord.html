@@ -147,6 +147,12 @@
         .pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.035); color: #aeb8cb; font-size: 11px; white-space: nowrap; }
         .refresh-button { width: 35px; height: 35px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.035); color: #b9c5db; }
         .refresh-button:hover { background: rgba(110,139,255,.13); color: white; }
+        .discord-open-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 15px; border: 1px solid rgba(110,139,255,.35); border-radius: 10px; color: #fff; background: linear-gradient(135deg, #748bff, #7b68fa); font-size: 11px; font-weight: 850; text-decoration: none; white-space: nowrap; box-shadow: 0 7px 20px rgba(94,107,245,.20); transition: filter .18s ease, transform .18s ease; }
+        .discord-open-button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .discord-open-button.disabled { pointer-events: none; opacity: .45; }
+        .discord-write-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border: 1px solid rgba(110,139,255,.2); border-radius: 14px; background: linear-gradient(110deg, rgba(76,99,221,.10), rgba(64,196,208,.04)); }
+        .discord-write-card strong { display: block; font-size: 12px; }
+        .discord-write-card p { margin: 5px 0 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
         .content-layout { display: flex; flex: 1; min-height: 0; }
         .main-content { display: flex; flex-direction: column; flex: 1; min-width: 0; }
         .welcome-banner { margin: 18px 22px 0; padding: 15px 18px; border: 1px solid rgba(110,139,255,.17); border-radius: 14px; background: linear-gradient(110deg, rgba(76,99,221,.12), rgba(64,196,208,.04), rgba(182,138,255,.06)); }
@@ -227,6 +233,7 @@
             .top-copy h2 { font-size: 14px; }
             .top-copy p { font-size: 10px; }
             .top-actions { gap: 5px; }
+            .top-actions .discord-open-button { max-width: 112px; padding: 0 8px; white-space: normal; text-align: center; font-size: 9px; }
             .refresh-button { width: 32px; height: 32px; }
             .welcome-banner { margin: 12px 10px 0; padding: 12px; }
             .messages { padding: 12px 12px 18px; }
@@ -290,11 +297,12 @@
             <div class="top-channel-icon" id="topChannelIcon">#</div>
             <div class="top-copy">
                 <h2 id="channelTitle">Choisis un salon</h2>
-                <p id="channelSubtitle">Les conversations de ta communauté</p>
+                <p id="channelSubtitle">Historique des conversations · écris dans Discord</p>
             </div>
             <div class="top-actions">
                 <span class="pill"><span class="online-dot"></span> Connecté au serveur</span>
-                <button class="refresh-button" id="refreshButton" type="button" title="Actualiser les salons et les messages">↻</button>
+                <a class="discord-open-button disabled" id="openDiscordCurrent" href="https://discord.com/app" target="_blank" rel="noopener noreferrer" title="Ouvrir le salon sélectionné dans Discord">↗ Ouvrir dans Discord</a>
+                <button class="refresh-button" id="refreshButton" type="button" title="Actualiser les salons et l’historique">↻</button>
             </div>
         </header>
 
@@ -309,13 +317,14 @@
                 </section>
                 <div id="status" role="status"></div>
                 <div class="composer-area" id="composerArea">
-                    <div id="mentionSuggestions" hidden></div>
-                    <div class="composer-topline"><span>MESSAGE DU SALON</span><span>Entrée : nouvelle ligne · Ctrl + Entrée : envoyer</span></div>
-                    <form class="composer" id="messageForm">
-                        <textarea id="messageInput" maxlength="2000" rows="1" disabled placeholder="Sélectionne d’abord un salon texte…"></textarea>
-                        <button id="sendButton" type="submit" disabled>➤ Envoyer</button>
-                    </form>
-                    <p class="hint">Les messages de cette interface sont publiés par le bot. Les mentions sélectionnées sont converties en mentions Discord.</p>
+                    <div class="discord-write-card">
+                        <div>
+                            <strong>Écrire avec ton compte Discord</strong>
+                            <p>Ouvre le salon officiel dans Discord pour écrire sous ton compte personnel. Aucun message ne sera envoyé par le bot depuis cette page.</p>
+                        </div>
+                        <a class="discord-open-button disabled" id="openDiscordText" href="https://discord.com/app" target="_blank" rel="noopener noreferrer">↗ Ouvrir dans Discord</a>
+                    </div>
+                    <p class="hint">Connecte-toi à ton compte dans Discord Web ou dans l’application Discord. L’historique reste consultable sur le site, mais l’écriture se fait dans Discord.</p>
                 </div>
             </div>
 
@@ -351,11 +360,7 @@ const messagesElement = document.getElementById("messages");
 const channelTitle = document.getElementById("channelTitle");
 const channelSubtitle = document.getElementById("channelSubtitle");
 const topChannelIcon = document.getElementById("topChannelIcon");
-const messageInput = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
-const messageForm = document.getElementById("messageForm");
 const statusElement = document.getElementById("status");
-const suggestionsElement = document.getElementById("mentionSuggestions");
 const sidebar = document.getElementById("sidebar");
 const mobileOverlay = document.getElementById("mobileOverlay");
 const textWorkspace = document.getElementById("textWorkspace");
@@ -365,11 +370,7 @@ const welcomeBanner = document.getElementById("welcomeBanner");
 let channels = [];
 let selectedChannelId = null;
 let selectedVoiceChannelId = null;
-let selectedMentionIds = new Set();
-let suggestionQuery = "";
 let loadingMessages = false;
-let sendingMessage = false;
-let latestSearchNumber = 0;
 let activeMessageRequest = 0;
 
 function escapeHTML(value) {
@@ -419,6 +420,25 @@ async function apiRequest(path, options = {}) {
 
 function isVoiceChannel(channel) {
     return channel.kind === "voice" || [2, 13].includes(Number(channel.type));
+}
+
+function discordChannelURL(channelId) {
+    return `https://discord.com/channels/${GUILD_ID}/${encodeURIComponent(channelId)}`;
+}
+
+function updateDiscordOpenLinks(channel) {
+    const url = channel ? discordChannelURL(channel.id) : "https://discord.com/app";
+    const links = [
+        document.getElementById("openDiscordCurrent"),
+        document.getElementById("openDiscordText")
+    ];
+
+    for (const link of links) {
+        if (!link) continue;
+        link.href = url;
+        link.classList.toggle("disabled", !channel);
+        link.setAttribute("aria-disabled", channel ? "false" : "true");
+    }
 }
 
 function iconForChannel(channel) {
@@ -593,13 +613,11 @@ function selectTextChannel(channel) {
     voicePanel.classList.remove("visible");
     welcomeBanner.classList.add("hidden");
     channelTitle.textContent = channel.name;
-    channelSubtitle.textContent = channel.type === 5 ? "Salon d’annonces" : "Conversation du serveur";
+    channelSubtitle.textContent = channel.type === 5
+        ? "Salon d’annonces · écriture dans Discord"
+        : "Conversation du serveur · écriture dans Discord";
     topChannelIcon.textContent = iconForChannel(channel);
-    messageInput.disabled = false;
-    messageInput.placeholder = `Écrire dans #${channel.name}…`;
-    sendButton.disabled = false;
-    selectedMentionIds.clear();
-    hideSuggestions();
+    updateDiscordOpenLinks(channel);
     setStatus();
     closeMobileSidebar();
     renderChannels();
@@ -613,14 +631,11 @@ function selectVoiceChannel(channel) {
     textWorkspace.classList.add("hidden");
     voicePanel.classList.add("visible");
     channelTitle.textContent = channel.name;
-    channelSubtitle.textContent = Number(channel.type) === 13 ? "Salon de conférence" : "Salon vocal du serveur";
+    channelSubtitle.textContent = Number(channel.type) === 13
+        ? "Salon de conférence · ouverture dans Discord"
+        : "Salon vocal · ouverture dans Discord";
     topChannelIcon.textContent = "♫";
-    messageInput.disabled = true;
-    messageInput.value = "";
-    messageInput.placeholder = "Les messages ne sont pas disponibles dans un salon vocal.";
-    sendButton.disabled = true;
-    selectedMentionIds.clear();
-    hideSuggestions();
+    updateDiscordOpenLinks(channel);
     setStatus();
     renderVoiceChannel(channel);
     closeMobileSidebar();
@@ -639,7 +654,7 @@ function renderVoiceChannel(channel) {
     document.getElementById("voiceLimit").textContent = channel.userLimit
         ? `♧ Limite : ${channel.userLimit} personnes`
         : "♧ Aucune limite indiquée";
-    document.getElementById("openDiscordVoice").href = `https://discord.com/channels/${GUILD_ID}/${encodeURIComponent(channel.id)}`;
+    document.getElementById("openDiscordVoice").href = discordChannelURL(channel.id);
     document.getElementById("voiceUpdated").textContent = `Mis à jour à ${new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`;
 
     const grid = document.getElementById("voiceMembersGrid");
@@ -726,109 +741,6 @@ async function loadChannels({ silent = false } = {}) {
     }
 }
 
-function hideSuggestions() {
-    suggestionsElement.hidden = true;
-    suggestionsElement.innerHTML = "";
-    suggestionQuery = "";
-}
-
-messageInput.addEventListener("input", async () => {
-    const content = messageInput.value;
-    const beforeCursor = content.slice(0, messageInput.selectionStart);
-    const match = beforeCursor.match(/@([a-zA-Z0-9_.]{1,32})$/);
-    if (!match) {
-        hideSuggestions();
-        return;
-    }
-
-    const query = match[1];
-    if (query === suggestionQuery) return;
-    suggestionQuery = query;
-    const searchNumber = ++latestSearchNumber;
-
-    try {
-        const data = await apiRequest(`/chat/members?q=${encodeURIComponent(query)}`);
-        if (searchNumber !== latestSearchNumber) return;
-        const latestPrefix = messageInput.value.slice(0, messageInput.selectionStart);
-        const latestMatch = latestPrefix.match(/@([a-zA-Z0-9_.]{1,32})$/);
-        if (!latestMatch || latestMatch[1] !== query) return;
-
-        const members = Array.isArray(data.members) ? data.members : [];
-        if (!members.length) {
-            suggestionsElement.innerHTML = '<div class="state-message">Aucun membre trouvé.</div>';
-            suggestionsElement.hidden = false;
-            return;
-        }
-
-        suggestionsElement.innerHTML = members.map(member => `
-            <button class="suggestion" type="button" data-user-id="${escapeHTML(member.id)}" data-username="${escapeHTML(member.username)}">
-                <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
-                <span>${escapeHTML(member.displayName || member.username)}<small>@${escapeHTML(member.username)}</small></span>
-            </button>`).join("");
-        suggestionsElement.hidden = false;
-
-        suggestionsElement.querySelectorAll("[data-user-id]").forEach(button => {
-            button.addEventListener("click", () => {
-                const userId = button.dataset.userId;
-                const username = button.dataset.username;
-                const text = messageInput.value;
-                const cursor = messageInput.selectionStart;
-                const prefix = text.slice(0, cursor);
-                const atIndex = prefix.lastIndexOf("@");
-                if (atIndex < 0) return;
-
-                const start = text.slice(0, atIndex);
-                const end = text.slice(cursor);
-                const inserted = `@${username} `;
-                messageInput.value = start + inserted + end;
-                const newCursor = start.length + inserted.length;
-                messageInput.focus();
-                messageInput.setSelectionRange(newCursor, newCursor);
-                selectedMentionIds.add(userId);
-                hideSuggestions();
-            });
-        });
-    } catch (error) {
-        hideSuggestions();
-        setStatus(error.message, "error");
-    }
-});
-
-messageForm.addEventListener("submit", async event => {
-    event.preventDefault();
-    const content = messageInput.value.trim();
-    if (!selectedChannelId || !content || sendingMessage) return;
-
-    sendingMessage = true;
-    sendButton.disabled = true;
-    setStatus("Envoi du message…");
-
-    try {
-        await apiRequest(`/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`, {
-            method: "POST",
-            body: { content, mentionUserIds: [...selectedMentionIds] }
-        });
-        messageInput.value = "";
-        selectedMentionIds.clear();
-        hideSuggestions();
-        setStatus("Message envoyé par le bot.", "success");
-        await loadMessages();
-    } catch (error) {
-        setStatus(error.message, "error");
-    } finally {
-        sendingMessage = false;
-        sendButton.disabled = !selectedChannelId;
-        messageInput.focus();
-    }
-});
-
-messageInput.addEventListener("keydown", event => {
-    if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
-        event.preventDefault();
-        messageForm.requestSubmit();
-    }
-    if (event.key === "Escape") hideSuggestions();
-});
 
 function closeMobileSidebar() {
     sidebar.classList.remove("open");
@@ -857,10 +769,7 @@ clearSearchButton.addEventListener("click", () => {
     channelSearchInput.focus();
 });
 
-document.addEventListener("click", event => {
-    if (!suggestionsElement.contains(event.target) && event.target !== messageInput) hideSuggestions();
-});
-
+updateDiscordOpenLinks(null);
 loadConnectedAccount();
 loadChannels();
 setInterval(() => {
