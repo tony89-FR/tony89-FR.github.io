@@ -3,200 +3,309 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Discord mobile — La Communauté Live</title>
+    <meta name="theme-color" content="#111318">
+    <title>Discord — La Communauté Live</title>
     <style>
         :root {
             color-scheme: dark;
-            --background: #1e1f22;
-            --sidebar: #2b2d31;
-            --chat: #313338;
-            --field: #383a40;
-            --muted: #b5bac1;
-            --text: #f2f3f5;
-            --accent: #5865f2;
-            --border: #242529;
+            --bg: #0b0d12;
+            --rail: #10131a;
+            --sidebar: #151922;
+            --panel: #191e28;
+            --panel-2: #202633;
+            --panel-3: #252d3c;
+            --text: #f4f7ff;
+            --muted: #9ba6bb;
+            --faint: #65718a;
+            --line: rgba(174, 190, 225, .12);
+            --blue: #6e8bff;
+            --cyan: #51d8e8;
+            --purple: #b58aff;
+            --green: #42d392;
+            --red: #ff7185;
+            --shadow: 0 20px 65px rgba(0,0,0,.28);
         }
         * { box-sizing: border-box; }
+        html, body { width: 100%; height: 100%; }
         body {
             margin: 0;
-            height: 100dvh;
             overflow: hidden;
             color: var(--text);
-            background: var(--background);
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(ellipse at 75% -15%, rgba(85,105,245,.18), transparent 40%),
+                radial-gradient(ellipse at 10% 110%, rgba(40,202,220,.09), transparent 42%),
+                var(--bg);
         }
         button, textarea { font: inherit; }
         button { cursor: pointer; }
-        .app { display: flex; height: 100dvh; width: 100%; }
+        a { color: inherit; }
+        .app { display: flex; height: 100dvh; min-width: 0; }
+
+        /* Petite barre de serveur façon Discord, modernisée */
+        .server-rail {
+            display: flex; flex-direction: column; align-items: center; gap: 13px;
+            width: 76px; flex: 0 0 76px; padding: 18px 0;
+            background: rgba(9,11,16,.92); border-right: 1px solid var(--line);
+        }
+        .server-mark, .rail-button {
+            display: grid; place-items: center; width: 48px; height: 48px;
+            border: 1px solid rgba(255,255,255,.09); border-radius: 17px;
+            color: #fff; background: linear-gradient(145deg, #27324c, #171c29);
+            font-size: 21px; font-weight: 800; box-shadow: 0 7px 20px rgba(0,0,0,.2);
+        }
+        .server-mark { border-radius: 17px; background: linear-gradient(145deg, var(--blue), #7d5cff); }
+        .rail-divider { width: 28px; height: 1px; background: var(--line); }
+        .rail-button { font-size: 18px; background: #181d27; color: var(--muted); transition: .18s ease; }
+        .rail-button:hover { color: #fff; background: #29334b; transform: translateY(-1px); }
+        .rail-spacer { flex: 1; }
+        .online-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 13px #42d39288; }
+
         .sidebar {
-            display: flex;
-            flex-direction: column;
-            width: 275px;
-            min-width: 230px;
-            background: var(--sidebar);
-            border-right: 1px solid #191a1c;
+            display: flex; flex-direction: column; width: 292px; flex: 0 0 292px;
+            min-width: 235px; background: rgba(19,23,32,.95); border-right: 1px solid var(--line);
         }
-        .server-title {
-            padding: 20px 16px;
-            font-size: 17px;
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
+        .server-heading {
+            display: flex; align-items: center; gap: 12px; padding: 19px 17px 17px;
+            border-bottom: 1px solid var(--line);
         }
-        .sidebar-heading {
-            padding: 19px 14px 7px;
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
+        .server-avatar {
+            display: grid; place-items: center; width: 43px; height: 43px; flex: 0 0 43px;
+            border: 1px solid rgba(255,255,255,.18); border-radius: 14px;
+            background: linear-gradient(135deg, #5865f2, #a05bff 62%, #52d9e8);
+            box-shadow: 0 6px 22px rgba(88,101,242,.25); font-weight: 900; font-size: 17px;
         }
-        #channelList { flex: 1; padding: 0 8px 12px; overflow-y: auto; }
-        .category-name {
-            margin: 15px 8px 5px;
-            color: var(--muted);
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
+        .server-heading h1 { margin: 0; font-size: 14px; letter-spacing: -.2px; }
+        .server-heading p { margin: 4px 0 0; font-size: 11px; color: var(--muted); }
+        .server-status { margin-left: auto; align-self: flex-start; }
+        .side-tools { display: flex; gap: 8px; padding: 13px 14px 4px; }
+        .search-box {
+            display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 11px;
+            border: 1px solid var(--line); border-radius: 10px; background: rgba(8,11,18,.55); color: var(--muted); font-size: 12px;
         }
+        .channels-heading { display: flex; justify-content: space-between; padding: 18px 17px 8px; color: var(--faint); font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 1.15px; }
+        .channels-heading span:last-child { color: #8a96ad; }
+        #channelList { overflow-y: auto; flex: 1; padding: 0 9px 16px; scrollbar-width: thin; scrollbar-color: #374057 transparent; }
+        .category { margin-top: 13px; }
+        .category-name { display: flex; align-items: center; gap: 8px; padding: 7px 9px 5px; color: #8792a8; font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+        .category-name::before { content: "⌄"; font-size: 14px; color: #6b7790; }
         .channel-button {
-            width: 100%;
-            margin: 2px 0;
-            padding: 9px 10px;
-            border: 0;
-            border-radius: 5px;
-            background: transparent;
-            color: var(--muted);
-            text-align: left;
-            overflow-wrap: anywhere;
+            display: flex; align-items: center; gap: 10px; width: 100%; min-height: 39px; margin: 3px 0; padding: 8px 10px;
+            border: 1px solid transparent; border-radius: 10px; background: transparent; color: #aeb8cb; text-align: left;
+            transition: background .16s ease, border-color .16s ease, color .16s ease; overflow: hidden;
         }
-        .channel-button:hover, .channel-button.active {
-            background: #404249;
-            color: #fff;
-        }
-        .sidebar-bottom {
-            padding: 12px;
-            color: var(--muted);
-            background: #232428;
-            font-size: 12px;
-        }
-        .chat { display: flex; flex: 1; min-width: 0; flex-direction: column; background: var(--chat); }
+        .channel-button:hover { color: #f5f7ff; background: rgba(255,255,255,.045); }
+        .channel-button.active { color: white; background: linear-gradient(95deg, rgba(102,128,255,.2), rgba(81,216,232,.07)); border-color: rgba(110,139,255,.24); box-shadow: inset 2px 0 var(--blue); }
+        .channel-icon { display: grid; place-items: center; width: 20px; flex: 0 0 20px; color: #7f8ba4; font-size: 17px; }
+        .channel-button.active .channel-icon { color: #aebcff; }
+        .channel-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 650; }
+        .channel-count { min-width: 22px; padding: 3px 5px; text-align: center; border-radius: 6px; color: #aab5cc; background: rgba(255,255,255,.06); font-size: 10px; }
+        .voice-members { margin: -1px 0 7px 28px; padding: 3px 0 3px 9px; border-left: 1px solid rgba(110,139,255,.21); }
+        .voice-member-mini { display: flex; align-items: center; gap: 7px; padding: 5px 2px; color: #99a5bc; font-size: 11px; min-width: 0; }
+        .voice-member-mini img { width: 22px; height: 22px; flex: 0 0 22px; border-radius: 8px; object-fit: cover; }
+        .voice-member-mini .member-name { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+        .voice-indicator { color: var(--green); font-size: 10px; }
+        .sidebar-footer { padding: 12px 14px; display: flex; align-items: center; gap: 10px; border-top: 1px solid var(--line); background: rgba(9,12,18,.45); }
+        .footer-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg,#5865f2,#a05bff); font-weight: 800; font-size: 12px; }
+        .footer-copy { min-width: 0; flex: 1; }
+        .footer-copy strong { display: block; font-size: 11px; }
+        .footer-copy span { color: var(--muted); font-size: 10px; }
+        .footer-state { display: flex; align-items: center; gap: 5px; color: var(--green); font-size: 10px; }
+
+        .workspace { display: flex; flex: 1; min-width: 0; flex-direction: column; }
         .topbar {
-            display: flex;
-            min-height: 62px;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 18px;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 2px 5px #0002;
+            position: relative; display: flex; align-items: center; gap: 13px; min-height: 76px; padding: 15px 23px;
+            border-bottom: 1px solid var(--line); background: rgba(18,22,31,.7); backdrop-filter: blur(20px);
         }
-        .topbar h1 { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
-        .hash { color: var(--muted); font-size: 23px; }
-        .menu-button {
-            display: none;
-            border: 0;
-            border-radius: 5px;
-            padding: 8px 11px;
-            color: white;
-            background: #404249;
-        }
-        .messages { flex: 1; padding: 18px 22px; overflow-y: auto; }
-        .state-message { padding: 28px 12px; color: var(--muted); text-align: center; line-height: 1.6; }
-        .message { display: flex; gap: 12px; padding: 9px 0; }
-        .message:hover { background: #0000000a; }
-        .avatar { width: 40px; height: 40px; flex: 0 0 40px; border-radius: 50%; object-fit: cover; background: #404249; }
-        .message-main { flex: 1; min-width: 0; }
-        .message-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin-bottom: 5px; }
-        .author { font-size: 14px; font-weight: 700; }
-        .bot-tag { color: #c9cdfb; background: #5865f244; padding: 2px 4px; border-radius: 3px; font-size: 10px; text-transform: uppercase; }
-        .time { color: var(--muted); font-size: 11px; }
-        .message-content { font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; white-space: normal; }
-        .mention { padding: 1px 3px; border-radius: 3px; color: #c9cdfb; background: #5865f244; font-weight: 600; }
-        .attachment { display: inline-block; margin-top: 6px; color: #00a8fc; overflow-wrap: anywhere; }
-        .composer-wrap { position: relative; padding: 0 18px 17px; }
-        .composer { display: flex; align-items: flex-end; gap: 10px; padding: 10px; border-radius: 9px; background: var(--field); }
-        #messageInput {
-            flex: 1;
-            width: 100%;
-            min-height: 40px;
-            max-height: 180px;
-            resize: vertical;
-            padding: 10px 4px;
-            border: 0;
-            outline: none;
-            color: white;
-            background: transparent;
-            line-height: 1.45;
-        }
-        #sendButton { min-height: 40px; padding: 10px 15px; border: 0; border-radius: 6px; color: white; background: var(--accent); font-weight: 700; }
-        #sendButton:disabled { cursor: wait; opacity: .55; }
-        .hint { margin: 8px 2px 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-        #status { min-height: 18px; padding: 0 18px 8px; color: var(--muted); font-size: 12px; }
-        #status.error { color: #ff7777; }
-        #status.success { color: #57f287; }
-        #mentionSuggestions {
-            position: absolute;
-            z-index: 5;
-            right: 18px;
-            bottom: 100%;
-            left: 18px;
-            max-height: 250px;
-            margin-bottom: 6px;
-            overflow-y: auto;
-            border: 1px solid #454750;
-            border-radius: 8px;
-            background: #232428;
-            box-shadow: 0 8px 24px #0005;
-        }
-        .suggestion { display: flex; width: 100%; align-items: center; gap: 10px; padding: 9px 12px; border: 0; color: white; background: transparent; text-align: left; }
-        .suggestion:hover, .suggestion:focus { background: #404249; }
-        .suggestion img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+        .menu-button { display: none; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; color: white; background: var(--panel-2); }
+        .top-channel-icon { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgba(110,139,255,.2); border-radius: 13px; background: rgba(110,139,255,.09); color: #aebcff; font-size: 21px; }
+        .top-copy { min-width: 0; }
+        .top-copy h2 { margin: 0; font-size: 16px; letter-spacing: -.25px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .top-copy p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+        .top-actions { display: flex; align-items: center; gap: 9px; margin-left: auto; }
+        .pill { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 9px; background: rgba(255,255,255,.035); color: #aeb8cb; font-size: 11px; white-space: nowrap; }
+        .refresh-button { width: 35px; height: 35px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.035); color: #b9c5db; }
+        .refresh-button:hover { background: rgba(110,139,255,.13); color: white; }
+        .content-layout { display: flex; flex: 1; min-height: 0; }
+        .main-content { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+        .welcome-banner { margin: 18px 22px 0; padding: 15px 18px; border: 1px solid rgba(110,139,255,.17); border-radius: 14px; background: linear-gradient(110deg, rgba(76,99,221,.12), rgba(64,196,208,.04), rgba(182,138,255,.06)); }
+        .welcome-banner strong { display: block; font-size: 12px; }
+        .welcome-banner span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+        .messages { flex: 1; overflow-y: auto; padding: 18px 25px 25px; scrollbar-width: thin; scrollbar-color: #374057 transparent; }
+        .state-message { padding: 30px 14px; color: var(--muted); text-align: center; line-height: 1.7; font-size: 13px; }
+        .message { display: flex; gap: 13px; padding: 11px 9px; margin: 2px -9px; border-radius: 12px; transition: background .16s; }
+        .message:hover { background: rgba(255,255,255,.025); }
+        .avatar { width: 40px; height: 40px; flex: 0 0 40px; border: 1px solid rgba(255,255,255,.07); border-radius: 13px; object-fit: cover; background: #2a3141; }
+        .message-main { min-width: 0; flex: 1; }
+        .message-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+        .author { color: #f0f3ff; font-size: 12px; font-weight: 800; }
+        .bot-tag { padding: 2px 5px; border: 1px solid rgba(110,139,255,.22); border-radius: 5px; background: rgba(110,139,255,.12); color: #c5ceff; font-size: 9px; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; }
+        .time { color: #77839b; font-size: 10px; }
+        .message-content { color: #dce2ef; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; white-space: normal; }
+        .mention { padding: 2px 5px; border: 1px solid rgba(110,139,255,.12); border-radius: 5px; color: #cdd5ff; background: rgba(110,139,255,.13); font-weight: 700; }
+        .attachment { display: inline-block; margin-top: 7px; color: var(--cyan); font-size: 12px; overflow-wrap: anywhere; }
+        .composer-area { position: relative; padding: 0 22px 20px; }
+        .composer-topline { display: flex; justify-content: space-between; align-items: center; margin: 0 3px 8px; color: #7f8aa2; font-size: 10px; }
+        .composer { display: flex; align-items: flex-end; gap: 10px; padding: 10px; border: 1px solid rgba(174,190,225,.14); border-radius: 14px; background: linear-gradient(135deg, rgba(31,37,50,.98), rgba(25,29,40,.98)); box-shadow: var(--shadow); }
+        .composer:focus-within { border-color: rgba(110,139,255,.55); box-shadow: 0 0 0 3px rgba(110,139,255,.08), var(--shadow); }
+        #messageInput { flex: 1; width: 100%; min-height: 42px; max-height: 160px; resize: vertical; padding: 12px 8px; border: 0; outline: none; color: var(--text); background: transparent; font-size: 13px; line-height: 1.5; }
+        #messageInput::placeholder { color: #75819a; }
+        #sendButton { min-height: 41px; padding: 0 17px; border: 0; border-radius: 10px; background: linear-gradient(135deg, #748bff, #7b68fa); color: white; font-size: 12px; font-weight: 800; box-shadow: 0 7px 20px rgba(94,107,245,.24); }
+        #sendButton:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
+        #sendButton:disabled { cursor: not-allowed; opacity: .45; }
+        .hint { margin: 9px 3px 0; color: #78849b; font-size: 10px; line-height: 1.5; }
+        #status { min-height: 17px; padding: 0 25px 6px; color: var(--muted); font-size: 11px; }
+        #status.error { color: var(--red); }
+        #status.success { color: var(--green); }
+        #mentionSuggestions { position: absolute; z-index: 20; right: 22px; bottom: calc(100% - 2px); left: 22px; max-height: 240px; margin-bottom: 8px; overflow-y: auto; border: 1px solid rgba(174,190,225,.2); border-radius: 12px; background: #171c26; box-shadow: 0 20px 50px #0008; }
+        .suggestion { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 13px; border: 0; color: white; background: transparent; text-align: left; }
+        .suggestion:hover, .suggestion:focus { background: rgba(110,139,255,.13); }
+        .suggestion img { width: 32px; height: 32px; border-radius: 10px; object-fit: cover; }
         .suggestion small { display: block; margin-top: 3px; color: var(--muted); }
-        @media (max-width: 700px) {
-            .sidebar {
-                position: fixed;
-                z-index: 10;
-                inset: 0 auto 0 0;
-                width: min(300px, 85vw);
-                min-width: 0;
-                transform: translateX(-105%);
-                transition: transform .2s ease;
-                box-shadow: 6px 0 24px #0006;
-            }
-            .sidebar.open { transform: translateX(0); }
-            .menu-button { display: inline-block; }
-            .topbar { padding: 10px 12px; }
-            .messages { padding: 13px 11px; }
-            .composer-wrap { padding: 0 9px 10px; }
-            #mentionSuggestions { right: 9px; left: 9px; }
-            #sendButton { padding: 10px 12px; }
+
+        /* Détail des salons vocaux et des membres connectés */
+        .voice-panel { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 28px clamp(18px, 4vw, 52px); }
+        .voice-panel.visible { display: flex; }
+        .voice-hero { padding: clamp(20px, 4vw, 36px); border: 1px solid rgba(110,139,255,.22); border-radius: 22px; background: radial-gradient(ellipse at 80% 0%, rgba(181,138,255,.18), transparent 46%), linear-gradient(135deg, rgba(39,47,69,.95), rgba(22,27,39,.95)); box-shadow: var(--shadow); }
+        .voice-big-icon { display: grid; place-items: center; width: 58px; height: 58px; border: 1px solid rgba(81,216,232,.25); border-radius: 18px; background: rgba(81,216,232,.1); color: var(--cyan); font-size: 28px; }
+        .eyebrow { margin-top: 20px; color: var(--cyan); font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.6px; }
+        .voice-hero h2 { margin: 8px 0 9px; font-size: clamp(23px, 3vw, 32px); letter-spacing: -.8px; }
+        .voice-hero p { max-width: 620px; margin: 0; color: #aab6cd; font-size: 12px; line-height: 1.7; }
+        .voice-stats { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 19px; }
+        .voice-open-button { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; padding: 11px 15px; border: 0; border-radius: 10px; background: linear-gradient(135deg, #758cff, #775ef3); color: #fff; font-size: 12px; font-weight: 800; text-decoration: none; }
+        .voice-open-button:hover { filter: brightness(1.08); }
+        .voice-section-title { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 28px 0 13px; }
+        .voice-section-title h3 { margin: 0; font-size: 13px; }
+        .voice-section-title span { color: var(--muted); font-size: 11px; }
+        .voice-members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+        .voice-user-card { display: flex; align-items: center; gap: 11px; min-width: 0; padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: rgba(22,27,38,.68); }
+        .voice-user-card img { width: 43px; height: 43px; flex: 0 0 43px; border: 1px solid rgba(255,255,255,.1); border-radius: 14px; object-fit: cover; }
+        .voice-user-info { flex: 1; min-width: 0; }
+        .voice-user-info strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+        .voice-user-info small { display: block; margin-top: 4px; color: var(--muted); font-size: 10px; }
+        .voice-flags { display: flex; gap: 4px; margin-top: 5px; color: var(--muted); font-size: 11px; }
+        .empty-voice { padding: 24px; border: 1px dashed rgba(174,190,225,.18); border-radius: 14px; color: var(--muted); text-align: center; font-size: 12px; line-height: 1.7; }
+        .voice-explainer { margin-top: 18px; padding: 13px 15px; border: 1px solid rgba(81,216,232,.15); border-radius: 12px; background: rgba(81,216,232,.045); color: #95a5bc; font-size: 11px; line-height: 1.65; }
+
+        .mobile-overlay { display: none; }
+        .hidden { display: none !important; }
+        @media (max-width: 1000px) {
+            .server-rail { width: 58px; flex-basis: 58px; }
+            .server-mark, .rail-button { width: 40px; height: 40px; border-radius: 13px; }
+            .sidebar { width: 260px; flex-basis: 260px; }
+            .pill { display: none; }
         }
+        @media (max-width: 720px) {
+            .server-rail { display: none; }
+            .sidebar { position: fixed; z-index: 30; inset: 0 auto 0 0; width: min(310px, 88vw); min-width: 0; transform: translateX(-105%); transition: transform .22s ease; box-shadow: 15px 0 50px #0009; }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-overlay.visible { display: block; position: fixed; z-index: 25; inset: 0; background: rgba(3,5,10,.68); backdrop-filter: blur(3px); }
+            .menu-button { display: inline-block; }
+            .topbar { min-height: 67px; gap: 9px; padding: 11px 12px; }
+            .top-channel-icon { width: 36px; height: 36px; flex-basis: 36px; }
+            .top-copy h2 { font-size: 14px; }
+            .top-copy p { font-size: 10px; }
+            .top-actions { gap: 5px; }
+            .refresh-button { width: 32px; height: 32px; }
+            .welcome-banner { margin: 12px 10px 0; padding: 12px; }
+            .messages { padding: 12px 12px 18px; }
+            .composer-area { padding: 0 9px 10px; }
+            #mentionSuggestions { right: 9px; left: 9px; }
+            #status { padding-left: 12px; }
+            .voice-panel { padding: 15px 11px; }
+            .voice-hero { padding: 20px; }
+            .voice-members-grid { grid-template-columns: 1fr; }
+            .hint { font-size: 9px; }
+        }
+        @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; } }
     </style>
 </head>
 <body>
 <div class="app">
-    <aside class="sidebar" id="sidebar">
-        <div class="server-title">🌐 La Communauté Live</div>
-        <div class="sidebar-heading">Salons accessibles</div>
-        <nav id="channelList"><div class="state-message">Chargement des salons…</div></nav>
-        <div class="sidebar-bottom">Mini-interface Discord du site</div>
-    </aside>
+    <nav class="server-rail" aria-label="Navigation des serveurs">
+        <div class="server-mark" title="La Communauté Live">LC</div>
+        <div class="rail-divider"></div>
+        <button class="rail-button" type="button" title="Salons">#</button>
+        <button class="rail-button" type="button" title="Vocaux">♫</button>
+        <div class="rail-spacer"></div>
+        <span class="online-dot" title="Interface connectée"></span>
+    </nav>
 
-    <main class="chat">
+    <aside class="sidebar" id="sidebar">
+        <div class="server-heading">
+            <div class="server-avatar">LC</div>
+            <div>
+                <h1>La Communauté Live</h1>
+                <p>Mini-interface communautaire</p>
+            </div>
+            <span class="online-dot server-status" title="Interface active"></span>
+        </div>
+        <div class="side-tools">
+            <div class="search-box"><span>⌕</span><span>Salons du serveur</span></div>
+        </div>
+        <div class="channels-heading"><span>Navigation</span><span>⌄</span></div>
+        <nav id="channelList" aria-label="Salons du serveur">
+            <div class="state-message">Chargement des salons…</div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="footer-avatar">LC</div>
+            <div class="footer-copy"><strong>La Communauté Live</strong><span>Connexion avec Discord</span></div>
+            <div class="footer-state"><span class="online-dot"></span> Actif</div>
+        </div>
+    </aside>
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <main class="workspace">
         <header class="topbar">
             <button class="menu-button" id="menuButton" type="button" aria-label="Ouvrir les salons">☰</button>
-            <span class="hash">#</span>
-            <h1 id="channelTitle">Choisis un salon</h1>
+            <div class="top-channel-icon" id="topChannelIcon">#</div>
+            <div class="top-copy">
+                <h2 id="channelTitle">Choisis un salon</h2>
+                <p id="channelSubtitle">Les conversations de ta communauté</p>
+            </div>
+            <div class="top-actions">
+                <span class="pill"><span class="online-dot"></span> Connecté au serveur</span>
+                <button class="refresh-button" id="refreshButton" type="button" title="Actualiser les salons et les messages">↻</button>
+            </div>
         </header>
-        <section class="messages" id="messages" aria-live="polite">
-            <div class="state-message">Sélectionne un salon pour voir les messages.</div>
-        </section>
-        <div id="status" role="status"></div>
-        <div class="composer-wrap">
-            <div id="mentionSuggestions" hidden></div>
-            <form class="composer" id="messageForm">
-                <textarea id="messageInput" maxlength="2000" rows="1" disabled placeholder="Sélectionne d'abord un salon…"></textarea>
-                <button id="sendButton" type="submit" disabled>Envoyer</button>
-            </form>
-            <p class="hint">Tape <strong>@</strong> puis un pseudo et sélectionne la personne dans la liste. Les messages envoyés depuis cette page seront publiés par le bot.</p>
+
+        <div class="content-layout">
+            <div class="main-content" id="textWorkspace">
+                <div class="welcome-banner" id="welcomeBanner">
+                    <strong>Bienvenue dans les salons de La Communauté Live</strong>
+                    <span>Choisis un salon à gauche. Pour mentionner quelqu’un, tape @ puis sélectionne son nom dans les suggestions.</span>
+                </div>
+                <section class="messages" id="messages" aria-live="polite">
+                    <div class="state-message">Sélectionne un salon pour afficher les messages.</div>
+                </section>
+                <div id="status" role="status"></div>
+                <div class="composer-area" id="composerArea">
+                    <div id="mentionSuggestions" hidden></div>
+                    <div class="composer-topline"><span>MESSAGE DU SALON</span><span>Entrée : nouvelle ligne · Ctrl + Entrée : envoyer</span></div>
+                    <form class="composer" id="messageForm">
+                        <textarea id="messageInput" maxlength="2000" rows="1" disabled placeholder="Sélectionne d’abord un salon texte…"></textarea>
+                        <button id="sendButton" type="submit" disabled>➤ Envoyer</button>
+                    </form>
+                    <p class="hint">Les messages de cette interface sont publiés par le bot. Les mentions sélectionnées sont converties en mentions Discord.</p>
+                </div>
+            </div>
+
+            <section class="voice-panel" id="voicePanel" aria-live="polite">
+                <div class="voice-hero">
+                    <div class="voice-big-icon">♫</div>
+                    <div class="eyebrow">Salon vocal</div>
+                    <h2 id="voiceTitle">Salon vocal</h2>
+                    <p id="voiceDescription">Les membres connectés à ce salon apparaîtront ici.</p>
+                    <div class="voice-stats">
+                        <span class="pill" id="voiceCount">♙ 0 connecté</span>
+                        <span class="pill" id="voiceLimit">∞ Aucune limite indiquée</span>
+                    </div>
+                    <a class="voice-open-button" id="openDiscordVoice" href="https://discord.com/app" target="_blank" rel="noopener noreferrer">↗ Ouvrir Discord pour rejoindre</a>
+                </div>
+                <div class="voice-section-title"><h3>Personnes dans le salon</h3><span id="voiceUpdated">Actualisation automatique</span></div>
+                <div class="voice-members-grid" id="voiceMembersGrid"></div>
+                <div class="voice-explainer">Cette page peut afficher les salons vocaux et les personnes connectées. Pour entendre les autres et parler au micro, ouvre le salon dans l’application ou dans Discord Web à l’aide du bouton ci-dessus.</div>
+            </section>
         </div>
     </main>
 </div>
@@ -205,24 +314,32 @@
 "use strict";
 
 const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+const GUILD_ID = "1447249368783523942";
 const channelList = document.getElementById("channelList");
 const messagesElement = document.getElementById("messages");
 const channelTitle = document.getElementById("channelTitle");
+const channelSubtitle = document.getElementById("channelSubtitle");
+const topChannelIcon = document.getElementById("topChannelIcon");
 const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
 const messageForm = document.getElementById("messageForm");
 const statusElement = document.getElementById("status");
 const suggestionsElement = document.getElementById("mentionSuggestions");
 const sidebar = document.getElementById("sidebar");
+const mobileOverlay = document.getElementById("mobileOverlay");
+const textWorkspace = document.getElementById("textWorkspace");
+const voicePanel = document.getElementById("voicePanel");
+const welcomeBanner = document.getElementById("welcomeBanner");
 
 let channels = [];
 let selectedChannelId = null;
+let selectedVoiceChannelId = null;
 let selectedMentionIds = new Set();
 let suggestionQuery = "";
 let loadingMessages = false;
 let sendingMessage = false;
-let messageRefreshTimer = null;
 let latestSearchNumber = 0;
+let activeMessageRequest = 0;
 
 function escapeHTML(value) {
     return String(value ?? "")
@@ -244,11 +361,15 @@ function setStatus(message = "", type = "") {
     statusElement.className = type;
 }
 
+function apiErrorMessage(status) {
+    if (status === 401) return "Ta session a expiré. Reconnecte-toi au site avec Discord.";
+    if (status === 403) return "Tu n’as pas la permission nécessaire ou le bot n’a pas accès à ce salon.";
+    return `Erreur serveur : ${status}`;
+}
+
 async function apiRequest(path, options = {}) {
     const token = localStorage.getItem("discord_session");
-    if (!token) {
-        throw new Error("Tu n'es pas connecté. Connecte-toi d'abord avec Discord sur le site.");
-    }
+    if (!token) throw new Error("Tu n’es pas connecté. Connecte-toi avec Discord sur le site.");
 
     const response = await fetch(API_URL + path, {
         method: options.method || "GET",
@@ -261,10 +382,17 @@ async function apiRequest(path, options = {}) {
 
     let data = {};
     try { data = await response.json(); } catch { /* réponse non JSON */ }
-    if (!response.ok) {
-        throw new Error(data.error || `Erreur serveur : ${response.status}`);
-    }
+    if (!response.ok) throw new Error(data.error || apiErrorMessage(response.status));
     return data;
+}
+
+function isVoiceChannel(channel) {
+    return channel.kind === "voice" || [2, 13].includes(Number(channel.type));
+}
+
+function iconForChannel(channel) {
+    if (isVoiceChannel(channel)) return "♫";
+    return Number(channel.type) === 5 ? "◈" : "#";
 }
 
 function renderChannels() {
@@ -273,22 +401,51 @@ function renderChannels() {
         return;
     }
 
-    let lastCategory = null;
-    let html = "";
+    const categories = new Map();
     for (const channel of channels) {
-        const category = channel.categoryName || "Salons sans catégorie";
-        if (category !== lastCategory) {
-            html += `<div class="category-name">${escapeHTML(category)}</div>`;
-            lastCategory = category;
+        const categoryName = channel.categoryName || "Salons sans catégorie";
+        if (!categories.has(categoryName)) categories.set(categoryName, []);
+        categories.get(categoryName).push(channel);
+    }
+
+    let html = "";
+    for (const [categoryName, group] of categories) {
+        html += `<section class="category"><div class="category-name">${escapeHTML(categoryName)}</div>`;
+        for (const channel of group) {
+            const voice = isVoiceChannel(channel);
+            const active = voice
+                ? channel.id === selectedVoiceChannelId
+                : channel.id === selectedChannelId;
+            const count = voice && Array.isArray(channel.voiceUsers) ? channel.voiceUsers.length : null;
+            html += `
+                <button class="channel-button ${active ? "active" : ""}" type="button" data-channel-id="${escapeHTML(channel.id)}" aria-label="${voice ? "Ouvrir le salon vocal" : "Ouvrir le salon texte"} ${escapeHTML(channel.name)}">
+                    <span class="channel-icon">${iconForChannel(channel)}</span>
+                    <span class="channel-name">${escapeHTML(channel.name)}</span>
+                    ${voice ? `<span class="channel-count">${count ?? 0}</span>` : ""}
+                </button>`;
+            if (voice && Array.isArray(channel.voiceUsers) && channel.voiceUsers.length) {
+                html += '<div class="voice-members">';
+                html += channel.voiceUsers.map(member => `
+                    <div class="voice-member-mini">
+                        <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
+                        <span class="member-name">${escapeHTML(member.displayName || member.username)}</span>
+                        ${member.streaming ? '<span title="Partage d’écran">▣</span>' : ''}
+                        ${member.selfMute || member.serverMute ? '<span title="Micro coupé">⌁</span>' : ''}
+                        ${member.selfDeaf || member.serverDeaf ? '<span title="Son coupé">◖</span>' : ''}
+                    </div>`).join("");
+                html += '</div>';
+            }
         }
-        html += `<button class="channel-button ${channel.id === selectedChannelId ? "active" : ""}" type="button" data-channel-id="${escapeHTML(channel.id)}"># ${escapeHTML(channel.name)}</button>`;
+        html += '</section>';
     }
 
     channelList.innerHTML = html;
     channelList.querySelectorAll("[data-channel-id]").forEach(button => {
         button.addEventListener("click", () => {
             const channel = channels.find(item => item.id === button.dataset.channelId);
-            if (channel) selectChannel(channel);
+            if (!channel) return;
+            if (isVoiceChannel(channel)) selectVoiceChannel(channel);
+            else selectTextChannel(channel);
         });
     });
 }
@@ -319,7 +476,7 @@ function formatContent(content, mentions) {
 
 function renderMessages(messages) {
     if (!messages.length) {
-        messagesElement.innerHTML = '<div class="state-message">Aucun message dans ce salon pour le moment.</div>';
+        messagesElement.innerHTML = '<div class="state-message">✨ Aucun message dans ce salon pour le moment.</div>';
         return;
     }
 
@@ -327,6 +484,7 @@ function renderMessages(messages) {
         const author = message.author || {};
         const authorName = message.authorName || author.displayName || author.username || message.authorUsername || "Utilisateur";
         const authorAvatar = message.authorAvatar || author.avatar;
+        const authorIsBot = author.bot || false;
         const date = new Date(message.timestamp);
         const time = Number.isNaN(date.getTime()) ? "" : date.toLocaleString("fr-FR", {
             day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
@@ -334,14 +492,14 @@ function renderMessages(messages) {
 
         const attachments = (message.attachments || []).filter(file =>
             file && typeof file.url === "string" && file.url.startsWith("https://")
-        ).map(file => `<div>📎 <a class="attachment" href="${escapeHTML(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(file.name || "Fichier joint")}</a></div>`).join("");
+        ).map(file => `<div>↳ <a class="attachment" href="${escapeHTML(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(file.name || "Fichier joint")}</a></div>`).join("");
 
         return `<article class="message">
             <img class="avatar" src="${escapeHTML(safeImageURL(authorAvatar))}" alt="" loading="lazy">
             <div class="message-main">
                 <div class="message-meta">
                     <span class="author">${escapeHTML(authorName)}</span>
-                    ${author.bot ? '<span class="bot-tag">Bot</span>' : ''}
+                    ${authorIsBot ? '<span class="bot-tag">Bot</span>' : ''}
                     <time class="time">${escapeHTML(time)}</time>
                 </div>
                 <div class="message-content">${formatContent(message.content, message.mentions)}</div>
@@ -349,57 +507,149 @@ function renderMessages(messages) {
             </div>
         </article>`;
     }).join("");
-
     messagesElement.scrollTop = messagesElement.scrollHeight;
 }
 
 async function loadMessages({ silent = false } = {}) {
-    if (!selectedChannelId || loadingMessages) return;
-    loadingMessages = true;
+    if (!selectedChannelId || selectedVoiceChannelId) return;
     const channelId = selectedChannelId;
-
+    const requestNumber = ++activeMessageRequest;
     if (!silent) messagesElement.innerHTML = '<div class="state-message">Chargement des messages…</div>';
 
     try {
         const data = await apiRequest(`/chat/channels/${encodeURIComponent(channelId)}/messages`);
-        if (selectedChannelId !== channelId) return;
+        if (requestNumber !== activeMessageRequest || selectedChannelId !== channelId) return;
         renderMessages(Array.isArray(data.messages) ? data.messages : []);
         if (!silent) setStatus();
     } catch (error) {
-        if (selectedChannelId === channelId) {
+        if (requestNumber === activeMessageRequest && selectedChannelId === channelId) {
             messagesElement.innerHTML = `<div class="state-message">${escapeHTML(error.message)}</div>`;
             setStatus(error.message, "error");
         }
-    } finally {
-        loadingMessages = false;
     }
 }
 
-function selectChannel(channel) {
+function selectTextChannel(channel) {
     selectedChannelId = channel.id;
+    selectedVoiceChannelId = null;
+    activeMessageRequest++;
+    textWorkspace.classList.remove("hidden");
+    voicePanel.classList.remove("visible");
+    welcomeBanner.classList.add("hidden");
     channelTitle.textContent = channel.name;
+    channelSubtitle.textContent = channel.type === 5 ? "Salon d’annonces" : "Conversation du serveur";
+    topChannelIcon.textContent = iconForChannel(channel);
     messageInput.disabled = false;
-    messageInput.placeholder = `Écrire dans #${channel.name}`;
+    messageInput.placeholder = `Écrire dans #${channel.name}…`;
     sendButton.disabled = false;
     selectedMentionIds.clear();
-    suggestionsElement.hidden = true;
+    hideSuggestions();
     setStatus();
-    sidebar.classList.remove("open");
+    closeMobileSidebar();
     renderChannels();
     loadMessages();
 }
 
-async function loadChannels() {
+function selectVoiceChannel(channel) {
+    selectedChannelId = null;
+    selectedVoiceChannelId = channel.id;
+    activeMessageRequest++;
+    textWorkspace.classList.add("hidden");
+    voicePanel.classList.add("visible");
+    channelTitle.textContent = channel.name;
+    channelSubtitle.textContent = Number(channel.type) === 13 ? "Salon de conférence" : "Salon vocal du serveur";
+    topChannelIcon.textContent = "♫";
+    messageInput.disabled = true;
+    messageInput.value = "";
+    messageInput.placeholder = "Les messages ne sont pas disponibles dans un salon vocal.";
+    sendButton.disabled = true;
+    selectedMentionIds.clear();
+    hideSuggestions();
+    setStatus();
+    renderVoiceChannel(channel);
+    closeMobileSidebar();
+    renderChannels();
+}
+
+function renderVoiceChannel(channel) {
+    document.getElementById("voiceTitle").textContent = channel.name;
+    const isStage = Number(channel.type) === 13;
+    document.getElementById("voiceDescription").textContent = isStage
+        ? "Salon de conférence : voici les membres actuellement présents."
+        : "Voici les personnes actuellement connectées à ce salon vocal.";
+
+    const members = Array.isArray(channel.voiceUsers) ? channel.voiceUsers : [];
+    document.getElementById("voiceCount").textContent = `♙ ${members.length} connecté${members.length > 1 ? "s" : ""}`;
+    document.getElementById("voiceLimit").textContent = channel.userLimit
+        ? `♧ Limite : ${channel.userLimit} personnes`
+        : "♧ Aucune limite indiquée";
+    document.getElementById("openDiscordVoice").href = `https://discord.com/channels/${GUILD_ID}/${encodeURIComponent(channel.id)}`;
+    document.getElementById("voiceUpdated").textContent = `Mis à jour à ${new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}`;
+
+    const grid = document.getElementById("voiceMembersGrid");
+    if (!members.length) {
+        grid.innerHTML = '<div class="empty-voice">🎧 Personne n’est actuellement connecté à ce salon.<br>Tu peux ouvrir le salon dans Discord avec le bouton ci-dessus.</div>';
+        return;
+    }
+
+    grid.innerHTML = members.map(member => {
+        const flags = [];
+        if (member.selfMute || member.serverMute) flags.push('<span title="Micro coupé">🎙️×</span>');
+        else flags.push('<span title="Micro actif">🎙️</span>');
+        if (member.selfDeaf || member.serverDeaf) flags.push('<span title="Son coupé">🔇</span>');
+        if (member.video) flags.push('<span title="Caméra active">▣ Caméra</span>');
+        if (member.streaming) flags.push('<span title="Partage d’écran actif">▣ Partage</span>');
+
+        return `<article class="voice-user-card">
+            <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
+            <div class="voice-user-info">
+                <strong>${escapeHTML(member.displayName || member.username || "Membre")}</strong>
+                <small>@${escapeHTML(member.username || "utilisateur")}</small>
+                <div class="voice-flags">${flags.join("")}</div>
+            </div>
+        </article>`;
+    }).join("");
+}
+
+async function loadChannels({ silent = false } = {}) {
     try {
         const data = await apiRequest("/chat/channels");
         channels = Array.isArray(data.channels) ? data.channels : [];
-        channels.sort((a, b) => (a.position ?? 0) - (b.position ?? 0));
+        channels.sort((a, b) => {
+            const categoryPosition = (a.categoryPosition ?? 0) - (b.categoryPosition ?? 0);
+            return categoryPosition || (a.position ?? 0) - (b.position ?? 0);
+        });
         renderChannels();
-        if (channels.length) selectChannel(channels[0]);
-        else messagesElement.innerHTML = '<div class="state-message">Aucun salon disponible.</div>';
+
+        if (selectedVoiceChannelId) {
+            const freshVoiceChannel = channels.find(item => item.id === selectedVoiceChannelId);
+            if (freshVoiceChannel && isVoiceChannel(freshVoiceChannel)) {
+                renderVoiceChannel(freshVoiceChannel);
+            } else {
+                selectedVoiceChannelId = null;
+                textWorkspace.classList.remove("hidden");
+                voicePanel.classList.remove("visible");
+            }
+        } else if (selectedChannelId) {
+            const freshTextChannel = channels.find(item => item.id === selectedChannelId);
+            if (!freshTextChannel || isVoiceChannel(freshTextChannel)) {
+                selectedChannelId = null;
+            }
+        }
+
+        if (!selectedChannelId && !selectedVoiceChannelId) {
+            const firstText = channels.find(channel => !isVoiceChannel(channel));
+            if (firstText) selectTextChannel(firstText);
+            else {
+                messagesElement.innerHTML = '<div class="state-message">Aucun salon texte n’est accessible. Les salons vocaux sont listés à gauche.</div>';
+            }
+        }
+        if (!silent) setStatus();
     } catch (error) {
-        channelList.innerHTML = `<div class="state-message">${escapeHTML(error.message)}</div>`;
-        setStatus(error.message, "error");
+        if (!silent) {
+            channelList.innerHTML = `<div class="state-message">${escapeHTML(error.message)}</div>`;
+            setStatus(error.message, "error");
+        }
     }
 }
 
@@ -410,16 +660,8 @@ function hideSuggestions() {
 }
 
 messageInput.addEventListener("input", async () => {
-    // Si l'utilisateur modifie le texte après avoir choisi une mention,
-    // ne garder que les identifiants dont le pseudo reste présent.
     const content = messageInput.value;
-    for (const userId of [...selectedMentionIds]) {
-        // Le backend vérifiera aussi que le @pseudo figure encore dans le texte.
-        if (!content.includes("@")) selectedMentionIds.delete(userId);
-    }
-
-    const cursor = messageInput.selectionStart;
-    const beforeCursor = content.slice(0, cursor);
+    const beforeCursor = content.slice(0, messageInput.selectionStart);
     const match = beforeCursor.match(/@([a-zA-Z0-9_.]{1,32})$/);
     if (!match) {
         hideSuggestions();
@@ -434,8 +676,8 @@ messageInput.addEventListener("input", async () => {
     try {
         const data = await apiRequest(`/chat/members?q=${encodeURIComponent(query)}`);
         if (searchNumber !== latestSearchNumber) return;
-        const latestBeforeCursor = messageInput.value.slice(0, messageInput.selectionStart);
-        const latestMatch = latestBeforeCursor.match(/@([a-zA-Z0-9_.]{1,32})$/);
+        const latestPrefix = messageInput.value.slice(0, messageInput.selectionStart);
+        const latestMatch = latestPrefix.match(/@([a-zA-Z0-9_.]{1,32})$/);
         if (!latestMatch || latestMatch[1] !== query) return;
 
         const members = Array.isArray(data.members) ? data.members : [];
@@ -445,10 +687,11 @@ messageInput.addEventListener("input", async () => {
             return;
         }
 
-        suggestionsElement.innerHTML = members.map(member => `<button class="suggestion" type="button" data-user-id="${escapeHTML(member.id)}" data-username="${escapeHTML(member.username)}">
-            <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
-            <span>${escapeHTML(member.displayName || member.username)}<small>@${escapeHTML(member.username)}</small></span>
-        </button>`).join("");
+        suggestionsElement.innerHTML = members.map(member => `
+            <button class="suggestion" type="button" data-user-id="${escapeHTML(member.id)}" data-username="${escapeHTML(member.username)}">
+                <img src="${escapeHTML(safeImageURL(member.avatar))}" alt="">
+                <span>${escapeHTML(member.displayName || member.username)}<small>@${escapeHTML(member.username)}</small></span>
+            </button>`).join("");
         suggestionsElement.hidden = false;
 
         suggestionsElement.querySelectorAll("[data-user-id]").forEach(button => {
@@ -456,13 +699,13 @@ messageInput.addEventListener("input", async () => {
                 const userId = button.dataset.userId;
                 const username = button.dataset.username;
                 const text = messageInput.value;
-                const currentCursor = messageInput.selectionStart;
-                const prefix = text.slice(0, currentCursor);
+                const cursor = messageInput.selectionStart;
+                const prefix = text.slice(0, cursor);
                 const atIndex = prefix.lastIndexOf("@");
                 if (atIndex < 0) return;
 
                 const start = text.slice(0, atIndex);
-                const end = text.slice(currentCursor);
+                const end = text.slice(cursor);
                 const inserted = `@${username} `;
                 messageInput.value = start + inserted + end;
                 const newCursor = start.length + inserted.length;
@@ -490,10 +733,7 @@ messageForm.addEventListener("submit", async event => {
     try {
         await apiRequest(`/chat/channels/${encodeURIComponent(selectedChannelId)}/messages`, {
             method: "POST",
-            body: {
-                content,
-                mentionUserIds: [...selectedMentionIds]
-            }
+            body: { content, mentionUserIds: [...selectedMentionIds] }
         });
         messageInput.value = "";
         selectedMentionIds.clear();
@@ -509,7 +749,6 @@ messageForm.addEventListener("submit", async event => {
     }
 });
 
-// Ctrl+Entrée envoie le message, Entrée seule permet d'aller à la ligne.
 messageInput.addEventListener("keydown", event => {
     if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
         event.preventDefault();
@@ -518,18 +757,27 @@ messageInput.addEventListener("keydown", event => {
     if (event.key === "Escape") hideSuggestions();
 });
 
+function closeMobileSidebar() {
+    sidebar.classList.remove("open");
+    mobileOverlay.classList.remove("visible");
+}
+
 document.getElementById("menuButton").addEventListener("click", () => {
     sidebar.classList.toggle("open");
+    mobileOverlay.classList.toggle("visible", sidebar.classList.contains("open"));
 });
-
+mobileOverlay.addEventListener("click", closeMobileSidebar);
+document.getElementById("refreshButton").addEventListener("click", async () => {
+    await loadChannels();
+    if (selectedChannelId) await loadMessages({ silent: true });
+});
 document.addEventListener("click", event => {
-    if (!suggestionsElement.contains(event.target) && event.target !== messageInput) {
-        hideSuggestions();
-    }
+    if (!suggestionsElement.contains(event.target) && event.target !== messageInput) hideSuggestions();
 });
 
 loadChannels();
-messageRefreshTimer = setInterval(() => {
+setInterval(() => {
+    loadChannels({ silent: true });
     if (selectedChannelId) loadMessages({ silent: true });
 }, 20000);
 </script>
