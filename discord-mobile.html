@@ -80,9 +80,30 @@
         .server-status { margin-left: auto; align-self: flex-start; }
         .side-tools { display: flex; gap: 8px; padding: 13px 14px 4px; }
         .search-box {
-            display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 11px;
+            display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 10px;
             border: 1px solid var(--line); border-radius: 10px; background: rgba(8,11,18,.55); color: var(--muted); font-size: 12px;
+            transition: border-color .18s ease, box-shadow .18s ease;
         }
+        .search-box:focus-within { border-color: rgba(110,139,255,.65); box-shadow: 0 0 0 3px rgba(110,139,255,.10); }
+        .search-box input {
+            min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: var(--text); font-size: 12px;
+        }
+        .search-box input::placeholder { color: #77839b; }
+        .search-clear {
+            display: none; flex: 0 0 auto; width: 23px; height: 23px; padding: 0; border: 0; border-radius: 7px;
+            color: var(--muted); background: rgba(255,255,255,.06); font-size: 16px; line-height: 1;
+        }
+        .search-clear.visible { display: grid; place-items: center; }
+        .dashboard-link {
+            display: flex; align-items: center; gap: 10px; margin: 8px 12px 10px; padding: 11px 12px;
+            border: 1px solid rgba(110,139,255,.22); border-radius: 11px;
+            color: #dce4ff; text-decoration: none; font-size: 12px; font-weight: 750;
+            background: linear-gradient(100deg, rgba(110,139,255,.13), rgba(81,216,232,.045));
+            transition: border-color .18s ease, transform .18s ease, background .18s ease;
+        }
+        .dashboard-link:hover { border-color: rgba(110,139,255,.6); transform: translateY(-1px); background: rgba(110,139,255,.13); }
+        .dashboard-link .back-arrow { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 8px; background: rgba(110,139,255,.2); font-size: 16px; }
+        .footer-avatar { object-fit: cover; }
         .channels-heading { display: flex; justify-content: space-between; padding: 18px 17px 8px; color: var(--faint); font-weight: 800; font-size: 10px; text-transform: uppercase; letter-spacing: 1.15px; }
         .channels-heading span:last-child { color: #8a96ad; }
         #channelList { overflow-y: auto; flex: 1; padding: 0 9px 16px; scrollbar-width: thin; scrollbar-color: #374057 transparent; }
@@ -241,15 +262,23 @@
             <span class="online-dot server-status" title="Interface active"></span>
         </div>
         <div class="side-tools">
-            <div class="search-box"><span>⌕</span><span>Salons du serveur</span></div>
+            <label class="search-box" for="channelSearch">
+                <span aria-hidden="true">⌕</span>
+                <input id="channelSearch" type="search" autocomplete="off" placeholder="Rechercher un salon…" aria-label="Rechercher un salon par nom ou catégorie">
+                <button id="clearSearchButton" class="search-clear" type="button" aria-label="Effacer la recherche" title="Effacer">×</button>
+            </label>
         </div>
         <div class="channels-heading"><span>Navigation</span><span>⌄</span></div>
         <nav id="channelList" aria-label="Salons du serveur">
             <div class="state-message">Chargement des salons…</div>
         </nav>
+        <a class="dashboard-link" href="dashboard.html" title="Retourner au tableau de bord">
+            <span class="back-arrow" aria-hidden="true">↩</span>
+            <span>Retour au dashboard</span>
+        </a>
         <div class="sidebar-footer">
-            <div class="footer-avatar">LC</div>
-            <div class="footer-copy"><strong>La Communauté Live</strong><span>Connexion avec Discord</span></div>
+            <img class="footer-avatar" id="footerAvatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar du compte connecté">
+            <div class="footer-copy"><strong id="footerUsername">Compte Discord</strong><span id="footerCaption">Connecté au serveur</span></div>
             <div class="footer-state"><span class="online-dot"></span> Actif</div>
         </div>
     </aside>
@@ -300,11 +329,11 @@
                         <span class="pill" id="voiceCount">♙ 0 connecté</span>
                         <span class="pill" id="voiceLimit">∞ Aucune limite indiquée</span>
                     </div>
-                    <a class="voice-open-button" id="openDiscordVoice" href="https://discord.com/app" target="_blank" rel="noopener noreferrer">↗ Ouvrir Discord pour rejoindre</a>
+                    <a class="voice-open-button" id="openDiscordVoice" href="https://discord.com/app" target="_blank" rel="noopener noreferrer">↗ Rejoindre dans Discord</a>
                 </div>
                 <div class="voice-section-title"><h3>Personnes dans le salon</h3><span id="voiceUpdated">Actualisation automatique</span></div>
                 <div class="voice-members-grid" id="voiceMembersGrid"></div>
-                <div class="voice-explainer">Cette page peut afficher les salons vocaux et les personnes connectées. Pour entendre les autres et parler au micro, ouvre le salon dans l’application ou dans Discord Web à l’aide du bouton ci-dessus.</div>
+                <div class="voice-explainer">Tu peux voir ici les salons vocaux et les personnes connectées. Pour rejoindre réellement l’appel et utiliser ton micro, clique sur « Rejoindre dans Discord » : le salon s’ouvrira dans Discord Web ou dans l’application. Une page web externe ne peut pas connecter directement ton compte Discord à un vocal sans accès spécial accordé par Discord.</div>
             </section>
         </div>
     </main>
@@ -316,6 +345,8 @@
 const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
 const GUILD_ID = "1447249368783523942";
 const channelList = document.getElementById("channelList");
+const channelSearchInput = document.getElementById("channelSearch");
+const clearSearchButton = document.getElementById("clearSearchButton");
 const messagesElement = document.getElementById("messages");
 const channelTitle = document.getElementById("channelTitle");
 const channelSubtitle = document.getElementById("channelSubtitle");
@@ -395,14 +426,39 @@ function iconForChannel(channel) {
     return Number(channel.type) === 5 ? "◈" : "#";
 }
 
+function normalizeSearchText(value) {
+    return String(value ?? "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLocaleLowerCase("fr");
+}
+
 function renderChannels() {
     if (!channels.length) {
         channelList.innerHTML = '<div class="state-message">Aucun salon accessible avec tes permissions.</div>';
         return;
     }
 
+    const query = normalizeSearchText(channelSearchInput?.value || "").trim();
+    const filteredChannels = query
+        ? channels.filter(channel => {
+            const searchable = [
+                channel.name,
+                channel.categoryName,
+                isVoiceChannel(channel) ? "vocal vocal voice audio" : "texte annonce",
+                Number(channel.type) === 13 ? "conference stage" : ""
+            ].join(" ");
+            return normalizeSearchText(searchable).includes(query);
+        })
+        : channels;
+
+    if (!filteredChannels.length) {
+        channelList.innerHTML = `<div class="state-message">Aucun salon ne correspond à « ${escapeHTML(channelSearchInput.value.trim())} ».<br><span style="font-size:11px;color:var(--faint)">Essaie un autre nom ou efface la recherche.</span></div>`;
+        return;
+    }
+
     const categories = new Map();
-    for (const channel of channels) {
+    for (const channel of filteredChannels) {
         const categoryName = channel.categoryName || "Salons sans catégorie";
         if (!categories.has(categoryName)) categories.set(categoryName, []);
         categories.get(categoryName).push(channel);
@@ -611,6 +667,23 @@ function renderVoiceChannel(channel) {
     }).join("");
 }
 
+async function loadConnectedAccount() {
+    try {
+        const data = await apiRequest("/auth/permissions");
+        const user = data.user || {};
+        const name = user.globalName || user.global_name || user.username || "Compte Discord";
+        const avatar = user.avatar;
+        document.getElementById("footerUsername").textContent = name;
+        document.getElementById("footerCaption").textContent = "Compte connecté";
+        if (typeof avatar === "string" && avatar.startsWith("https://")) {
+            document.getElementById("footerAvatar").src = avatar;
+        }
+    } catch (error) {
+        document.getElementById("footerUsername").textContent = "Non connecté";
+        document.getElementById("footerCaption").textContent = "Connecte-toi au site";
+    }
+}
+
 async function loadChannels({ silent = false } = {}) {
     try {
         const data = await apiRequest("/chat/channels");
@@ -771,10 +844,24 @@ document.getElementById("refreshButton").addEventListener("click", async () => {
     await loadChannels();
     if (selectedChannelId) await loadMessages({ silent: true });
 });
+
+channelSearchInput.addEventListener("input", () => {
+    clearSearchButton.classList.toggle("visible", Boolean(channelSearchInput.value));
+    renderChannels();
+});
+
+clearSearchButton.addEventListener("click", () => {
+    channelSearchInput.value = "";
+    clearSearchButton.classList.remove("visible");
+    renderChannels();
+    channelSearchInput.focus();
+});
+
 document.addEventListener("click", event => {
     if (!suggestionsElement.contains(event.target) && event.target !== messageInput) hideSuggestions();
 });
 
+loadConnectedAccount();
 loadChannels();
 setInterval(() => {
     loadChannels({ silent: true });
