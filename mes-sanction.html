@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes sanctions - La communauté live</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=20261015-sanctions">
+    <style>
+        .sanctions-page{min-height:100vh;padding:110px 0 80px}
+        .sanctions-section{width:min(1150px,94%);margin:auto}
+        .page-header{text-align:center;margin:0 auto 32px;max-width:800px}
+        .page-kicker{color:#00d9ff;font-weight:700;letter-spacing:2px;font-size:.8rem}
+        .page-header h1{font-size:clamp(2rem,5vw,3.4rem);margin:10px 0}
+        .page-header p{opacity:.75;line-height:1.6}
+        .profile-line{display:flex;align-items:center;gap:14px;margin:0 auto 24px;padding:16px 20px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.045)}
+        .profile-avatar{width:54px;height:54px;border-radius:50%;object-fit:cover;flex-shrink:0}
+        .profile-name{font-weight:700;overflow-wrap:anywhere}
+        .profile-note{font-size:.82rem;opacity:.65;margin-top:4px;overflow-wrap:anywhere}
+        .toolbar{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+        .control,.refresh-button{box-sizing:border-box;padding:12px 14px;border-radius:11px;border:1px solid rgba(255,255,255,.13);background:#101626;color:#fff;font:inherit}
+        .control{flex:1;min-width:0}
+        .control option{background:#111629;color:#fff}
+        .refresh-button{cursor:pointer;background:rgba(0,217,255,.1)}
+        .refresh-button:hover{background:rgba(0,217,255,.2)}
+        .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 24px}
+        .stat{padding:16px 18px;border:1px solid rgba(255,255,255,.09);border-radius:14px;background:rgba(255,255,255,.045)}
+        .stat-label{display:block;color:rgba(255,255,255,.62);font-size:.85rem}
+        .stat-value{display:block;font-size:1.7rem;font-weight:700;margin-top:4px}
+        .results-count{opacity:.7;font-size:.9rem;margin:0 0 12px}
+        .sanctions-list{display:flex;flex-direction:column;gap:12px}
+        .sanction-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.9fr) minmax(220px,1.2fr);align-items:start;gap:18px;padding:18px 20px;border-radius:15px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.05);min-width:0}
+        .sanction-title{font-weight:700;margin:8px 0}
+        .sanction-meta{font-size:.83rem;line-height:1.6;color:rgba(255,255,255,.65);overflow-wrap:anywhere;margin:3px 0}
+        .sanction-reason{font-size:.9rem;line-height:1.6;overflow-wrap:anywhere}
+        .status{display:inline-block;font-size:.74rem;border-radius:999px;padding:4px 9px;background:rgba(255,255,255,.09)}
+        .status.active{color:#fda4af;background:rgba(225,29,72,.15)}
+        .status.expired,.status.revoked,.status.completed{color:#86efac;background:rgba(22,163,74,.13)}
+        .status.failed{color:#fca5a5;background:rgba(220,38,38,.15)}
+        .message{padding:24px;text-align:center;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);border-radius:14px;line-height:1.6}
+        .message.error{border-color:rgba(255,70,90,.3);color:#ffabb5}
+        [hidden]{display:none!important}
+        @media(max-width:800px){.sanction-card{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sanction-card .reason-block{grid-column:1 / -1}}
+        @media(max-width:600px){.sanctions-page{padding-top:88px}.toolbar{align-items:stretch;flex-direction:column}.stats{gap:8px}.stat{padding:12px}.stat-value{font-size:1.4rem}.sanction-card{grid-template-columns:minmax(0,1fr);gap:10px;padding:15px}.sanction-card .reason-block{grid-column:1}.profile-line{align-items:flex-start;padding:14px}.page-header{margin-bottom:24px}}
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <nav class="navbar" id="navbar"></nav>
+    <main class="sanctions-page">
+        <section class="sanctions-section">
+            <header class="page-header">
+                <p class="page-kicker">📋 ESPACE PERSONNEL</p>
+                <h1>Mes sanctions</h1>
+                <p>Consulte uniquement l'historique des sanctions associées à ton compte Discord.</p>
+            </header>
+            <div id="loading" class="message">⏳ Chargement de tes sanctions...</div>
+            <div id="error" class="message error" hidden></div>
+            <section id="content" hidden>
+                <div class="profile-line">
+                    <img id="avatar" class="profile-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Avatar Discord">
+                    <div><div id="username" class="profile-name">Mon compte Discord</div><div id="userId" class="profile-note"></div></div>
+                </div>
+                <div class="toolbar">
+                    <input id="search" class="control" type="search" placeholder="🔎 Rechercher dans mes sanctions..." aria-label="Rechercher mes sanctions">
+                    <select id="statusFilter" class="control" aria-label="Filtrer par statut">
+                        <option value="">Tous les statuts</option>
+                        <option value="active">Actives</option>
+                        <option value="expired">Expirées</option>
+                        <option value="revoked">Levées</option>
+                        <option value="completed">Effectuées</option>
+                        <option value="superseded">Remplacées</option>
+                        <option value="failed">Échecs</option>
+                        <option value="pending">En cours</option>
+                    </select>
+                    <button id="refresh" class="refresh-button" type="button">🔄 Actualiser</button>
+                </div>
+                <div class="stats">
+                    <div class="stat"><span class="stat-label">Total</span><span id="totalCount" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">Actives</span><span id="activeCount" class="stat-value">0</span></div>
+                    <div class="stat"><span class="stat-label">Terminées ou levées</span><span id="endedCount" class="stat-value">0</span></div>
+                </div>
+                <p id="resultsCount" class="results-count"></p>
+                <div id="sanctionsList" class="sanctions-list"></div>
+            </section>
+        </section>
+    </main>
+    <script src="js/navbar.js?v=20261015"></script>
+    <script>
+        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+        const loading = document.getElementById("loading");
+        const errorBox = document.getElementById("error");
+        const content = document.getElementById("content");
+        const list = document.getElementById("sanctionsList");
+        const searchInput = document.getElementById("search");
+        const statusFilter = document.getElementById("statusFilter");
+        let permissions = [];
+        let sanctions = [];
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+        }
+        async function apiRequest(path) {
+            const token = localStorage.getItem("discord_session");
+            if (!token) throw new Error("Tu n'es pas connecté. Connecte-toi avec Discord.");
+            const response = await fetch(`${API_URL}${path}`, {headers:{Authorization:`Bearer ${token}`}});
+            let data = {};
+            try { data = await response.json(); } catch {}
+            if (!response.ok) throw new Error(data.error || `Erreur serveur : ${response.status}`);
+            return data;
+        }
+        async function loadMine() {
+            const auth = await apiRequest("/auth/permissions");
+            if (!auth.connected || !Array.isArray(auth.permissions) || !auth.user) throw new Error("Impossible de récupérer ton compte Discord.");
+            permissions = auth.permissions;
+            if (!permissions.includes("view_own_sanctions")) throw new Error("Ton compte n'a pas la permission d'accéder à la page Mes sanctions.");
+            document.getElementById("username").textContent = auth.user.globalName || auth.user.username || "Mon compte Discord";
+            document.getElementById("userId").textContent = `ID Discord : ${auth.user.id || "inconnu"}`;
+            const avatar = document.getElementById("avatar");
+            avatar.onerror = () => { avatar.onerror = null; avatar.src = "https://cdn.discordapp.com/embed/avatars/0.png"; };
+            if (auth.user.avatar) avatar.src = auth.user.avatar;
+            const data = await apiRequest("/moderation/sanctions/mine");
+            sanctions = Array.isArray(data.sanctions) ? data.sanctions : [];
+            renderSanctions();
+            content.hidden = false;
+        }
+        function dateLabel(value) {
+            if (!value) return "—";
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("fr-FR");
+        }
+        function durationLabel(minutes) {
+            if (minutes == null) return "Non définie / permanente";
+            if (minutes < 60) return `${minutes} min`;
+            if (minutes % 1440 === 0) return `${minutes / 1440} jour(s)`;
+            if (minutes % 60 === 0) return `${minutes / 60} heure(s)`;
+            return `${minutes} min`;
+        }
+        function typeLabel(item) {
+            if (item.type === "mute") return item.mode === "voice" ? "Mute vocal" : item.mode === "chat" ? "Mute chat" : "Mute vocal + chat";
+            if (item.type === "ban_temp") return "Ban temporaire";
+            if (item.type === "ban_perm") return "Ban définitif";
+            if (item.type === "kick") return "Expulsion";
+            return item.type || "Sanction";
+        }
+        function statusLabel(status) {
+            return ({active:"Active", expired:"Expirée", revoked:"Levée manuellement", completed:"Effectuée", superseded:"Remplacée", failed:"Échec", pending:"En cours", revoking:"Levée en cours"})[status] || status || "Inconnu";
+        }
+        function renderSanctions() {
+            const q = searchInput.value.trim().toLowerCase();
+            const wantedStatus = statusFilter.value;
+            const filtered = sanctions.filter(item => {
+                const text = [typeLabel(item), item.reason, item.moderatorName, item.status].join(" ").toLowerCase();
+                return text.includes(q) && (!wantedStatus || item.status === wantedStatus);
+            });
+            document.getElementById("totalCount").textContent = String(sanctions.length);
+            document.getElementById("activeCount").textContent = String(sanctions.filter(item => item.status === "active").length);
+            document.getElementById("endedCount").textContent = String(sanctions.filter(item => ["expired","revoked","completed","superseded"].includes(item.status)).length);
+            document.getElementById("resultsCount").textContent = `${filtered.length} résultat(s)`;
+            if (!filtered.length) {
+                list.innerHTML = `<div class="message">${sanctions.length ? "Aucune sanction ne correspond à tes filtres." : "✅ Aucune sanction n'est enregistrée sur ton compte."}</div>`;
+                return;
+            }
+            list.innerHTML = filtered.map(item => `
+                <article class="sanction-card">
+                    <div>
+                        <span class="status ${escapeHTML(item.status)}">${escapeHTML(statusLabel(item.status))}</span>
+                        <div class="sanction-title">${escapeHTML(typeLabel(item))}</div>
+                        <div class="sanction-meta">📅 Date : ${escapeHTML(dateLabel(item.createdAt))}</div>
+                        <div class="sanction-meta">⏳ Durée : ${escapeHTML(durationLabel(item.durationMinutes))}</div>
+                        ${item.expiresAt ? `<div class="sanction-meta">Fin prévue : ${escapeHTML(dateLabel(item.expiresAt))}</div>` : ""}
+                        ${item.endedAt ? `<div class="sanction-meta">Fin effective : ${escapeHTML(dateLabel(item.endedAt))}</div>` : ""}
+                    </div>
+                    <div>
+                        <div class="sanction-meta">👮 Modérateur</div>
+                        <div>${escapeHTML(item.moderatorName || "Inconnu")}</div>
+                    </div>
+                    <div class="reason-block">
+                        <div class="sanction-meta">📝 Raison</div>
+                        <div class="sanction-reason">${escapeHTML(item.reason || "Aucune raison renseignée")}</div>
+                    </div>
+                </article>
+            `).join("");
+        }
+        async function refresh() {
+            loading.hidden = false; errorBox.hidden = true; content.hidden = true;
+            try { await loadMine(); }
+            catch (error) { errorBox.textContent = `❌ ${error.message}`; errorBox.hidden = false; }
+            finally { loading.hidden = true; }
+        }
+        searchInput.addEventListener("input", renderSanctions);
+        statusFilter.addEventListener("change", renderSanctions);
+        document.getElementById("refresh").addEventListener("click", refresh);
+        refresh();
+    </script>
+</body>
+</html>
