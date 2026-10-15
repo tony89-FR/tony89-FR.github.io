@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=20261011">
+    <link rel="stylesheet" href="css/style.css?v=20261015-sanctions">
 
     <style>
         .members-page {
@@ -18,7 +17,7 @@
         }
 
         .members-section {
-            width: min(1350px, 94%);
+            width: min(1200px, 92%);
             margin: 0 auto;
             padding: 35px 0 80px;
         }
@@ -50,6 +49,7 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
+            justify-content: space-between;
             gap: 12px;
             margin-bottom: 24px;
         }
@@ -63,65 +63,41 @@
             border: 1px solid rgba(255,255,255,.12);
             border-radius: 12px;
             font: inherit;
-            outline: none;
-        }
-
-        .members-search:focus {
-            border-color: #00d9ff;
-        }
-
-        .members-count {
-            color: rgba(255,255,255,.7);
-            font-size: .9rem;
         }
 
         .members-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
         }
 
-        /* Une ligne par membre */
         .member-card {
-            display: grid;
-            grid-template-columns:
-                minmax(210px, 1fr)
-                minmax(140px, .65fr)
-                minmax(300px, 1.5fr);
-            align-items: center;
-            gap: 20px;
             min-width: 0;
-            padding: 17px 20px;
-            border-radius: 16px;
-            background: linear-gradient(
-                145deg,
-                rgba(255,255,255,.065),
-                rgba(255,255,255,.025)
-            );
-            border: 1px solid rgba(255,255,255,.09);
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(255,255,255,.055);
+            border: 1px solid rgba(255,255,255,.08);
             backdrop-filter: blur(12px);
-            transition: transform .2s ease, border-color .2s ease;
+            transition: transform .25s ease, border-color .25s ease;
         }
 
         .member-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px);
             border-color: rgba(0,217,255,.35);
         }
 
         .member-card-top {
             display: flex;
             align-items: center;
-            gap: 13px;
-            min-width: 0;
+            gap: 15px;
         }
 
         .member-avatar {
-            width: 54px;
-            height: 54px;
+            width: 64px;
+            height: 64px;
             flex-shrink: 0;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(0,217,255,.25);
         }
 
         .member-identity {
@@ -130,70 +106,31 @@
 
         .member-identity h2 {
             margin: 0 0 5px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             overflow-wrap: anywhere;
         }
 
-        .member-roles {
+        .member-identity span {
             color: #00d9ff;
-            font-size: .78rem;
-            line-height: 1.5;
+            font-size: .8rem;
             overflow-wrap: anywhere;
-        }
-
-        .member-details {
-            min-width: 0;
         }
 
         .member-id {
-            color: rgba(255,255,255,.48);
-            font-size: .72rem;
+            margin-top: 18px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            background: rgba(0,0,0,.2);
+            color: rgba(255,255,255,.6);
+            font-size: .75rem;
             overflow-wrap: anywhere;
-        }
-
-        .member-presence {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            margin-top: 8px;
-            color: rgba(255,255,255,.72);
-            font-size: .8rem;
-        }
-
-        .presence-dot {
-            display: inline-block;
-            width: 9px;
-            height: 9px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: #7a8397;
-        }
-
-        .presence-online .presence-dot {
-            background: #3ba55d;
-            box-shadow: 0 0 9px rgba(59,165,93,.45);
-        }
-
-        .presence-idle .presence-dot {
-            background: #faa61a;
-        }
-
-        .presence-dnd .presence-dot {
-            background: #ed4245;
-        }
-
-        .presence-offline .presence-dot,
-        .presence-unknown .presence-dot {
-            background: #747f94;
         }
 
         .member-actions {
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 8px;
-            min-width: 0;
+            margin-top: 15px;
         }
 
         .member-action,
@@ -201,38 +138,76 @@
         .dialog-button {
             border: 1px solid rgba(255,255,255,.1);
             border-radius: 10px;
-            padding: 9px 12px;
+            padding: 10px 12px;
             color: white;
-            background: rgba(255,255,255,.07);
+            background: rgba(255,255,255,.08);
             cursor: pointer;
             font: inherit;
-            font-size: .82rem;
-            text-align: center;
+            font-size: .9rem;
+            text-align: left;
             transition: background .2s ease, border-color .2s ease;
+        }
+
+        .member-action {
+            width: 100%;
         }
 
         .member-action:hover,
         .members-button:hover,
         .dialog-button:hover {
             background: rgba(0,217,255,.14);
-            border-color: rgba(0,217,255,.35);
+            border-color: rgba(0,217,255,.3);
         }
 
-        .member-action.danger,
-        .dialog-button.danger {
-            color: #ffb1bc;
-            border-color: rgba(255,75,95,.22);
-        }
-
-        .member-action.danger:hover,
-        .dialog-button.danger:hover {
-            background: rgba(255,70,90,.15);
-            border-color: rgba(255,75,95,.5);
+        .member-action.danger {
+            color: #ffabb5;
         }
 
         .member-no-action {
-            color: rgba(255,255,255,.45);
-            font-size: .82rem;
+            display: block;
+            margin-top: 15px;
+            color: rgba(255,255,255,.55);
+            font-size: .85rem;
+        }
+
+        .sanction-entry {
+            padding: 14px;
+            margin: 10px 0;
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 12px;
+            background: rgba(255,255,255,.035);
+        }
+
+        .sanction-entry h3 {
+            margin: 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .sanction-meta {
+            color: rgba(255,255,255,.62);
+            font-size: .8rem;
+            line-height: 1.5;
+            margin: 5px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .sanction-status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            margin-bottom: 5px;
+            font-size: .75rem;
+            background: rgba(255,255,255,.08);
+        }
+
+        .sanction-status.active { color: #fda4af; background: rgba(225,29,72,.14); }
+        .sanction-status.expired,
+        .sanction-status.revoked,
+        .sanction-status.completed { color: #86efac; background: rgba(22,163,74,.12); }
+
+        .members-count {
+            opacity: .75;
+            font-size: .9rem;
         }
 
         .members-message {
@@ -246,6 +221,11 @@
         .members-error {
             color: #ff9ca8;
             border: 1px solid rgba(255,70,90,.3);
+        }
+
+        .members-success {
+            color: #a8ffc0;
+            border: 1px solid rgba(70,255,120,.25);
         }
 
         [hidden] {
@@ -344,6 +324,10 @@
             background: #5865f2;
         }
 
+        .dialog-button.danger {
+            background: #b72b45;
+        }
+
         .dialog-button:disabled {
             opacity: .55;
             cursor: wait;
@@ -388,32 +372,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,.4);
         }
 
-        @media (max-width: 900px) {
-            .member-card {
-                grid-template-columns: minmax(0, 1fr);
-                gap: 12px;
-            }
-
-            .member-actions {
-                justify-content: flex-start;
-            }
-
-            .member-action {
-                flex: 1 1 145px;
-            }
-        }
-
         @media (max-width: 600px) {
             .members-section {
                 padding-top: 25px;
             }
 
-            .members-toolbar {
-                align-items: stretch;
-            }
-
-            .members-search {
-                flex-basis: 100%;
+            .members-grid {
+                grid-template-columns: 1fr;
             }
 
             .role-row {
@@ -491,7 +456,7 @@
          role="status"
          hidden></div>
 
-    <script src="js/navbar.js?v=20261011"></script>
+    <script src="js/navbar.js?v=20261015"></script>
 
     <script>
         const API_URL =
@@ -531,7 +496,6 @@
             toast.hidden = false;
 
             clearTimeout(toastTimeout);
-
             toastTimeout = setTimeout(() => {
                 toast.hidden = true;
             }, 4500);
@@ -551,7 +515,6 @@
                 "Une erreur est survenue",
                 `
                     <p>${escapeHTML(message)}</p>
-
                     <div class="dialog-buttons">
                         <button class="dialog-button primary"
                                 type="button"
@@ -592,7 +555,7 @@
             try {
                 data = await response.json();
             } catch {
-                // La réponse du serveur n'est pas toujours du JSON.
+                // Certains messages d'erreur du serveur peuvent ne pas être JSON.
             }
 
             if (!response.ok) {
@@ -627,7 +590,6 @@
 
             if (!members) {
                 console.error("Réponse de l'API /members :", data);
-
                 throw new Error(
                     "Le serveur a renvoyé un format de membres incorrect."
                 );
@@ -647,33 +609,6 @@
             }
 
             return member.role || "Membre";
-        }
-
-        function getPresenceInfo(status) {
-            const statuses = {
-                online: {
-                    label: "En ligne",
-                    className: "presence-online"
-                },
-                idle: {
-                    label: "Absent",
-                    className: "presence-idle"
-                },
-                dnd: {
-                    label: "Ne pas déranger",
-                    className: "presence-dnd"
-                },
-                offline: {
-                    label: "Hors ligne",
-                    className: "presence-offline"
-                },
-                unknown: {
-                    label: "Statut inconnu",
-                    className: "presence-unknown"
-                }
-            };
-
-            return statuses[status] || statuses.unknown;
         }
 
         function getActions(member) {
@@ -699,32 +634,32 @@
                 `);
             }
 
-            if (hasPermission("kick_member")) {
-                actions.push(`
-                    <button class="member-action danger"
-                            data-action="kick"
-                            data-id="${escapeHTML(member.id)}">
-                        👢 Expulser
-                    </button>
-                `);
-            }
-
-            if (hasPermission("manage_nicknames")) {
-                actions.push(`
-                    <button class="member-action"
-                            data-action="nickname"
-                            data-id="${escapeHTML(member.id)}">
-                        ✏️ Modifier le pseudo
-                    </button>
-                `);
-            }
-
             if (hasPermission("manage_roles")) {
                 actions.push(`
                     <button class="member-action"
                             data-action="roles"
                             data-id="${escapeHTML(member.id)}">
                         🛡️ Gérer les rôles
+                    </button>
+                `);
+            }
+
+            if (hasPermission("temp_ban") || hasPermission("perm_ban")) {
+                actions.push(`
+                    <button class="member-action"
+                            data-action="mute"
+                            data-id="${escapeHTML(member.id)}">
+                        🔇 Mute vocal / chat
+                    </button>
+                `);
+            }
+
+            if (hasPermission("sanctions_total") || hasPermission("temp_ban") || hasPermission("perm_ban")) {
+                actions.push(`
+                    <button class="member-action"
+                            data-action="sanctions"
+                            data-id="${escapeHTML(member.id)}">
+                        📋 Historique des sanctions
                     </button>
                 `);
             }
@@ -789,11 +724,9 @@
                 );
 
                 const id = escapeHTML(member.id || "");
-                const presence = getPresenceInfo(member.status);
 
                 return `
                     <article class="member-card">
-
                         <div class="member-card-top">
                             <img
                                 src="${avatar}"
@@ -804,29 +737,167 @@
 
                             <div class="member-identity">
                                 <h2>${name}</h2>
-                                <div class="member-roles">${role}</div>
-
-                                <span class="member-presence ${presence.className}">
-                                    <span class="presence-dot"></span>
-                                    ${presence.label}
-                                </span>
+                                <span>${role}</span>
                             </div>
                         </div>
 
-                        <div class="member-details">
-                            <div class="member-id">ID : ${id}</div>
-                        </div>
+                        <div class="member-id">ID : ${id}</div>
 
                         ${getActions(member)}
-
                     </article>
                 `;
             }).join("");
         }
 
-        // ==================================================
-        // FORMULAIRE BAN TEMPORAIRE
-        // ==================================================
+        function getMemberName(memberId) {
+            const member = allMembers.find(item => item.id === memberId);
+            return member
+                ? member.displayName || member.globalName || member.username || memberId
+                : memberId;
+        }
+
+        function openMuteDialog(memberId) {
+            activeMemberId = memberId;
+            const name = escapeHTML(getMemberName(memberId));
+            openDialog(
+                `🔇 Sanction — ${name}`,
+                `
+                    <p>Choisis le type de mute, sa durée et une raison. Le mute vocal empêche de parler mais laisse entendre les autres. Le mute chat bloque l'envoi de messages dans les salons textuels.</p>
+                    <form id="muteForm">
+                        <label class="dialog-label" for="muteMode">Type de sanction</label>
+                        <select class="dialog-select" id="muteMode" name="mode" required>
+                            <option value="voice">🔇 Mute vocal — peut toujours entendre</option>
+                            <option value="chat">💬 Mute chat — peut toujours lire</option>
+                            <option value="both">🔇💬 Mute vocal + chat</option>
+                        </select>
+
+                        <label class="dialog-label" for="muteDuration">Durée</label>
+                        <select class="dialog-select" id="muteDuration" name="durationMinutes" required>
+                            <option value="5">5 minutes</option>
+                            <option value="10">10 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="60">1 heure</option>
+                            <option value="360">6 heures</option>
+                            <option value="720">12 heures</option>
+                            <option value="1440">24 heures</option>
+                            <option value="4320">3 jours</option>
+                            <option value="10080">7 jours</option>
+                        </select>
+
+                        <label class="dialog-label" for="muteReason">Raison</label>
+                        <textarea class="dialog-textarea" id="muteReason" name="reason" maxlength="450" minlength="3" placeholder="Explique la raison de la sanction" required></textarea>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button" type="button" data-close>Annuler</button>
+                            <button class="dialog-button danger" type="submit">Appliquer la sanction</button>
+                        </div>
+                    </form>
+                `
+            );
+        }
+
+        function displayDate(value) {
+            if (!value) return "—";
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("fr-FR");
+        }
+
+        function sanctionTypeLabel(sanction) {
+            if (sanction.type === "mute") {
+                return sanction.mode === "voice" ? "Mute vocal"
+                    : sanction.mode === "chat" ? "Mute chat"
+                    : "Mute vocal + chat";
+            }
+            if (sanction.type === "ban_temp") return "Ban temporaire";
+            if (sanction.type === "ban_perm") return "Ban définitif";
+            if (sanction.type === "kick") return "Expulsion";
+            return sanction.type || "Sanction";
+        }
+
+        function sanctionStatusLabel(status) {
+            const labels = {
+                active: "Active",
+                expired: "Expirée",
+                revoked: "Levée manuellement",
+                completed: "Effectuée",
+                superseded: "Remplacée",
+                failed: "Échec",
+                pending: "En cours"
+            };
+            return labels[status] || status || "Inconnue";
+        }
+
+        async function openSanctionsHistory(memberId) {
+            activeMemberId = memberId;
+            const name = getMemberName(memberId);
+            openDialog(`📋 Sanctions — ${name}`, '<p>Chargement de l’historique…</p>');
+
+            try {
+                const data = await apiRequest(
+                    `/moderation/sanctions?memberId=${encodeURIComponent(memberId)}`
+                );
+                const sanctions = Array.isArray(data.sanctions) ? data.sanctions : [];
+
+                if (!sanctions.length) {
+                    dialogContent.innerHTML = `
+                        <p>Aucune sanction enregistrée pour <strong>${escapeHTML(name)}</strong>.</p>
+                        <div class="dialog-buttons"><button class="dialog-button" type="button" data-close>Fermer</button></div>
+                    `;
+                    return;
+                }
+
+                dialogContent.innerHTML = `
+                    <p>Historique des sanctions enregistrées pour <strong>${escapeHTML(name)}</strong>.</p>
+                    <div>
+                        ${sanctions.map(sanction => {
+                            const activeMute = sanction.type === "mute" && sanction.status === "active";
+                            const duration = sanction.durationMinutes
+                                ? `Durée : ${escapeHTML(formatDuration(sanction.durationMinutes))}`
+                                : "Durée : permanente / non définie";
+                            return `
+                                <article class="sanction-entry">
+                                    <span class="sanction-status ${escapeHTML(sanction.status)}">${escapeHTML(sanctionStatusLabel(sanction.status))}</span>
+                                    <h3>${escapeHTML(sanctionTypeLabel(sanction))}</h3>
+                                    <div class="sanction-meta">📅 Date : ${escapeHTML(displayDate(sanction.createdAt))}</div>
+                                    <div class="sanction-meta">⏳ ${duration}</div>
+                                    ${sanction.expiresAt ? `<div class="sanction-meta">Fin prévue : ${escapeHTML(displayDate(sanction.expiresAt))}</div>` : ""}
+                                    <div class="sanction-meta">👮 Modérateur : ${escapeHTML(sanction.moderatorName || "Inconnu")}</div>
+                                    <div class="sanction-meta">📝 Raison : ${escapeHTML(sanction.reason || "Aucune raison renseignée")}</div>
+                                    ${activeMute ? `<button class="dialog-button danger" type="button" data-revoke-sanction="${escapeHTML(sanction.id)}">Lever cette sanction</button>` : ""}
+                                </article>
+                            `;
+                        }).join("")}
+                    </div>
+                    <div class="dialog-buttons"><button class="dialog-button" type="button" data-close>Fermer</button></div>
+                `;
+            } catch (error) {
+                showDialogError(error.message);
+            }
+        }
+
+        function formatDuration(minutes) {
+            if (minutes < 60) return `${minutes} minute(s)`;
+            if (minutes % 1440 === 0) return `${minutes / 1440} jour(s)`;
+            if (minutes % 60 === 0) return `${minutes / 60} heure(s)`;
+            return `${minutes} minute(s)`;
+        }
+
+        async function revokeSanction(sanctionId, button) {
+            button.disabled = true;
+            try {
+                const data = await apiRequest(
+                    `/moderation/sanctions/${encodeURIComponent(sanctionId)}/revoke`,
+                    { method: "POST", body: {} }
+                );
+                showToast(`✅ ${data.message || "Sanction levée."}`);
+                await openSanctionsHistory(activeMemberId);
+                await initMembers();
+            } catch (error) {
+                showDialogError(error.message);
+            } finally {
+                if (button.isConnected) button.disabled = false;
+            }
+        }
 
         function openTempBan(memberId) {
             activeMemberId = memberId;
@@ -836,8 +907,8 @@
                 `
                     <p>
                         Le membre sera banni pendant la durée choisie.
-                        Le débannissement automatique dépend du fonctionnement
-                        continu du bot.
+                        Le débannissement automatique de cette version
+                        dépend du fonctionnement continu du bot.
                     </p>
 
                     <form id="tempBanForm">
@@ -885,10 +956,6 @@
             );
         }
 
-        // ==================================================
-        // FORMULAIRE BAN DÉFINITIF
-        // ==================================================
-
         function openPermanentBan(memberId) {
             activeMemberId = memberId;
 
@@ -908,8 +975,8 @@
                     <p>
                         Tu es sur le point de bannir définitivement
                         <strong>${escapeHTML(name)}</strong>.
-                        Cette action l'empêchera de rejoindre le serveur
-                        jusqu'à un débannissement.
+                        Cette action empêche le membre de rejoindre
+                        le serveur jusqu'à un débannissement.
                     </p>
 
                     <form id="permBanForm">
@@ -941,126 +1008,6 @@
             );
         }
 
-        // ==================================================
-        // FORMULAIRE EXPULSION
-        // ==================================================
-
-        function openKickDialog(memberId) {
-            activeMemberId = memberId;
-
-            const member = allMembers.find(
-                item => item.id === memberId
-            );
-
-            const name = member
-                ? member.displayName ||
-                  member.globalName ||
-                  member.username
-                : memberId;
-
-            openDialog(
-                "👢 Expulser un membre",
-                `
-                    <p>
-                        Veux-tu vraiment expulser
-                        <strong>${escapeHTML(name)}</strong> ?
-                        Cette action le retirera du serveur sans le bannir.
-                    </p>
-
-                    <form id="kickForm">
-                        <label class="dialog-label" for="kickReason">
-                            Raison de l'expulsion
-                        </label>
-
-                        <textarea class="dialog-textarea"
-                                  id="kickReason"
-                                  name="reason"
-                                  maxlength="450"
-                                  placeholder="Indique la raison"
-                                  required></textarea>
-
-                        <div class="dialog-buttons">
-                            <button class="dialog-button"
-                                    type="button"
-                                    data-close>
-                                Annuler
-                            </button>
-
-                            <button class="dialog-button danger"
-                                    type="submit">
-                                Confirmer l'expulsion
-                            </button>
-                        </div>
-                    </form>
-                `
-            );
-        }
-
-        // ==================================================
-        // FORMULAIRE MODIFICATION PSEUDO
-        // ==================================================
-
-        function openNicknameDialog(memberId) {
-            activeMemberId = memberId;
-
-            const member = allMembers.find(
-                item => item.id === memberId
-            );
-
-            const name = member
-                ? member.displayName ||
-                  member.globalName ||
-                  member.username
-                : memberId;
-
-            const nickname = member?.nickname || "";
-
-            openDialog(
-                "✏️ Modifier le pseudo",
-                `
-                    <p>
-                        Membre : <strong>${escapeHTML(name)}</strong>
-                    </p>
-
-                    <form id="nicknameForm">
-                        <label class="dialog-label" for="newNickname">
-                            Nouveau pseudo
-                        </label>
-
-                        <input
-                            class="dialog-input"
-                            id="newNickname"
-                            name="nickname"
-                            maxlength="32"
-                            value="${escapeHTML(nickname)}"
-                            placeholder="Saisis un nouveau pseudo">
-
-                        <p>
-                            Laisse le champ vide pour réinitialiser
-                            le pseudo personnalisé.
-                        </p>
-
-                        <div class="dialog-buttons">
-                            <button class="dialog-button"
-                                    type="button"
-                                    data-close>
-                                Annuler
-                            </button>
-
-                            <button class="dialog-button primary"
-                                    type="submit">
-                                Enregistrer
-                            </button>
-                        </div>
-                    </form>
-                `
-            );
-        }
-
-        // ==================================================
-        // GESTION DES RÔLES
-        // ==================================================
-
         async function openRoleManager(memberId) {
             activeMemberId = memberId;
 
@@ -1083,8 +1030,9 @@
                 if (!roles.length) {
                     rows = `
                         <p>
-                            Aucun rôle modifiable n'est disponible.
-                            Les rôles protégés ne sont pas affichés.
+                            Aucun rôle modifiable n'est disponible pour toi
+                            sur ce membre. Les rôles protégés ou supérieurs
+                            à ceux que tu peux gérer ne sont pas affichés.
                         </p>
                     `;
                 } else {
@@ -1122,8 +1070,8 @@
 
                 dialogContent.innerHTML = `
                     <p>
-                        Sélectionne une action. Les permissions seront
-                        vérifiées par le bot avant toute modification.
+                        Sélectionne une action. Discord et le bot
+                        vérifieront les permissions avant modification.
                     </p>
 
                     <div>${rows}</div>
@@ -1141,21 +1089,14 @@
             }
         }
 
-        // ==================================================
-        // ENVOI DES FORMULAIRES AU BOT
-        // ==================================================
-
         async function handleFormSubmit(event) {
             const form = event.target;
 
-            const acceptedForms = [
-                "tempBanForm",
-                "permBanForm",
-                "kickForm",
-                "nicknameForm"
-            ];
-
-            if (!acceptedForms.includes(form.id)) {
+            if (
+                form.id !== "tempBanForm" &&
+                form.id !== "permBanForm" &&
+                form.id !== "muteForm"
+            ) {
                 return;
             }
 
@@ -1195,36 +1136,23 @@
                             }
                         }
                     );
-                } else if (form.id === "kickForm") {
+                } else {
                     data = await apiRequest(
-                        "/moderation/kick",
+                        "/moderation/mute",
                         {
                             method: "POST",
                             body: {
                                 memberId: activeMemberId,
+                                mode: form.elements.mode.value,
+                                durationMinutes: Number(form.elements.durationMinutes.value),
                                 reason: form.elements.reason.value.trim()
-                            }
-                        }
-                    );
-                } else if (form.id === "nicknameForm") {
-                    data = await apiRequest(
-                        "/moderation/nickname",
-                        {
-                            method: "POST",
-                            body: {
-                                memberId: activeMemberId,
-                                nickname: form.elements.nickname.value,
-                                reason: "Pseudo modifié depuis le dashboard"
                             }
                         }
                     );
                 }
 
                 dialog.close();
-
-                showToast(
-                    `✅ ${data.message || "Action effectuée."}`
-                );
+                showToast(`✅ ${data.message || "Action effectuée."}`);
 
                 await initMembers();
             } catch (error) {
@@ -1235,10 +1163,6 @@
                 }
             }
         }
-
-        // ==================================================
-        // AJOUT / RETRAIT D'UN RÔLE
-        // ==================================================
 
         async function handleRoleToggle(button) {
             const roleId = button.dataset.roleId;
@@ -1260,9 +1184,7 @@
                     }
                 );
 
-                showToast(
-                    `✅ ${data.message || "Rôle modifié."}`
-                );
+                showToast(`✅ ${data.message || "Rôle modifié."}`);
 
                 await openRoleManager(memberId);
                 await initMembers();
@@ -1275,16 +1197,10 @@
             }
         }
 
-        // ==================================================
-        // CLICS SUR LES BOUTONS
-        // ==================================================
-
         grid.addEventListener("click", event => {
             const button = event.target.closest(".member-action");
 
-            if (!button) {
-                return;
-            }
+            if (!button) return;
 
             const memberId = button.dataset.id;
             const action = button.dataset.action;
@@ -1293,12 +1209,12 @@
                 openTempBan(memberId);
             } else if (action === "perm-ban") {
                 openPermanentBan(memberId);
-            } else if (action === "kick") {
-                openKickDialog(memberId);
-            } else if (action === "nickname") {
-                openNicknameDialog(memberId);
             } else if (action === "roles") {
                 openRoleManager(memberId);
+            } else if (action === "mute") {
+                openMuteDialog(memberId);
+            } else if (action === "sanctions") {
+                openSanctionsHistory(memberId);
             }
         });
 
@@ -1312,6 +1228,12 @@
 
             if (roleButton) {
                 handleRoleToggle(roleButton);
+                return;
+            }
+
+            const revokeButton = event.target.closest("[data-revoke-sanction]");
+            if (revokeButton) {
+                revokeSanction(revokeButton.dataset.revokeSanction, revokeButton);
             }
         });
 
@@ -1321,10 +1243,6 @@
 
         document.getElementById("membersRefresh")
             .addEventListener("click", initMembers);
-
-        // ==================================================
-        // INITIALISATION DE LA PAGE
-        // ==================================================
 
         async function initMembers() {
             loading.hidden = false;
@@ -1341,10 +1259,7 @@
 
                 content.hidden = false;
             } catch (error) {
-                console.error(
-                    "Erreur chargement des membres :",
-                    error
-                );
+                console.error("Erreur chargement des membres :", error);
 
                 errorBox.textContent = `❌ ${error.message}`;
                 errorBox.hidden = false;
@@ -1357,4 +1272,3 @@
     </script>
 </body>
 </html>
-```
