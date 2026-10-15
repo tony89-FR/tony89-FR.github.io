@@ -171,6 +171,25 @@
         .message-content { color: #dce2ef; font-size: 13px; line-height: 1.7; overflow-wrap: anywhere; white-space: normal; }
         .mention { padding: 2px 5px; border: 1px solid rgba(110,139,255,.12); border-radius: 5px; color: #cdd5ff; background: rgba(110,139,255,.13); font-weight: 700; }
         .attachment { display: inline-block; margin-top: 7px; color: var(--cyan); font-size: 12px; overflow-wrap: anywhere; }
+        .message-link { color: #8eb7ff; text-decoration: underline; text-decoration-color: rgba(142,183,255,.45); overflow-wrap: anywhere; }
+        .message-link:hover { color: #c4d8ff; }
+        .embed-card { position: relative; width: min(100%, 620px); margin-top: 10px; padding: 13px 14px; border: 1px solid rgba(174,190,225,.15); border-left: 3px solid var(--embed-color, #5865f2); border-radius: 10px; background: rgba(10,13,20,.55); overflow: hidden; }
+        .embed-provider { margin-bottom: 7px; color: var(--muted); font-size: 10px; }
+        .embed-author { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; color: #d5dcec; font-size: 11px; font-weight: 700; }
+        .embed-author img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
+        .embed-title { display: inline-block; margin: 0 0 7px; color: #8eb7ff; font-size: 13px; font-weight: 800; text-decoration: none; }
+        .embed-title:hover { text-decoration: underline; }
+        .embed-description { color: #dce2ef; font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+        .embed-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 10px; }
+        .embed-field { min-width: 0; }
+        .embed-field.full { grid-column: 1 / -1; }
+        .embed-field-name { margin-bottom: 4px; color: #f2f5ff; font-size: 11px; font-weight: 800; }
+        .embed-field-value { color: #cbd4e5; font-size: 11px; line-height: 1.55; overflow-wrap: anywhere; }
+        .embed-media { display: block; max-width: min(100%, 460px); max-height: 330px; margin-top: 11px; border-radius: 8px; object-fit: contain; object-position: left; }
+        .embed-media.thumbnail { float: right; width: min(120px, 30%); max-height: 120px; margin: 0 0 8px 12px; }
+        .embed-footer { display: flex; align-items: center; gap: 7px; margin-top: 11px; color: var(--muted); font-size: 10px; }
+        .embed-footer img { width: 17px; height: 17px; border-radius: 50%; object-fit: cover; }
+        @media (max-width: 600px) { .embed-fields { grid-template-columns: 1fr; } .embed-field.full { grid-column: auto; } .embed-media { max-height: 240px; } }
         .composer-area { position: relative; padding: 0 22px 20px; }
         .composer-topline { display: flex; justify-content: space-between; align-items: center; margin: 0 3px 8px; color: #7f8aa2; font-size: 10px; }
         .composer { display: flex; align-items: flex-end; gap: 10px; padding: 10px; border: 1px solid rgba(174,190,225,.14); border-radius: 14px; background: linear-gradient(135deg, rgba(31,37,50,.98), rgba(25,29,40,.98)); box-shadow: var(--shadow); }
@@ -539,11 +558,23 @@ function renderChannels() {
     });
 }
 
+function safeLinkURL(value) {
+    if (typeof value !== "string") return null;
+    const raw = value.trim();
+    const candidate = raw.startsWith("www.") ? `https://${raw}` : raw;
+    try {
+        const url = new URL(candidate);
+        return ["https:", "http:"].includes(url.protocol) ? url.href : null;
+    } catch {
+        return null;
+    }
+}
+
 function formatContent(content, mentions) {
     const users = new Map((mentions?.users || []).map(item => [item.id, item.name]));
     const roles = new Map((mentions?.roles || []).map(item => [item.id, item.name]));
     const mentionedChannels = new Map((mentions?.channels || []).map(item => [item.id, item.name]));
-    const pattern = /<@!?(\d{17,20})>|<@&(\d{17,20})>|<#(\d{17,20})>/g;
+    const pattern = /<@!?(\d{17,20})>|<@&(\d{17,20})>|<#(\d{17,20})>|(?:https?:\/\/|www\.)[^\s<>]+/g;
     const text = String(content || "");
     let result = "";
     let lastIndex = 0;
@@ -551,16 +582,88 @@ function formatContent(content, mentions) {
 
     while ((match = pattern.exec(text)) !== null) {
         result += escapeHTML(text.slice(lastIndex, match.index)).replace(/\n/g, "<br>");
-        let label;
-        if (match[1]) label = "@" + (users.get(match[1]) || "utilisateur");
-        else if (match[2]) label = "@" + (roles.get(match[2]) || "rôle");
-        else label = "#" + (mentionedChannels.get(match[3]) || "salon");
-        result += `<span class="mention">${escapeHTML(label)}</span>`;
+        const token = match[0];
+
+        if (match[1] || match[2] || match[3]) {
+            let label;
+            if (match[1]) label = "@" + (users.get(match[1]) || "utilisateur");
+            else if (match[2]) label = "@" + (roles.get(match[2]) || "rôle");
+            else label = "#" + (mentionedChannels.get(match[3]) || "salon");
+            result += `<span class="mention">${escapeHTML(label)}</span>`;
+        } else {
+            const trailing = (token.match(/[.,!?;:\)\]]+$/) || [""])[0];
+            const visibleURL = trailing ? token.slice(0, -trailing.length) : token;
+            const href = safeLinkURL(visibleURL);
+            if (href) {
+                result += `<a class="message-link" href="${escapeHTML(href)}" target="_blank" rel="noopener noreferrer">${escapeHTML(visibleURL)}</a>${escapeHTML(trailing)}`;
+            } else {
+                result += escapeHTML(token);
+            }
+        }
         lastIndex = pattern.lastIndex;
     }
 
     result += escapeHTML(text.slice(lastIndex)).replace(/\n/g, "<br>");
     return result;
+}
+
+function renderEmbedCard(embed) {
+    if (!embed || typeof embed !== "object") return "";
+
+    const title = String(embed.title || "");
+    const description = String(embed.description || "");
+    const url = safeLinkURL(embed.url);
+    const provider = String(embed.provider?.name || "");
+    const author = embed.author || {};
+    const thumbnail = safeLinkURL(embed.thumbnail?.url);
+    const image = safeLinkURL(embed.image?.url);
+    const footer = embed.footer || {};
+    const footerIcon = safeLinkURL(footer.iconURL || footer.icon_url);
+    const colorValue = Number(embed.color);
+    const color = Number.isInteger(colorValue) && colorValue >= 0 && colorValue <= 0xFFFFFF
+        ? `#${colorValue.toString(16).padStart(6, "0")}`
+        : "#5865f2";
+
+    const authorIcon = safeLinkURL(author.iconURL || author.icon_url);
+    const authorURL = safeLinkURL(author.url);
+    const authorHTML = author.name
+        ? `<div class="embed-author">${authorIcon ? `<img src="${escapeHTML(authorIcon)}" alt="">` : ""}${authorURL ? `<a class="message-link" href="${escapeHTML(authorURL)}" target="_blank" rel="noopener noreferrer">${escapeHTML(author.name)}</a>` : escapeHTML(author.name)}</div>`
+        : "";
+
+    const titleHTML = title
+        ? (url
+            ? `<a class="embed-title" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(title)}</a>`
+            : `<div class="embed-title">${escapeHTML(title)}</div>`)
+        : "";
+
+    const fieldsHTML = (Array.isArray(embed.fields) ? embed.fields : [])
+        .map(field => `
+            <div class="embed-field ${field.inline ? "" : "full"}">
+                <div class="embed-field-name">${escapeHTML(field.name || "")}</div>
+                <div class="embed-field-value">${formatContent(field.value || "", null)}</div>
+            </div>
+        `).join("");
+
+    const footerHTML = footer.text
+        ? `<div class="embed-footer">${footerIcon ? `<img src="${escapeHTML(footerIcon)}" alt="">` : ""}<span>${escapeHTML(footer.text)}</span>${embed.timestamp ? `<span> · ${escapeHTML(new Date(embed.timestamp).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }))}</span>` : ""}</div>`
+        : (embed.timestamp ? `<div class="embed-footer">${escapeHTML(new Date(embed.timestamp).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }))}</div>` : "");
+
+    if (!title && !description && !fieldsHTML && !image && !thumbnail && !authorHTML && !provider) {
+        return "";
+    }
+
+    return `
+        <section class="embed-card" style="--embed-color:${color}">
+            ${provider ? `<div class="embed-provider">${escapeHTML(provider)}</div>` : ""}
+            ${authorHTML}
+            ${thumbnail ? `<img class="embed-media thumbnail" src="${escapeHTML(thumbnail)}" alt="Aperçu" loading="lazy">` : ""}
+            ${titleHTML}
+            ${description ? `<div class="embed-description">${formatContent(description, null)}</div>` : ""}
+            ${fieldsHTML ? `<div class="embed-fields">${fieldsHTML}</div>` : ""}
+            ${image ? `<a href="${escapeHTML(image)}" target="_blank" rel="noopener noreferrer"><img class="embed-media" src="${escapeHTML(image)}" alt="Aperçu du lien" loading="lazy"></a>` : ""}
+            ${footerHTML}
+        </section>
+    `;
 }
 
 function renderMessages(messages) {
@@ -573,15 +676,41 @@ function renderMessages(messages) {
         const author = message.author || {};
         const authorName = message.authorName || author.displayName || author.username || message.authorUsername || "Utilisateur";
         const authorAvatar = message.authorAvatar || author.avatar;
-        const authorIsBot = author.bot || false;
+        const authorIsBot = Boolean(author.bot || message.authorIsBot);
         const date = new Date(message.timestamp);
         const time = Number.isNaN(date.getTime()) ? "" : date.toLocaleString("fr-FR", {
             day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
         });
 
         const attachments = (message.attachments || []).filter(file =>
-            file && typeof file.url === "string" && file.url.startsWith("https://")
-        ).map(file => `<div>↳ <a class="attachment" href="${escapeHTML(file.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(file.name || "Fichier joint")}</a></div>`).join("");
+            file && typeof file.url === "string" && safeLinkURL(file.url)
+        ).map(file => {
+            const url = safeLinkURL(file.url);
+            const name = file.name || "Fichier joint";
+            const lowerName = String(name).toLowerCase();
+            const isImage = /\.(png|jpe?g|gif|webp|avif)$/i.test(lowerName);
+            const isVideo = /\.(mp4|webm|mov)$/i.test(lowerName);
+            const preview = isImage
+                ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer"><img class="embed-media" src="${escapeHTML(url)}" alt="${escapeHTML(name)}" loading="lazy"></a>`
+                : isVideo
+                    ? `<video class="embed-media" controls preload="metadata"><source src="${escapeHTML(url)}"></video>`
+                    : "";
+            return `<div>↳ <a class="attachment" href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(name)}</a></div>${preview}`;
+        }).join("");
+
+        const embeds = (Array.isArray(message.embeds) ? message.embeds : [])
+            .map(renderEmbedCard)
+            .join("");
+
+        const contentHTML = formatContent(message.content, message.mentions);
+        const hasContent = String(message.content || "").trim().length > 0;
+        const hasAttachments = Boolean(attachments);
+        const hasEmbeds = Boolean(embeds);
+
+        // Les webhooks et bots publient souvent uniquement un embed, sans texte.
+        if (!hasContent && !hasAttachments && !hasEmbeds) {
+            return "";
+        }
 
         return `<article class="message">
             <img class="avatar" src="${escapeHTML(safeImageURL(authorAvatar))}" alt="" loading="lazy">
@@ -591,11 +720,16 @@ function renderMessages(messages) {
                     ${authorIsBot ? '<span class="bot-tag">Bot</span>' : ''}
                     <time class="time">${escapeHTML(time)}</time>
                 </div>
-                <div class="message-content">${formatContent(message.content, message.mentions)}</div>
+                ${hasContent ? `<div class="message-content">${contentHTML}</div>` : ""}
+                ${embeds}
                 ${attachments}
             </div>
         </article>`;
-    }).join("");
+    }).filter(Boolean).join("");
+
+    if (!messagesElement.innerHTML.trim()) {
+        messagesElement.innerHTML = '<div class="state-message">Aucun message affichable dans ce salon.</div>';
+    }
     messagesElement.scrollTop = messagesElement.scrollHeight;
 }
 
