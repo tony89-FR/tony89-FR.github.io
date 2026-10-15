@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -64,6 +65,8 @@
             border-radius: 12px;
             font: inherit;
         }
+
+        /* UN MEMBRE PAR LIGNE, SUR PC ET MOBILE */
         .members-grid {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
@@ -73,6 +76,8 @@
 
         .member-card {
             min-width: 0;
+            width: 100%;
+            box-sizing: border-box;
             padding: 22px;
             border-radius: 18px;
             background: rgba(255,255,255,.055);
@@ -150,6 +155,7 @@
 
         .member-action {
             width: 100%;
+            box-sizing: border-box;
         }
 
         .member-action:hover,
@@ -200,10 +206,17 @@
             background: rgba(255,255,255,.08);
         }
 
-        .sanction-status.active { color: #fda4af; background: rgba(225,29,72,.14); }
+        .sanction-status.active {
+            color: #fda4af;
+            background: rgba(225,29,72,.14);
+        }
+
         .sanction-status.expired,
         .sanction-status.revoked,
-        .sanction-status.completed { color: #86efac; background: rgba(22,163,74,.12); }
+        .sanction-status.completed {
+            color: #86efac;
+            background: rgba(22,163,74,.12);
+        }
 
         .members-count {
             opacity: .75;
@@ -294,6 +307,7 @@
         .dialog-select,
         .dialog-textarea {
             width: 100%;
+            box-sizing: border-box;
             padding: 12px;
             color: white;
             background: #0a1020;
@@ -373,12 +387,38 @@
         }
 
         @media (max-width: 600px) {
+            .members-page {
+                padding-top: 90px;
+            }
+
             .members-section {
                 padding-top: 25px;
             }
 
             .members-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .member-card {
+                padding: 16px;
+            }
+
+            .members-toolbar {
+                align-items: stretch;
+            }
+
+            .members-search {
+                width: 100%;
+                min-width: 0;
+                box-sizing: border-box;
+            }
+
+            .members-count {
+                align-self: center;
+            }
+
+            .members-button {
+                text-align: center;
             }
 
             .role-row {
@@ -390,7 +430,7 @@
                 width: 100%;
             }
         }
-    
+    </style>
 </head>
 
 <body>
@@ -654,7 +694,11 @@
                 `);
             }
 
-            if (hasPermission("sanctions_total") || hasPermission("temp_ban") || hasPermission("perm_ban")) {
+            if (
+                hasPermission("sanctions_total") ||
+                hasPermission("temp_ban") ||
+                hasPermission("perm_ban")
+            ) {
                 actions.push(`
                     <button class="member-action"
                             data-action="sanctions"
@@ -751,28 +795,57 @@
 
         function getMemberName(memberId) {
             const member = allMembers.find(item => item.id === memberId);
+
             return member
-                ? member.displayName || member.globalName || member.username || memberId
+                ? member.displayName ||
+                  member.globalName ||
+                  member.username ||
+                  memberId
                 : memberId;
         }
 
         function openMuteDialog(memberId) {
             activeMemberId = memberId;
             const name = escapeHTML(getMemberName(memberId));
+
             openDialog(
                 `🔇 Sanction — ${name}`,
                 `
-                    <p>Choisis le type de mute, sa durée et une raison. Le mute vocal empêche de parler mais laisse entendre les autres. Le mute chat bloque l'envoi de messages dans les salons textuels.</p>
+                    <p>
+                        Choisis le type de mute, sa durée et une raison.
+                        Le mute vocal empêche de parler mais laisse entendre
+                        les autres. Le mute chat bloque l'envoi de messages
+                        dans les salons textuels.
+                    </p>
+
                     <form id="muteForm">
-                        <label class="dialog-label" for="muteMode">Type de sanction</label>
-                        <select class="dialog-select" id="muteMode" name="mode" required>
-                            <option value="voice">🔇 Mute vocal — peut toujours entendre</option>
-                            <option value="chat">💬 Mute chat — peut toujours lire</option>
-                            <option value="both">🔇💬 Mute vocal + chat</option>
+                        <label class="dialog-label" for="muteMode">
+                            Type de sanction
+                        </label>
+
+                        <select class="dialog-select"
+                                id="muteMode"
+                                name="mode"
+                                required>
+                            <option value="voice">
+                                🔇 Mute vocal — peut toujours entendre
+                            </option>
+                            <option value="chat">
+                                💬 Mute chat — peut toujours lire
+                            </option>
+                            <option value="both">
+                                🔇💬 Mute vocal + chat
+                            </option>
                         </select>
 
-                        <label class="dialog-label" for="muteDuration">Durée</label>
-                        <select class="dialog-select" id="muteDuration" name="durationMinutes" required>
+                        <label class="dialog-label" for="muteDuration">
+                            Durée
+                        </label>
+
+                        <select class="dialog-select"
+                                id="muteDuration"
+                                name="durationMinutes"
+                                required>
                             <option value="5">5 minutes</option>
                             <option value="10">10 minutes</option>
                             <option value="30">30 minutes</option>
@@ -784,12 +857,30 @@
                             <option value="10080">7 jours</option>
                         </select>
 
-                        <label class="dialog-label" for="muteReason">Raison</label>
-                        <textarea class="dialog-textarea" id="muteReason" name="reason" maxlength="450" minlength="3" placeholder="Explique la raison de la sanction" required></textarea>
+                        <label class="dialog-label" for="muteReason">
+                            Raison
+                        </label>
+
+                        <textarea
+                            class="dialog-textarea"
+                            id="muteReason"
+                            name="reason"
+                            maxlength="450"
+                            minlength="3"
+                            placeholder="Explique la raison de la sanction"
+                            required></textarea>
 
                         <div class="dialog-buttons">
-                            <button class="dialog-button" type="button" data-close>Annuler</button>
-                            <button class="dialog-button danger" type="submit">Appliquer la sanction</button>
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Annuler
+                            </button>
+
+                            <button class="dialog-button danger"
+                                    type="submit">
+                                Appliquer la sanction
+                            </button>
                         </div>
                     </form>
                 `
@@ -798,19 +889,27 @@
 
         function displayDate(value) {
             if (!value) return "—";
+
             const date = new Date(value);
-            return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString("fr-FR");
+
+            return Number.isNaN(date.getTime())
+                ? "—"
+                : date.toLocaleString("fr-FR");
         }
 
         function sanctionTypeLabel(sanction) {
             if (sanction.type === "mute") {
-                return sanction.mode === "voice" ? "Mute vocal"
-                    : sanction.mode === "chat" ? "Mute chat"
-                    : "Mute vocal + chat";
+                return sanction.mode === "voice"
+                    ? "Mute vocal"
+                    : sanction.mode === "chat"
+                        ? "Mute chat"
+                        : "Mute vocal + chat";
             }
+
             if (sanction.type === "ban_temp") return "Ban temporaire";
             if (sanction.type === "ban_perm") return "Ban définitif";
             if (sanction.type === "kick") return "Expulsion";
+
             return sanction.type || "Sanction";
         }
 
@@ -824,51 +923,111 @@
                 failed: "Échec",
                 pending: "En cours"
             };
+
             return labels[status] || status || "Inconnue";
         }
 
         async function openSanctionsHistory(memberId) {
             activeMemberId = memberId;
+
             const name = getMemberName(memberId);
-            openDialog(`📋 Sanctions — ${name}`, '<p>Chargement de l’historique…</p>');
+
+            openDialog(
+                `📋 Sanctions — ${name}`,
+                "<p>Chargement de l’historique…</p>"
+            );
 
             try {
                 const data = await apiRequest(
                     `/moderation/sanctions?memberId=${encodeURIComponent(memberId)}`
                 );
-                const sanctions = Array.isArray(data.sanctions) ? data.sanctions : [];
+
+                const sanctions = Array.isArray(data.sanctions)
+                    ? data.sanctions
+                    : [];
 
                 if (!sanctions.length) {
                     dialogContent.innerHTML = `
-                        <p>Aucune sanction enregistrée pour <strong>${escapeHTML(name)}</strong>.</p>
-                        <div class="dialog-buttons"><button class="dialog-button" type="button" data-close>Fermer</button></div>
+                        <p>
+                            Aucune sanction enregistrée pour
+                            <strong>${escapeHTML(name)}</strong>.
+                        </p>
+
+                        <div class="dialog-buttons">
+                            <button class="dialog-button"
+                                    type="button"
+                                    data-close>
+                                Fermer
+                            </button>
+                        </div>
                     `;
                     return;
                 }
 
                 dialogContent.innerHTML = `
-                    <p>Historique des sanctions enregistrées pour <strong>${escapeHTML(name)}</strong>.</p>
+                    <p>
+                        Historique des sanctions enregistrées pour
+                        <strong>${escapeHTML(name)}</strong>.
+                    </p>
+
                     <div>
                         ${sanctions.map(sanction => {
-                            const activeMute = sanction.type === "mute" && sanction.status === "active";
+                            const activeMute =
+                                sanction.type === "mute" &&
+                                sanction.status === "active";
+
                             const duration = sanction.durationMinutes
                                 ? `Durée : ${escapeHTML(formatDuration(sanction.durationMinutes))}`
                                 : "Durée : permanente / non définie";
+
                             return `
                                 <article class="sanction-entry">
-                                    <span class="sanction-status ${escapeHTML(sanction.status)}">${escapeHTML(sanctionStatusLabel(sanction.status))}</span>
-                                    <h3>${escapeHTML(sanctionTypeLabel(sanction))}</h3>
-                                    <div class="sanction-meta">📅 Date : ${escapeHTML(displayDate(sanction.createdAt))}</div>
-                                    <div class="sanction-meta">⏳ ${duration}</div>
-                                    ${sanction.expiresAt ? `<div class="sanction-meta">Fin prévue : ${escapeHTML(displayDate(sanction.expiresAt))}</div>` : ""}
-                                    <div class="sanction-meta">👮 Modérateur : ${escapeHTML(sanction.moderatorName || "Inconnu")}</div>
-                                    <div class="sanction-meta">📝 Raison : ${escapeHTML(sanction.reason || "Aucune raison renseignée")}</div>
-                                    ${activeMute ? `<button class="dialog-button danger" type="button" data-revoke-sanction="${escapeHTML(sanction.id)}">Lever cette sanction</button>` : ""}
+                                    <span class="sanction-status ${escapeHTML(sanction.status)}">
+                                        ${escapeHTML(sanctionStatusLabel(sanction.status))}
+                                    </span>
+
+                                    <h3>
+                                        ${escapeHTML(sanctionTypeLabel(sanction))}
+                                    </h3>
+
+                                    <div class="sanction-meta">
+                                        📅 Date :
+                                        ${escapeHTML(displayDate(sanction.createdAt))}
+                                    </div>
+
+                                    <div class="sanction-meta">
+                                        ⏳ ${duration}
+                                    </div>
+
+                                    ${sanction.expiresAt
+                                        ? `<div class="sanction-meta">Fin prévue : ${escapeHTML(displayDate(sanction.expiresAt))}</div>`
+                                        : ""}
+
+                                    <div class="sanction-meta">
+                                        👮 Modérateur :
+                                        ${escapeHTML(sanction.moderatorName || "Inconnu")}
+                                    </div>
+
+                                    <div class="sanction-meta">
+                                        📝 Raison :
+                                        ${escapeHTML(sanction.reason || "Aucune raison renseignée")}
+                                    </div>
+
+                                    ${activeMute
+                                        ? `<button class="dialog-button danger" type="button" data-revoke-sanction="${escapeHTML(sanction.id)}">Lever cette sanction</button>`
+                                        : ""}
                                 </article>
                             `;
                         }).join("")}
                     </div>
-                    <div class="dialog-buttons"><button class="dialog-button" type="button" data-close>Fermer</button></div>
+
+                    <div class="dialog-buttons">
+                        <button class="dialog-button"
+                                type="button"
+                                data-close>
+                            Fermer
+                        </button>
+                    </div>
                 `;
             } catch (error) {
                 showDialogError(error.message);
@@ -877,25 +1036,38 @@
 
         function formatDuration(minutes) {
             if (minutes < 60) return `${minutes} minute(s)`;
-            if (minutes % 1440 === 0) return `${minutes / 1440} jour(s)`;
-            if (minutes % 60 === 0) return `${minutes / 60} heure(s)`;
+            if (minutes % 1440 === 0) {
+                return `${minutes / 1440} jour(s)`;
+            }
+            if (minutes % 60 === 0) {
+                return `${minutes / 60} heure(s)`;
+            }
+
             return `${minutes} minute(s)`;
         }
 
         async function revokeSanction(sanctionId, button) {
             button.disabled = true;
+
             try {
                 const data = await apiRequest(
                     `/moderation/sanctions/${encodeURIComponent(sanctionId)}/revoke`,
-                    { method: "POST", body: {} }
+                    {
+                        method: "POST",
+                        body: {}
+                    }
                 );
+
                 showToast(`✅ ${data.message || "Sanction levée."}`);
+
                 await openSanctionsHistory(activeMemberId);
                 await initMembers();
             } catch (error) {
                 showDialogError(error.message);
             } finally {
-                if (button.isConnected) button.disabled = false;
+                if (button.isConnected) {
+                    button.disabled = false;
+                }
             }
         }
 
@@ -932,12 +1104,13 @@
                             Raison
                         </label>
 
-                        <textarea class="dialog-textarea"
-                                  id="tempBanReason"
-                                  name="reason"
-                                  maxlength="450"
-                                  placeholder="Raison du bannissement"
-                                  required></textarea>
+                        <textarea
+                            class="dialog-textarea"
+                            id="tempBanReason"
+                            name="reason"
+                            maxlength="450"
+                            placeholder="Raison du bannissement"
+                            required></textarea>
 
                         <div class="dialog-buttons">
                             <button class="dialog-button"
@@ -984,12 +1157,13 @@
                             Raison du bannissement
                         </label>
 
-                        <textarea class="dialog-textarea"
-                                  id="permBanReason"
-                                  name="reason"
-                                  maxlength="450"
-                                  placeholder="Indique la raison"
-                                  required></textarea>
+                        <textarea
+                            class="dialog-textarea"
+                            id="permBanReason"
+                            name="reason"
+                            maxlength="450"
+                            placeholder="Indique la raison"
+                            required></textarea>
 
                         <div class="dialog-buttons">
                             <button class="dialog-button"
@@ -1038,6 +1212,7 @@
                 } else {
                     rows = roles.map(role => {
                         const action = role.assigned ? "remove" : "add";
+
                         const label = role.assigned
                             ? "➖ Retirer"
                             : "➕ Ajouter";
@@ -1045,7 +1220,10 @@
                         return `
                             <div class="role-row">
                                 <div class="role-name">
-                                    <strong>${escapeHTML(role.name)}</strong>
+                                    <strong>
+                                        ${escapeHTML(role.name)}
+                                    </strong>
+
                                     <span class="role-status">
                                         ${role.assigned
                                             ? "Rôle attribué"
@@ -1144,7 +1322,9 @@
                             body: {
                                 memberId: activeMemberId,
                                 mode: form.elements.mode.value,
-                                durationMinutes: Number(form.elements.durationMinutes.value),
+                                durationMinutes: Number(
+                                    form.elements.durationMinutes.value
+                                ),
                                 reason: form.elements.reason.value.trim()
                             }
                         }
@@ -1231,9 +1411,15 @@
                 return;
             }
 
-            const revokeButton = event.target.closest("[data-revoke-sanction]");
+            const revokeButton = event.target.closest(
+                "[data-revoke-sanction]"
+            );
+
             if (revokeButton) {
-                revokeSanction(revokeButton.dataset.revokeSanction, revokeButton);
+                revokeSanction(
+                    revokeButton.dataset.revokeSanction,
+                    revokeButton
+                );
             }
         });
 
@@ -1259,7 +1445,10 @@
 
                 content.hidden = false;
             } catch (error) {
-                console.error("Erreur chargement des membres :", error);
+                console.error(
+                    "Erreur chargement des membres :",
+                    error
+                );
 
                 errorBox.textContent = `❌ ${error.message}`;
                 errorBox.hidden = false;
