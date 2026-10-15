@@ -18,7 +18,7 @@
         }
 
         .members-section {
-            width: min(1200px, 92%);
+            width: min(1400px, 94%);
             margin: 0 auto;
             padding: 35px 0 80px;
         }
@@ -64,45 +64,70 @@
             border: 1px solid rgba(255,255,255,.12);
             border-radius: 12px;
             font: inherit;
+            box-sizing: border-box;
         }
 
-        /* UN MEMBRE PAR LIGNE, SUR PC ET MOBILE */
+        /* =========================================
+           LISTE DES MEMBRES : UNE GRANDE LIGNE PAR MEMBRE
+           Profil à gauche, ID au centre, actions à droite
+        ========================================= */
+
         .members-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
             width: 100%;
-            gap: 16px;
         }
 
         .member-card {
-            min-width: 0;
+            display: grid;
+            grid-template-columns:
+                minmax(190px, 1.1fr)
+                minmax(140px, .8fr)
+                minmax(300px, 1.8fr);
+            align-items: center;
+            gap: 20px;
+
             width: 100%;
+            min-width: 0;
             box-sizing: border-box;
-            padding: 22px;
-            border-radius: 18px;
+            padding: 18px 22px;
+
+            border-radius: 16px;
             background: rgba(255,255,255,.055);
             border: 1px solid rgba(255,255,255,.08);
             backdrop-filter: blur(12px);
-            transition: transform .25s ease, border-color .25s ease;
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease,
+                background .25s ease;
         }
 
         .member-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
             border-color: rgba(0,217,255,.35);
+            background: rgba(255,255,255,.075);
         }
 
+        /* Profil du membre : colonne de gauche */
         .member-card-top {
+            grid-column: 1;
+            grid-row: 1;
+
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 14px;
+            min-width: 0;
         }
 
         .member-avatar {
-            width: 64px;
-            height: 64px;
+            width: 60px;
+            height: 60px;
             flex-shrink: 0;
             border-radius: 50%;
             object-fit: cover;
+            border: 2px solid rgba(0,217,255,.25);
         }
 
         .member-identity {
@@ -111,31 +136,47 @@
 
         .member-identity h2 {
             margin: 0 0 5px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             overflow-wrap: anywhere;
         }
 
         .member-identity span {
+            display: block;
             color: #00d9ff;
             font-size: .8rem;
             overflow-wrap: anywhere;
+            line-height: 1.5;
         }
 
+        /* Identifiant Discord : colonne du milieu */
         .member-id {
-            margin-top: 18px;
-            padding: 8px 10px;
+            grid-column: 2;
+            grid-row: 1;
+
+            min-width: 0;
+            margin-top: 0;
+            padding: 10px 12px;
             border-radius: 8px;
             background: rgba(0,0,0,.2);
-            color: rgba(255,255,255,.6);
+            color: rgba(255,255,255,.65);
             font-size: .75rem;
+            line-height: 1.6;
             overflow-wrap: anywhere;
         }
 
+        /* Boutons d'action : colonne de droite */
         .member-actions {
+            grid-column: 3;
+            grid-row: 1;
+
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
             gap: 8px;
-            margin-top: 15px;
+
+            min-width: 0;
+            margin-top: 0;
         }
 
         .member-action,
@@ -148,13 +189,17 @@
             background: rgba(255,255,255,.08);
             cursor: pointer;
             font: inherit;
-            font-size: .9rem;
-            text-align: left;
-            transition: background .2s ease, border-color .2s ease;
+            font-size: .85rem;
+            text-align: center;
+            transition:
+                background .2s ease,
+                border-color .2s ease;
         }
 
         .member-action {
-            width: 100%;
+            flex: 1 1 135px;
+            width: auto;
+            min-width: 0;
             box-sizing: border-box;
         }
 
@@ -170,11 +215,19 @@
         }
 
         .member-no-action {
+            grid-column: 3;
+            grid-row: 1;
+
             display: block;
-            margin-top: 15px;
+            min-width: 0;
+            margin-top: 0;
             color: rgba(255,255,255,.55);
             font-size: .85rem;
         }
+
+        /* =========================================
+           HISTORIQUE DES SANCTIONS
+        ========================================= */
 
         .sanction-entry {
             padding: 14px;
@@ -218,6 +271,7 @@
             background: rgba(22,163,74,.12);
         }
 
+        /* Messages et compteur */
         .members-count {
             opacity: .75;
             font-size: .9rem;
@@ -245,7 +299,10 @@
             display: none !important;
         }
 
-        /* Fenêtre des actions */
+        /* =========================================
+           FENÊTRE DES ACTIONS
+        ========================================= */
+
         .action-dialog {
             width: min(560px, calc(100% - 28px));
             max-height: 85vh;
@@ -276,9 +333,11 @@
         .dialog-header h2 {
             margin: 0;
             font-size: 1.2rem;
+            overflow-wrap: anywhere;
         }
 
         .dialog-close {
+            flex-shrink: 0;
             border: 0;
             color: white;
             background: transparent;
@@ -347,6 +406,7 @@
             cursor: wait;
         }
 
+        /* Gestion des rôles */
         .role-row {
             display: flex;
             align-items: center;
@@ -372,6 +432,7 @@
             flex-shrink: 0;
         }
 
+        /* Notification */
         .members-toast {
             position: fixed;
             right: 18px;
@@ -386,21 +447,80 @@
             box-shadow: 0 10px 30px rgba(0,0,0,.4);
         }
 
-        @media (max-width: 600px) {
+        /* =========================================
+           TABLETTES : LIGNES PLUS COMPACTES
+        ========================================= */
+
+        @media (max-width: 1050px) and (min-width: 851px) {
+            .member-card {
+                grid-template-columns:
+                    minmax(160px, 1fr)
+                    minmax(120px, .7fr)
+                    minmax(250px, 1.5fr);
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .member-avatar {
+                width: 50px;
+                height: 50px;
+            }
+
+            .member-action {
+                flex-basis: 115px;
+                padding: 9px;
+                font-size: .8rem;
+            }
+        }
+
+        /* =========================================
+           MOBILE : CONTENU EMPILÉ POUR LA LISIBILITÉ
+        ========================================= */
+
+        @media (max-width: 850px) {
             .members-page {
                 padding-top: 90px;
             }
 
             .members-section {
+                width: 94%;
                 padding-top: 25px;
             }
 
             .members-grid {
-                grid-template-columns: minmax(0, 1fr);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
             }
 
             .member-card {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
                 padding: 16px;
+            }
+
+            .member-card-top,
+            .member-id,
+            .member-actions,
+            .member-no-action {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .member-id {
+                margin-top: 0;
+            }
+
+            .member-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .member-action {
+                flex: 1 1 auto;
+                width: 100%;
+                text-align: left;
+                box-sizing: border-box;
             }
 
             .members-toolbar {
@@ -410,7 +530,6 @@
             .members-search {
                 width: 100%;
                 min-width: 0;
-                box-sizing: border-box;
             }
 
             .members-count {
