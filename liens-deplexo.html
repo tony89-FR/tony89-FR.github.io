@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>Liens Deplexo — La communauté live</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#111a2b;--panel2:#0f1726;--line:#28364d;--text:#eef4ff;--muted:#9caec8;--blue:#72b7ff;--green:#39d98a;--red:#ff6b7e;--amber:#f6c66a}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#17243b 0,#0b1020 47%,#080d17 100%);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);min-height:100vh}
+    a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}button{font:inherit;cursor:pointer}
+    .wrap{width:min(1160px,calc(100% - 32px));margin:0 auto;padding:30px 0 56px}.top{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:13px}.logo{width:48px;height:48px;border:1px solid #314667;border-radius:15px;display:grid;place-items:center;background:#142039;font-size:25px}.brand h1{font-size:clamp(22px,4vw,32px);margin:0;letter-spacing:-.04em}.brand p{margin:5px 0 0;color:var(--muted);font-size:14px}.top-links{display:flex;flex-wrap:wrap;gap:9px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 13px;border-radius:10px;border:1px solid var(--line);background:#151f31;color:var(--text);font-weight:650;font-size:13px}.btn.primary{background:#152e4a;border-color:#315780}.btn:hover{filter:brightness(1.13);text-decoration:none}.section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 13px}.section-title h2{font-size:18px;margin:0;letter-spacing:-.02em}.section-title p{font-size:12px;color:var(--muted);margin:5px 0 0}.panel{border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,rgba(18,29,47,.96),rgba(13,21,34,.97));box-shadow:0 14px 38px rgba(0,0,0,.14)}.status-panel{padding:20px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}.status-title{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--amber);box-shadow:0 0 12px currentColor}.dot.ok{background:var(--green);color:var(--green)}.dot.bad{background:var(--red);color:var(--red)}.subtext{font-size:13px;color:var(--muted);line-height:1.55;margin-top:7px}.status-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:13px}.metric{padding:17px;border:1px solid var(--line);border-radius:14px;background:#101827;min-width:0}.metric .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.14em}.metric .value{font-size:22px;font-weight:800;margin-top:9px;overflow-wrap:anywhere}.metric .hint{font-size:12px;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}.metric .bar{height:5px;background:#263246;border-radius:20px;overflow:hidden;margin-top:13px}.metric .bar span{display:block;height:100%;width:0;background:var(--blue);border-radius:20px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.link-card{padding:17px;min-width:0}.card-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.endpoint{font-size:14px;font-weight:800;overflow-wrap:anywhere}.tag{flex-shrink:0;font-size:10px;letter-spacing:.09em;text-transform:uppercase;border:1px solid var(--line);border-radius:6px;padding:4px 7px;color:var(--muted)}.tag.public{color:var(--green);border-color:#28533f}.card-desc{font-size:13px;line-height:1.5;color:var(--muted);margin:8px 0 13px}.url{font-size:12px;color:#b8d7ff;background:#0a1220;border:1px solid #202e43;border-radius:8px;padding:9px 10px;overflow-wrap:anywhere;word-break:break-word}.card-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}.check{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}.check .dot{width:7px;height:7px}.smallbtn{padding:7px 9px;font-size:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}.note{padding:15px;border:1px solid #514529;background:rgba(73,57,19,.18);border-radius:13px;color:#f4ddb0;font-size:13px;line-height:1.6}.codebox{border:1px solid var(--line);background:#0a111d;border-radius:12px;overflow:hidden}.codebox summary{padding:12px 14px;cursor:pointer;font-size:13px;color:var(--muted)}pre{padding:0 14px 14px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:11px;color:#bcd1eb;max-height:380px;overflow:auto}.routes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.route{padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);display:flex;align-items:flex-start;gap:9px}.method{font-size:10px;font-weight:850;letter-spacing:.05em;min-width:40px;padding-top:2px;color:var(--amber)}.method.get{color:var(--green)}.route code{font-size:12px;color:#d9e9ff;overflow-wrap:anywhere}.route small{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:4px}.foot{color:var(--muted);font-size:12px;text-align:center;margin-top:28px;line-height:1.6}
+    @media(max-width:780px){.top{align-items:flex-start;flex-direction:column}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid,.two,.routes{grid-template-columns:1fr}.status-panel{grid-template-columns:1fr}.status-actions{justify-content:flex-start}.section-title{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><div class="logo">🔗</div><div><h1>Liens Deplexo</h1><p>API, intégrations et état du service de La communauté live</p></div></div>
+    <div class="top-links"><a class="btn" href="index.html">← Retour au site</a><a class="btn" href="https://deplexo.com/apps" target="_blank" rel="noopener noreferrer">Tableau de bord Deplexo ↗</a></div>
+  </header>
+
+  <section class="panel status-panel" aria-live="polite">
+    <div><div class="status-title"><span id="serviceDot" class="dot"></span><span id="serviceTitle">Vérification de l’API…</span></div><div class="subtext" id="serviceDescription">Test en direct de l’adresse publique de ton service.</div><div class="subtext" id="checkedAt">Vérification en cours…</div></div>
+    <div class="status-actions"><a class="btn primary" href="https://la-communaute-live-bot.de.deplexo.com/" target="_blank" rel="noopener noreferrer">Ouvrir l’API ↗</a><button type="button" class="btn" id="refreshBtn">↻ Actualiser</button></div>
+  </section>
+
+  <section>
+    <div class="section-title"><div><h2>📊 Monitoring Deplexo en direct</h2><p>CPU, mémoire, réseau, trafic et dernier déploiement lorsque l’API Deplexo est configurée.</p></div><span class="tag" id="metricsTag">CONNEXION À CONFIGURER</span></div>
+    <div id="metricGrid" class="metric-grid">
+      <article class="metric"><div class="label">CPU</div><div class="value">—</div><div class="hint">En attente des métriques Deplexo</div><div class="bar"><span></span></div></article>
+      <article class="metric"><div class="label">Mémoire</div><div class="value">—</div><div class="hint">En attente des métriques Deplexo</div><div class="bar"><span></span></div></article>
+      <article class="metric"><div class="label">Réseau</div><div class="value">—</div><div class="hint">En attente des métriques Deplexo</div><div class="bar"><span></span></div></article>
+      <article class="metric"><div class="label">Trafic mensuel</div><div class="value">—</div><div class="hint">En attente des métriques Deplexo</div><div class="bar"><span></span></div></article>
+    </div>
+    <div id="deploymentPanel" class="two" style="margin-top:13px">
+      <article class="metric"><div class="label">Déploiements</div><div class="value">—</div><div class="hint">En attente des informations Deplexo</div></article>
+      <article class="metric"><div class="label">Dernier déploiement</div><div class="value">—</div><div class="hint">En attente des informations Deplexo</div></article>
+    </div>
+    <p id="metricsMessage" class="subtext">Pour afficher les statistiques réelles, configure DEPLEXO_TOKEN et DEPLEXO_APP_ID côté serveur. Aucune clé secrète ne doit être ajoutée à cette page HTML.</p>
+    <details class="codebox" style="margin-top:12px"><summary>Données détaillées renvoyées par Deplexo</summary><pre id="rawMetrics">Les données apparaîtront ici lorsque la connexion sera configurée.</pre></details>
+  </section>
+
+  <section>
+    <div class="section-title"><div><h2>🌐 Liens d’intégration publics</h2><p>Ces URL GET sont déclarées dans l’API actuelle. Tu peux les ouvrir ou copier leur adresse.</p></div><span class="tag public">GET PUBLIC</span></div>
+    <div class="grid" id="publicLinks"></div>
+  </section>
+
+  <section>
+    <div class="section-title"><div><h2>🔐 Routes utilisées par les outils du site</h2><p>Liste de routes du bot : les routes protégées nécessitent une session Discord et les permissions correspondantes. Les routes POST ne doivent pas être ouvertes directement dans le navigateur.</p></div><span class="tag">SESSION / PERMISSIONS</span></div>
+    <div class="routes" id="protectedRoutes"></div>
+  </section>
+  <div class="note" style="margin-top:18px"><strong>À propos des statistiques :</strong> l’état public de l’API est vérifié directement depuis cette page. Les compteurs CPU, mémoire, réseau, trafic et déploiements proviennent de l’API privée Deplexo et nécessitent une clé limitée à <code>app:read</code>, stockée uniquement dans les variables d’environnement du service.</div>
+  <footer class="foot">La communauté live · Liens d’intégration et monitoring · Les données d’hébergement sont actualisées lorsque l’API Deplexo répond.</footer>
+</div>
+<script>
+(() => {
+  const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+  const $ = id => document.getElementById(id);
+  const PUBLIC_ENDPOINTS = [
+    {path:"/", title:"API principale", description:"Vérifie que l’API répond et affiche le message d’état."},
+    {path:"/events", title:"Événements Discord", description:"Liste JSON des événements programmés du serveur."},
+    {path:"/stats", title:"Statistiques du serveur", description:"Données statistiques publiques renvoyées par le bot."},
+    {path:"/staff", title:"Équipe du staff", description:"Liste publique du staff renvoyée par l’API."},
+    {path:"/annonces", title:"Annonces", description:"Données d’annonces synchronisées par le bot."},
+    {path:"/regles", title:"Règlement", description:"Règlement synchronisé depuis Discord."}
+  ];
+  const PROTECTED_ENDPOINTS = [
+    ["GET","/auth/discord","Démarre la connexion OAuth2 Discord."],
+    ["GET","/auth/discord/callback","Retour OAuth2 Discord ; utilisé par le flux de connexion."],
+    ["GET","/auth/me","Vérifie la session avec l’en-tête Bearer."],
+    ["GET","/auth/status","État de la configuration OAuth2."],
+    ["GET","/auth/permissions","Identité, rôles et permissions du membre connecté."],
+    ["GET","/members","Liste des membres ; permission member_list requise."],
+    ["POST","/moderation/temp-ban","Ban temporaire ; permission de modération requise."],
+    ["POST","/moderation/perm-ban","Ban définitif ; permission de modération requise."],
+    ["GET / POST","/moderation/roles","Charge et modifie les rôles d’un membre."],
+    ["POST","/moderation/kick","Expulse un membre du serveur."],
+    ["POST","/moderation/nickname","Modifie le pseudo d’un membre."],
+    ["POST","/moderation/mute","Mute vocal, chat ou combiné."],
+    ["GET","/moderation/sanctions?memberId=…","Historique des sanctions d’un membre précis."],
+    ["GET","/moderation/sanctions/all","Historique global des sanctions ; permission requise."],
+    ["GET","/moderation/sanctions/mine","Sanctions du compte connecté, si la route est déployée."],
+    ["POST","/moderation/sanctions/:sanctionId/revoke","Lève un mute actif."],
+    ["GET","/chat/channels","Salons visibles dans l’outil Discord web."],
+    ["GET","/chat/members?q=…","Recherche de membres pour les mentions."],
+    ["GET / POST","/chat/channels/:channelId/messages","Lit ou envoie des messages dans un salon autorisé."],
+    ["GET","/creation/suggestions?type=mention&q=…","Suggestions de membres et de rôles pour une annonce."],
+    ["GET","/creation/suggestions?type=channel&q=…","Suggestions de salons pour une annonce."],
+    ["POST","/creation/announcement","Publie une annonce depuis le site."],
+    ["POST","/creation/event","Crée un événement Discord depuis le site."]
+  ];
+  const clean = value => String(value ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+  function renderPublicLinks() {
+    $("publicLinks").innerHTML = PUBLIC_ENDPOINTS.map(item => {
+      const url = API_URL + item.path;
+      return `<article class="panel link-card" data-endpoint="${clean(item.path)}"><div class="card-head"><div class="endpoint">${clean(item.title)}</div><span class="tag public">GET</span></div><p class="card-desc">${clean(item.description)}</p><div class="url">${clean(url)}</div><div class="card-actions"><span class="check"><span class="dot"></span><span class="health-label">À vérifier</span></span><div style="display:flex;gap:7px"><a class="btn smallbtn primary" href="${clean(url)}" target="_blank" rel="noopener noreferrer">Ouvrir ↗</a><button class="btn smallbtn copy-btn" type="button" data-copy="${clean(url)}">Copier</button></div></div></article>`;
+    }).join("");
+    $("publicLinks").querySelectorAll(".copy-btn").forEach(button => button.addEventListener("click", async () => {
+      try { await navigator.clipboard.writeText(button.dataset.copy); button.textContent = "Copié ✓"; }
+      catch { window.prompt("Copie cette URL :", button.dataset.copy); }
+      window.setTimeout(() => button.textContent = "Copier", 1600);
+    }));
+  }
+  function renderProtected() {
+    $("protectedRoutes").innerHTML = PROTECTED_ENDPOINTS.map(([method,path,desc]) => `<div class="route"><span class="method ${method.includes("GET") ? "get" : ""}">${clean(method)}</span><div><code>${clean(path)}</code><small>${clean(desc)}</small></div></div>`).join("");
+  }
+  async function checkPublicApi() {
+    const started = performance.now();
+    try {
+      const response = await fetch(API_URL + "/", {cache:"no-store", signal:AbortSignal.timeout(8000)});
+      const text = await response.text();
+      const elapsed = Math.round(performance.now() - started);
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      $("serviceDot").className = "dot ok";
+      $("serviceTitle").textContent = "API accessible";
+      $("serviceDescription").textContent = text || "Le serveur répond.";
+      $("checkedAt").textContent = `Dernière vérification : ${new Date().toLocaleString("fr-FR")} · Réponse en ${elapsed} ms.`;
+      const endpoints = [...document.querySelectorAll("[data-endpoint]")];
+      await Promise.all(endpoints.map(async card => {
+        const path = card.dataset.endpoint;
+        const label = card.querySelector(".health-label");
+        const dot = card.querySelector(".check .dot");
+        try {
+          const res = await fetch(API_URL + path, {cache:"no-store", signal:AbortSignal.timeout(8000)});
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          if (path !== "/") await res.text();
+          label.textContent = "Répond · HTTP " + res.status;
+          dot.className = "dot ok";
+        } catch { label.textContent = "Non vérifié / erreur"; dot.className = "dot bad"; }
+      }));
+    } catch (error) {
+      $("serviceDot").className = "dot bad";
+      $("serviceTitle").textContent = "API non joignable";
+      $("serviceDescription").textContent = "La vérification n’a pas reçu de réponse. L’API peut être momentanément indisponible ou bloquée par le réseau.";
+      $("checkedAt").textContent = "Dernier essai : " + new Date().toLocaleString("fr-FR");
+    }
+  }
+  function flatten(value, prefix="", output=[]) {
+    if (value === null || value === undefined) return output;
+    if (typeof value !== "object") { output.push({key:prefix || "valeur", value}); return output; }
+    if (Array.isArray(value)) { value.slice(0,8).forEach((item,index)=>flatten(item, `${prefix}[${index}]`, output)); return output; }
+    for (const [key,child] of Object.entries(value)) flatten(child, prefix ? `${prefix}.${key}` : key, output);
+    return output;
+  }
+  function displayMetricData(payload) {
+    const flat = flatten(payload.liveStats || {});
+    const searchValue = patterns => flat.find(entry => patterns.some(pattern => pattern.test(entry.key)));
+    const specs = [
+      {label:"CPU",patterns:[/cpu/i,/vcpu/i]},
+      {label:"Mémoire",patterns:[/memory/i,/ram/i]},
+      {label:"Réseau",patterns:[/network/i,/ingress/i,/egress/i,/bandwidth/i]},
+      {label:"Trafic mensuel",patterns:[/traffic/i,/transfer/i,/monthly/i,/bandwidth/i]}
+    ];
+    const chosen = specs.map(spec => ({...spec, entry:searchValue(spec.patterns)}));
+    $("metricGrid").innerHTML = chosen.map((spec,i) => {
+      let value = spec.entry ? (typeof spec.entry.value === "object" ? JSON.stringify(spec.entry.value) : String(spec.entry.value)) : "Voir détails";
+      if (value.length > 50) value = value.slice(0,47) + "…";
+      const hint = spec.entry ? spec.entry.key : "Les noms de champs peuvent varier selon Deplexo.";
+      return `<article class="metric"><div class="label">${clean(spec.label)}</div><div class="value" title="${clean(spec.entry ? String(spec.entry.value) : "")}">${clean(value)}</div><div class="hint">${clean(hint)}</div><div class="bar"><span style="width:${spec.entry && /percent|percentage|usage_pct/i.test(spec.entry.key) ? Math.max(0,Math.min(100,Number(spec.entry.value)||0)) : 0}%"></span></div></article>`;
+    }).join("");
+    $("metricsTag").textContent = "MÉTRIQUES REÇUES";
+    $("metricsMessage").textContent = `Données récupérées le ${new Date(payload.checkedAt).toLocaleString("fr-FR")}. Les champs ci-dessous correspondent à la réponse de l’API Deplexo.`;
+    $("rawMetrics").textContent = JSON.stringify(payload, null, 2);
+    const totalDeploys = payload.deployments?.total;
+    const latest = payload.deployments?.latest;
+    const created = latest?.createdAt ? new Date(latest.createdAt) : null;
+    const deployCards = $("deploymentPanel").querySelectorAll(".metric");
+    deployCards[0].querySelector(".value").textContent = Number.isFinite(totalDeploys) ? totalDeploys.toLocaleString("fr-FR") : "—";
+    deployCards[0].querySelector(".hint").textContent = "Nombre annoncé par l’API Deplexo";
+    deployCards[1].querySelector(".value").textContent = latest?.status ? String(latest.status).toUpperCase() : (created && !Number.isNaN(created.getTime()) ? created.toLocaleDateString("fr-FR") : "—");
+    deployCards[1].querySelector(".hint").textContent = [created && !Number.isNaN(created.getTime()) ? created.toLocaleString("fr-FR") : null, latest?.commitSha ? "Commit " + String(latest.commitSha).slice(0,7) : null].filter(Boolean).join(" · ") || "Dernier déploiement non fourni";
+    if (payload.app?.status) {
+      const state = String(payload.app.status).toUpperCase();
+      $("serviceTitle").textContent = "API accessible · Hébergement " + state;
+    }
+  }
+  async function loadMetrics() {
+    try {
+      const response = await fetch(API_URL + "/deplexo/metrics", {cache:"no-store", signal:AbortSignal.timeout(10000)});
+      const data = await response.json().catch(()=>({}));
+      if (!response.ok || !data.ok) {
+        $("metricsTag").textContent = data.code === "CONFIG_REQUIRED" ? "CONNEXION À CONFIGURER" : "MÉTRIQUES INDISPONIBLES";
+        $("metricsMessage").textContent = data.message || "L’API de métriques Deplexo n’est pas encore configurée.";
+        $("rawMetrics").textContent = JSON.stringify(data, null, 2);
+        return;
+      }
+      displayMetricData(data);
+    } catch {
+      $("metricsTag").textContent = "MÉTRIQUES INDISPONIBLES";
+      $("metricsMessage").textContent = "La route /deplexo/metrics n’est pas encore publiée, ou l’API Deplexo n’est pas configurée. Les liens publics restent utilisables.";
+    }
+  }
+  async function refresh() {
+    $("refreshBtn").disabled = true;
+    $("refreshBtn").textContent = "↻ Actualisation…";
+    await Promise.all([checkPublicApi(), loadMetrics()]);
+    $("refreshBtn").disabled = false;
+    $("refreshBtn").textContent = "↻ Actualiser";
+  }
+  renderPublicLinks(); renderProtected(); $("refreshBtn").addEventListener("click", refresh); refresh();
+  window.setInterval(() => { checkPublicApi(); loadMetrics(); }, 60000);
+})();
+</script>
+</body>
+</html>
