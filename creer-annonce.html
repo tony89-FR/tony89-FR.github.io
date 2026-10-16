@@ -34,6 +34,18 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
 .mention-suggestion-detail { display: block; margin-top: 2px; color: #8494ae; font-size: .78rem; }
 .mention-empty { padding: 12px; color: #94a3b8; font-size: .85rem; }
 .form-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.embed-preview { margin-top: 24px; padding: 18px; border: 1px solid #2c3a53; border-radius: 14px; background: #090d17; }
+.embed-preview h2 { margin: 0 0 12px; font-size: 1rem; color: #cbd5e1; }
+.discord-embed { max-width: 640px; overflow: hidden; border-left: 5px solid #5865f2; border-radius: 5px; background: #202225; color: #f2f3f5; padding: 16px; }
+.discord-embed-title { margin: 0 0 12px; font-weight: 700; font-size: 1.05rem; overflow-wrap: anywhere; }
+.discord-embed-title a { color: #00a8fc; text-decoration: none; }
+.discord-embed-body { display: grid; grid-template-columns: minmax(0,1fr) 88px; gap: 12px; }
+.discord-content-preview { max-width: 640px; margin-bottom: 10px; padding: 0 2px; color: #f2f3f5; white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5; font-size: .92rem; }
+.discord-embed-thumb { width: 88px; height: 88px; border-radius: 5px; object-fit: cover; }
+.discord-embed-image { display: block; width: 100%; max-height: 260px; margin-top: 14px; border-radius: 5px; object-fit: cover; }
+.discord-embed-footer { margin-top: 14px; color: #b5bac1; font-size: .78rem; overflow-wrap: anywhere; }
+.color-control { width: 62px; height: 45px; padding: 4px; border: 1px solid #2c3a53; border-radius: 9px; background: #0a1020; }
+.embed-help { color: #8494ae; font-size: .8rem; line-height: 1.5; margin-top: 8px; }
 .form-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 18px; border: 1px solid #334155; border-radius: 11px; color: #e2e8f0; background: rgba(255,255,255,.06); text-decoration: none; font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
 .btn:hover { transform: translateY(-1px); border-color: rgba(0,217,255,.6); background: rgba(0,217,255,.10); }
@@ -77,8 +89,41 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
                 </div>
                 <span class="field-help">Tape <strong>@</strong> pour rechercher un membre ou un rôle, et <strong>#</strong> pour insérer un salon Discord. Seules les mentions que tu sélectionnes peuvent notifier un membre ou un rôle ; @everyone et @here restent désactivés.</span>
 
-                <label class="form-label" for="url">Lien (facultatif)</label>
+                <label class="form-label" for="url">Lien du titre (facultatif)</label>
                 <input class="form-control" id="url" name="url" type="url" maxlength="300" placeholder="https://…">
+                <span class="field-help">Si tu ajoutes un lien, le titre de l'embed sera cliquable.</span>
+
+                <h2 class="form-label" style="font-size:1.15rem;margin-top:28px">🎨 Personnaliser l'embed Discord</h2>
+                <div class="form-row">
+                    <div>
+                        <label class="form-label" for="color">Couleur de l'embed</label>
+                        <input class="color-control" id="color" name="color" type="color" value="#5865f2" aria-label="Couleur de l'embed">
+                    </div>
+                    <div>
+                        <label class="form-label" for="footerText">Pied de page (facultatif)</label>
+                        <input class="form-control" id="footerText" name="footerText" maxlength="1800" placeholder="Ex. Infos • La communauté live">
+                    </div>
+                </div>
+                <label class="form-label" for="imageUrl">Grande image (facultatif)</label>
+                <input class="form-control" id="imageUrl" name="imageUrl" type="url" maxlength="500" placeholder="https://exemple.fr/image.png">
+                <span class="field-help">Utilise un lien direct vers une image accessible publiquement (HTTPS de préférence).</span>
+                <label class="form-label" for="thumbnailUrl">Miniature à droite (facultatif)</label>
+                <input class="form-control" id="thumbnailUrl" name="thumbnailUrl" type="url" maxlength="500" placeholder="https://exemple.fr/miniature.png">
+
+                <section class="embed-preview" aria-live="polite">
+                    <h2>👀 Aperçu de l'embed</h2>
+                    <div class="discord-content-preview" id="previewMessage">Ton message apparaîtra ici.</div>
+                    <div id="embedPreview" class="discord-embed">
+                        <div class="discord-embed-title" id="previewTitle">Titre de l'annonce</div>
+                        <div class="discord-embed-body">
+                            <div></div>
+                            <img class="discord-embed-thumb" id="previewThumbnail" alt="Aperçu de la miniature" hidden>
+                        </div>
+                        <img class="discord-embed-image" id="previewImage" alt="Aperçu de la grande image" hidden>
+                        <div class="discord-embed-footer" id="previewFooter">La communauté live • Publié par toi</div>
+                    </div>
+                    <p class="embed-help">L'aperçu est indicatif. Le rendu final dépendra de Discord et des URL d'image que tu renseignes.</p>
+                </section>
 
                 <div class="form-actions">
                     <button id="submitButton" class="btn btn-primary" type="submit">📢 Publier l’annonce</button>
@@ -98,6 +143,17 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
         const form = document.getElementById("announcementForm");
         const submitButton = document.getElementById("submitButton");
         const messageInput = document.getElementById("message");
+        const titleInput = document.getElementById("title");
+        const colorInput = document.getElementById("color");
+        const imageUrlInput = document.getElementById("imageUrl");
+        const thumbnailUrlInput = document.getElementById("thumbnailUrl");
+        const footerTextInput = document.getElementById("footerText");
+        const embedPreview = document.getElementById("embedPreview");
+        const previewTitle = document.getElementById("previewTitle");
+        const previewMessage = document.getElementById("previewMessage");
+        const previewImage = document.getElementById("previewImage");
+        const previewThumbnail = document.getElementById("previewThumbnail");
+        const previewFooter = document.getElementById("previewFooter");
         const mentionSuggestions = document.getElementById("mentionSuggestions");
         let activeTrigger = null;
         let currentSuggestions = [];
@@ -109,6 +165,35 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
             errorBox.textContent = "❌ " + message;
             errorBox.hidden = false;
         }
+
+        function safePreviewImage(value, img) {
+            try {
+                const parsed = new URL(value);
+                if (!["http:", "https:"].includes(parsed.protocol)) throw new Error("URL non autorisée");
+                img.src = parsed.href;
+                img.hidden = false;
+                img.onerror = () => { img.hidden = true; };
+            } catch {
+                img.removeAttribute("src");
+                img.hidden = true;
+            }
+        }
+
+        function updateEmbedPreview() {
+            previewTitle.textContent = titleInput.value.trim() || "Titre de l'annonce";
+            previewMessage.textContent = `📢 ${titleInput.value.trim() || "Titre de l'annonce"}\n\n${messageInput.value.trim() || "Ton message apparaîtra ici."}`;
+            embedPreview.style.borderLeftColor = /^#[0-9a-fA-F]{6}$/.test(colorInput.value) ? colorInput.value : "#5865f2";
+            previewFooter.textContent = [footerTextInput.value.trim(), "La communauté live • Publié par toi"].filter(Boolean).join(" | ");
+            if (imageUrlInput.value.trim()) safePreviewImage(imageUrlInput.value.trim(), previewImage);
+            else { previewImage.removeAttribute("src"); previewImage.hidden = true; }
+            if (thumbnailUrlInput.value.trim()) safePreviewImage(thumbnailUrlInput.value.trim(), previewThumbnail);
+            else { previewThumbnail.removeAttribute("src"); previewThumbnail.hidden = true; }
+        }
+
+        [titleInput, messageInput, colorInput, imageUrlInput, thumbnailUrlInput, footerTextInput].forEach(input => {
+            input.addEventListener("input", updateEmbedPreview);
+        });
+        updateEmbedPreview();
 
         async function apiRequest(path, options = {}) {
             const token = localStorage.getItem("discord_session");
@@ -303,6 +388,10 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
                         title: form.elements.title.value.trim(),
                         message: form.elements.message.value.trim(),
                         url: form.elements.url.value.trim(),
+                        color: form.elements.color.value,
+                        imageUrl: form.elements.imageUrl.value.trim(),
+                        thumbnailUrl: form.elements.thumbnailUrl.value.trim(),
+                        footerText: form.elements.footerText.value.trim(),
                         mentions: getSelectedMentionsForMessage(form.elements.message.value)
                     }
                 });
@@ -311,6 +400,7 @@ textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
                 form.reset();
                 selectedMentions = [];
                 hideSuggestions();
+                updateEmbedPreview();
             } catch (error) {
                 showError(error.message);
             } finally {
