@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer - La communauté live</title>
+    <link rel="stylesheet" href="css/style.css?v=20261016-created">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: #f8fafc;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(ellipse at 8% 5%, rgba(88,101,242,.20), transparent 35%),
+                radial-gradient(ellipse at 95% 90%, rgba(0,217,255,.08), transparent 35%),
+                #080b14;
+        }
+
+        .create-page {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 110px 0 70px;
+        }
+
+        .create-header {
+            text-align: center;
+            margin-bottom: 34px;
+        }
+
+        .create-kicker {
+            color: #00d9ff;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .create-header h1 {
+            margin: 10px 0;
+            font-size: clamp(2.1rem, 5vw, 3.5rem);
+            line-height: 1.15;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #d946ef);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .create-header p:last-child {
+            max-width: 680px;
+            margin: 0 auto;
+            color: #9aabc5;
+            line-height: 1.7;
+        }
+
+        .create-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .create-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-height: 235px;
+            padding: 26px;
+            border: 1px solid #25314a;
+            border-radius: 18px;
+            color: #f8fafc;
+            text-decoration: none;
+            background: linear-gradient(145deg, rgba(15,23,42,.98), rgba(11,17,31,.96));
+            box-shadow: 0 12px 30px rgba(0,0,0,.18);
+            transition: transform .2s ease, border-color .2s ease, background .2s ease;
+        }
+
+        .create-card:hover,
+        .create-card:focus-visible {
+            transform: translateY(-4px);
+            border-color: rgba(0,217,255,.55);
+            background: linear-gradient(145deg, rgba(19,34,57,.98), rgba(13,22,40,.98));
+            outline: none;
+        }
+
+        .create-icon {
+            display: grid;
+            place-items: center;
+            width: 56px;
+            height: 56px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(0,217,255,.18);
+            border-radius: 15px;
+            background: rgba(0,217,255,.08);
+            font-size: 1.8rem;
+        }
+
+        .create-card h2 {
+            margin: 0 0 9px;
+            font-size: 1.25rem;
+        }
+
+        .create-card p {
+            margin: 0 0 22px;
+            color: #9aabc5;
+            line-height: 1.6;
+        }
+
+        .create-card-label {
+            margin-top: auto;
+            color: #67e8f9;
+            font-weight: 700;
+            font-size: .9rem;
+        }
+
+        .create-message {
+            padding: 22px;
+            margin-bottom: 18px;
+            border: 1px solid #26324a;
+            border-radius: 14px;
+            color: #cbd5e1;
+            background: #10182a;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .create-message.error {
+            color: #fecaca;
+            border-color: rgba(248,113,113,.35);
+        }
+
+        .create-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 26px;
+            color: #9aabc5;
+            text-decoration: none;
+            transition: color .2s ease;
+        }
+
+        .create-back:hover { color: #67e8f9; }
+        [hidden] { display: none !important; }
+
+        @media (max-width: 680px) {
+            .create-page { padding-top: 90px; }
+            .create-grid { grid-template-columns: minmax(0, 1fr); }
+            .create-card { min-height: 205px; padding: 22px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <nav class="navbar" id="navbar"></nav>
+
+    <main class="create-page">
+        <header class="create-header">
+            <p class="create-kicker">🛠️ Espace outils</p>
+            <h1>Créer</h1>
+            <p>Choisis ce que tu souhaites créer pour la communauté.</p>
+        </header>
+
+        <div id="loading" class="create-message">⏳ Vérification de ta session Discord et de tes permissions…</div>
+        <div id="error" class="create-message error" hidden></div>
+
+        <section id="createOptions" class="create-grid" hidden>
+            <a id="announcementCard" class="create-card" href="creer-annonce.html" hidden>
+                <span class="create-icon" aria-hidden="true">📢</span>
+                <h2>Créer une annonce</h2>
+                <p>Préparer une annonce pour informer la communauté.</p>
+                <span class="create-card-label">Ouvrir la création d’annonce →</span>
+            </a>
+
+            <a id="eventCard" class="create-card" href="creer-event.html" hidden>
+                <span class="create-icon" aria-hidden="true">📅</span>
+                <h2>Créer un événement</h2>
+                <p>Préparer un événement Discord pour les membres.</p>
+                <span class="create-card-label">Ouvrir la création d’événement →</span>
+            </a>
+        </section>
+
+        <a class="create-back" href="dashboard.html">← Retour au tableau de bord</a>
+    </main>
+
+    <script src="js/navbar.js?v=20261016"></script>
+    <script>
+        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+        const loading = document.getElementById("loading");
+        const errorBox = document.getElementById("error");
+        const options = document.getElementById("createOptions");
+        const announcementCard = document.getElementById("announcementCard");
+        const eventCard = document.getElementById("eventCard");
+
+        async function loadCreateOptions() {
+            const token = localStorage.getItem("discord_session");
+            if (!token) {
+                throw new Error("Tu dois être connecté avec Discord pour accéder à cette page.");
+            }
+
+            const response = await fetch(`${API_URL}/auth/permissions`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            let data = {};
+            try { data = await response.json(); } catch {}
+            if (!response.ok) {
+                throw new Error(data.error || `Erreur serveur : ${response.status}`);
+            }
+            if (!data.connected || !Array.isArray(data.permissions)) {
+                throw new Error("Impossible de vérifier tes permissions Discord.");
+            }
+
+            const permissions = data.permissions;
+            const canCreateAnnouncement = permissions.includes("create_announcement");
+            const canCreateEvent = permissions.includes("create_event");
+
+            announcementCard.hidden = !canCreateAnnouncement;
+            eventCard.hidden = !canCreateEvent;
+
+            if (!canCreateAnnouncement && !canCreateEvent) {
+                throw new Error("Ton compte ne possède pas la permission de créer une annonce ou un événement.");
+            }
+
+            options.hidden = false;
+        }
+
+        loadCreateOptions()
+            .catch(error => {
+                errorBox.textContent = `❌ ${error.message}`;
+                errorBox.hidden = false;
+            })
+            .finally(() => {
+                loading.hidden = true;
+            });
+    </script>
+</body>
+</html>
