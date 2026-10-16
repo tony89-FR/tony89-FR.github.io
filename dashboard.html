@@ -631,7 +631,7 @@ const TOOLS = [
         icon: "🖥️",
         title: "Discord web",
         description: "Accéder aux informations Discord mobile.",
-        link: "discord.html",
+        link: "discord.html"
     },
     {
         permission: "server_logs",
@@ -640,18 +640,18 @@ const TOOLS = [
         description: "Consulter les journaux du serveur."
     },
     {
-        permission: "create_event",
+        permission: ["create_event", "create_announcement"],
         icon: "🛠️",
         title: "Créer",
-        description: "Crée des outil sur le site pour discord",
-        link: "créé.html".
+        description: "Créer une annonce ou un événement Discord.",
+        link: "created.html"
     },
     {
         permission: "deplexo_links",
         icon: "🔗",
         title: "Liens Deplexo",
         description: "Accéder aux liens et informations Deplexo."
-    },
+    }
 ];
 
 /* Sécuriser le texte inséré dans le HTML */
@@ -785,9 +785,15 @@ function renderDashboard(data) {
 
     /* Afficher uniquement les outils autorisés */
 
-    const allowedTools = TOOLS.filter(tool =>
-        permissions.includes(tool.permission)
-    );
+    const allowedTools = TOOLS.filter(tool => {
+        const requiredPermissions = Array.isArray(tool.permission)
+            ? tool.permission
+            : [tool.permission];
+
+        return requiredPermissions.some(permission =>
+            permissions.includes(permission)
+        );
+    });
 
     document.getElementById("tools").innerHTML =
         allowedTools.map(tool => {
