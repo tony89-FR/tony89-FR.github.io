@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer une annonce — La communauté live</title>
+    <link rel="stylesheet" href="css/style.css?v=20261016-created">
+    <style>
+* { box-sizing: border-box; }
+body {
+    margin: 0; min-height: 100vh; color: #f8fafc;
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(ellipse at 8% 5%, rgba(88,101,242,.20), transparent 35%),
+                radial-gradient(ellipse at 95% 90%, rgba(0,217,255,.08), transparent 35%), #080b14;
+}
+.create-page { width: min(850px, 92%); margin: 0 auto; padding: 110px 0 70px; }
+.create-header { text-align: center; margin-bottom: 28px; }
+.create-kicker { color: #00d9ff; font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.create-header h1 { margin: 10px 0; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; background: linear-gradient(90deg,#38bdf8,#818cf8,#d946ef); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.create-header p:last-child { max-width: 680px; margin: 0 auto; color: #9aabc5; line-height: 1.7; }
+.form-card { padding: clamp(18px, 4vw, 30px); border: 1px solid #25314a; border-radius: 20px; background: linear-gradient(145deg,rgba(15,23,42,.98),rgba(11,17,31,.96)); box-shadow: 0 12px 35px rgba(0,0,0,.22); }
+.form-label { display: block; margin: 16px 0 7px; font-size: .92rem; font-weight: 700; color: #e2e8f0; }
+.form-control { display: block; width: 100%; min-width: 0; padding: 13px 14px; border: 1px solid #2c3a53; border-radius: 11px; outline: none; background: #0a1020; color: #f8fafc; font: inherit; }
+.form-control:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.12); }
+textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
+.field-help { display: block; margin-top: 6px; color: #8494ae; font-size: .8rem; line-height: 1.5; }
+.form-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 18px; border: 1px solid #334155; border-radius: 11px; color: #e2e8f0; background: rgba(255,255,255,.06); text-decoration: none; font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.btn:hover { transform: translateY(-1px); border-color: rgba(0,217,255,.6); background: rgba(0,217,255,.10); }
+.btn-primary { color: #08111f; border-color: transparent; background: linear-gradient(100deg,#38bdf8,#818cf8); }
+.btn-primary:hover { background: linear-gradient(100deg,#67e8f9,#a5b4fc); }
+.btn:disabled { opacity: .6; cursor: wait; transform: none; }
+.page-message { padding: 16px 18px; margin-bottom: 16px; border: 1px solid #26324a; border-radius: 13px; color: #cbd5e1; background: #10182a; line-height: 1.6; }
+.page-message.error { color: #fecaca; border-color: rgba(248,113,113,.4); }
+.page-message.success { color: #bbf7d0; border-color: rgba(74,222,128,.35); }
+.page-message a { color: #67e8f9; overflow-wrap: anywhere; }
+.page-back { display: inline-flex; margin-top: 22px; color: #9aabc5; text-decoration: none; }
+.page-back:hover { color: #67e8f9; }
+[hidden] { display: none !important; }
+@media(max-width:620px) { .create-page { padding-top: 90px; } .form-row { grid-template-columns: 1fr; gap: 0; } .form-actions { flex-direction: column; align-items: stretch; } .btn { width: 100%; } }
+
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <nav class="navbar" id="navbar"></nav>
+    <main class="create-page">
+        <header class="create-header">
+            <p class="create-kicker">📢 Espace communauté</p>
+            <h1>Créer une annonce</h1>
+            <p>Rédige ton annonce : le bot la publiera dans le salon des annonces de La communauté live.</p>
+        </header>
+
+        <div id="loading" class="page-message">⏳ Vérification de ta session Discord et de tes permissions…</div>
+        <div id="error" class="page-message error" hidden></div>
+        <div id="success" class="page-message success" role="status" hidden></div>
+
+        <section id="formSection" class="form-card" hidden>
+            <form id="announcementForm">
+                <label class="form-label" for="title">Titre de l’annonce</label>
+                <input class="form-control" id="title" name="title" maxlength="100" minlength="3" required placeholder="Ex. Soirée communautaire ce vendredi">
+
+                <label class="form-label" for="message">Message</label>
+                <textarea class="form-control" id="message" name="message" maxlength="1600" minlength="3" required placeholder="Écris ici les informations que tu souhaites partager…"></textarea>
+                <span class="field-help">Le texte est envoyé par le bot. Les mentions automatiques (@everyone, rôles et utilisateurs) sont désactivées.</span>
+
+                <label class="form-label" for="url">Lien (facultatif)</label>
+                <input class="form-control" id="url" name="url" type="url" maxlength="300" placeholder="https://…">
+
+                <div class="form-actions">
+                    <button id="submitButton" class="btn btn-primary" type="submit">📢 Publier l’annonce</button>
+                    <a class="btn" href="created.html">Annuler</a>
+                </div>
+            </form>
+        </section>
+        <a class="page-back" href="created.html">← Retour à la page Créer</a>
+    </main>
+    <script src="js/navbar.js?v=20261016"></script>
+    <script>
+        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+        const loading = document.getElementById("loading");
+        const errorBox = document.getElementById("error");
+        const successBox = document.getElementById("success");
+        const formSection = document.getElementById("formSection");
+        const form = document.getElementById("announcementForm");
+        const submitButton = document.getElementById("submitButton");
+
+        function showError(message) {
+            errorBox.textContent = "❌ " + message;
+            errorBox.hidden = false;
+        }
+
+        async function apiRequest(path, options = {}) {
+            const token = localStorage.getItem("discord_session");
+            if (!token) throw new Error("Tu dois être connecté avec Discord.");
+            const response = await fetch(`${API_URL}${path}`, {
+                method: options.method || "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    ...(options.body ? { "Content-Type": "application/json" } : {})
+                },
+                ...(options.body ? { body: JSON.stringify(options.body) } : {})
+            });
+            let data = {};
+            try { data = await response.json(); } catch {}
+            if (!response.ok) throw new Error(data.error || `Erreur serveur : ${response.status}`);
+            return data;
+        }
+
+        async function init() {
+            try {
+                const auth = await apiRequest("/auth/permissions");
+                if (!auth.connected || !Array.isArray(auth.permissions)) throw new Error("Impossible de vérifier tes permissions Discord.");
+                if (!auth.permissions.includes("create_announcement")) throw new Error("Tu n’as pas la permission create_announcement.");
+                formSection.hidden = false;
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                loading.hidden = true;
+            }
+        }
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            errorBox.hidden = true;
+            successBox.hidden = true;
+            submitButton.disabled = true;
+            submitButton.textContent = "⏳ Publication en cours…";
+            try {
+                const data = await apiRequest("/creation/announcement", {
+                    method: "POST",
+                    body: {
+                        title: form.elements.title.value.trim(),
+                        message: form.elements.message.value.trim(),
+                        url: form.elements.url.value.trim()
+                    }
+                });
+                successBox.textContent = "✅ " + (data.message || "Annonce publiée sur Discord.");
+                successBox.hidden = false;
+                form.reset();
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "📢 Publier l’annonce";
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>

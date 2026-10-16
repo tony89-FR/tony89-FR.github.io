@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créer un événement — La communauté live</title>
+    <link rel="stylesheet" href="css/style.css?v=20261016-created">
+    <style>
+* { box-sizing: border-box; }
+body {
+    margin: 0; min-height: 100vh; color: #f8fafc;
+    font-family: Arial, Helvetica, sans-serif;
+    background: radial-gradient(ellipse at 8% 5%, rgba(88,101,242,.20), transparent 35%),
+                radial-gradient(ellipse at 95% 90%, rgba(0,217,255,.08), transparent 35%), #080b14;
+}
+.create-page { width: min(850px, 92%); margin: 0 auto; padding: 110px 0 70px; }
+.create-header { text-align: center; margin-bottom: 28px; }
+.create-kicker { color: #00d9ff; font-size: .8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+.create-header h1 { margin: 10px 0; font-size: clamp(2rem, 5vw, 3.2rem); line-height: 1.15; background: linear-gradient(90deg,#38bdf8,#818cf8,#d946ef); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.create-header p:last-child { max-width: 680px; margin: 0 auto; color: #9aabc5; line-height: 1.7; }
+.form-card { padding: clamp(18px, 4vw, 30px); border: 1px solid #25314a; border-radius: 20px; background: linear-gradient(145deg,rgba(15,23,42,.98),rgba(11,17,31,.96)); box-shadow: 0 12px 35px rgba(0,0,0,.22); }
+.form-label { display: block; margin: 16px 0 7px; font-size: .92rem; font-weight: 700; color: #e2e8f0; }
+.form-control { display: block; width: 100%; min-width: 0; padding: 13px 14px; border: 1px solid #2c3a53; border-radius: 11px; outline: none; background: #0a1020; color: #f8fafc; font: inherit; }
+.form-control:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,.12); }
+textarea.form-control { min-height: 150px; resize: vertical; line-height: 1.6; }
+.field-help { display: block; margin-top: 6px; color: #8494ae; font-size: .8rem; line-height: 1.5; }
+.form-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.form-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 12px 18px; border: 1px solid #334155; border-radius: 11px; color: #e2e8f0; background: rgba(255,255,255,.06); text-decoration: none; font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s ease, border-color .2s ease, background .2s ease; }
+.btn:hover { transform: translateY(-1px); border-color: rgba(0,217,255,.6); background: rgba(0,217,255,.10); }
+.btn-primary { color: #08111f; border-color: transparent; background: linear-gradient(100deg,#38bdf8,#818cf8); }
+.btn-primary:hover { background: linear-gradient(100deg,#67e8f9,#a5b4fc); }
+.btn:disabled { opacity: .6; cursor: wait; transform: none; }
+.page-message { padding: 16px 18px; margin-bottom: 16px; border: 1px solid #26324a; border-radius: 13px; color: #cbd5e1; background: #10182a; line-height: 1.6; }
+.page-message.error { color: #fecaca; border-color: rgba(248,113,113,.4); }
+.page-message.success { color: #bbf7d0; border-color: rgba(74,222,128,.35); }
+.page-message a { color: #67e8f9; overflow-wrap: anywhere; }
+.page-back { display: inline-flex; margin-top: 22px; color: #9aabc5; text-decoration: none; }
+.page-back:hover { color: #67e8f9; }
+[hidden] { display: none !important; }
+@media(max-width:620px) { .create-page { padding-top: 90px; } .form-row { grid-template-columns: 1fr; gap: 0; } .form-actions { flex-direction: column; align-items: stretch; } .btn { width: 100%; } }
+
+    </style>
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <nav class="navbar" id="navbar"></nav>
+    <main class="create-page">
+        <header class="create-header">
+            <p class="create-kicker">📅 Espace communauté</p>
+            <h1>Créer un événement</h1>
+            <p>Prépare un événement Discord externe avec un lieu et des horaires. Le bot le créera dans les événements du serveur.</p>
+        </header>
+
+        <div id="loading" class="page-message">⏳ Vérification de ta session Discord et de tes permissions…</div>
+        <div id="error" class="page-message error" hidden></div>
+        <div id="success" class="page-message success" role="status" hidden></div>
+
+        <section id="formSection" class="form-card" hidden>
+            <form id="eventForm">
+                <label class="form-label" for="title">Nom de l’événement</label>
+                <input class="form-control" id="title" name="title" maxlength="100" minlength="3" required placeholder="Ex. Soirée jeux communautaire">
+
+                <label class="form-label" for="description">Description (facultatif)</label>
+                <textarea class="form-control" id="description" name="description" maxlength="1000" placeholder="Explique ce qui est prévu pour cet événement…"></textarea>
+
+                <label class="form-label" for="location">Lieu</label>
+                <input class="form-control" id="location" name="location" maxlength="100" required value="En ligne / Discord" placeholder="Ex. En ligne / Discord">
+                <span class="field-help">Discord demande un lieu et une date de fin pour ce type d’événement externe.</span>
+
+                <div class="form-row">
+                    <div>
+                        <label class="form-label" for="startAt">Date et heure de début</label>
+                        <input class="form-control" id="startAt" name="startAt" type="datetime-local" required>
+                    </div>
+                    <div>
+                        <label class="form-label" for="endAt">Date et heure de fin</label>
+                        <input class="form-control" id="endAt" name="endAt" type="datetime-local" required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button id="submitButton" class="btn btn-primary" type="submit">📅 Créer l’événement</button>
+                    <a class="btn" href="created.html">Annuler</a>
+                </div>
+            </form>
+        </section>
+        <a class="page-back" href="created.html">← Retour à la page Créer</a>
+    </main>
+    <script src="js/navbar.js?v=20261016"></script>
+    <script>
+        const API_URL = "https://la-communaute-live-bot.de.deplexo.com";
+        const loading = document.getElementById("loading");
+        const errorBox = document.getElementById("error");
+        const successBox = document.getElementById("success");
+        const formSection = document.getElementById("formSection");
+        const form = document.getElementById("eventForm");
+        const startInput = document.getElementById("startAt");
+        const endInput = document.getElementById("endAt");
+        const submitButton = document.getElementById("submitButton");
+
+        function showError(message) {
+            errorBox.textContent = "❌ " + message;
+            errorBox.hidden = false;
+        }
+
+        function localDateTimeValue(date) {
+            const pad = value => String(value).padStart(2, "0");
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        function setDefaultDates() {
+            const start = new Date(Date.now() + 60 * 60 * 1000);
+            start.setSeconds(0, 0);
+            const end = new Date(start.getTime() + 60 * 60 * 1000);
+            startInput.value = localDateTimeValue(start);
+            endInput.value = localDateTimeValue(end);
+            startInput.min = localDateTimeValue(new Date(Date.now() + 60 * 1000));
+            endInput.min = startInput.value;
+        }
+
+        startInput.addEventListener("change", () => {
+            if (!startInput.value) return;
+            const start = new Date(startInput.value);
+            endInput.min = startInput.value;
+            if (!endInput.value || new Date(endInput.value) <= start) {
+                endInput.value = localDateTimeValue(new Date(start.getTime() + 60 * 60 * 1000));
+            }
+        });
+
+        async function apiRequest(path, options = {}) {
+            const token = localStorage.getItem("discord_session");
+            if (!token) throw new Error("Tu dois être connecté avec Discord.");
+            const response = await fetch(`${API_URL}${path}`, {
+                method: options.method || "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    ...(options.body ? { "Content-Type": "application/json" } : {})
+                },
+                ...(options.body ? { body: JSON.stringify(options.body) } : {})
+            });
+            let data = {};
+            try { data = await response.json(); } catch {}
+            if (!response.ok) throw new Error(data.error || `Erreur serveur : ${response.status}`);
+            return data;
+        }
+
+        async function init() {
+            setDefaultDates();
+            try {
+                const auth = await apiRequest("/auth/permissions");
+                if (!auth.connected || !Array.isArray(auth.permissions)) throw new Error("Impossible de vérifier tes permissions Discord.");
+                if (!auth.permissions.includes("create_event")) throw new Error("Tu n’as pas la permission create_event.");
+                formSection.hidden = false;
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                loading.hidden = true;
+            }
+        }
+
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            errorBox.hidden = true;
+            successBox.hidden = true;
+
+            const start = new Date(startInput.value);
+            const end = new Date(endInput.value);
+            if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+                showError("Choisis une date de début et une date de fin valides.");
+                return;
+            }
+            if (start <= new Date(Date.now() + 60 * 1000)) {
+                showError("Le début de l’événement doit être situé au moins une minute dans le futur.");
+                return;
+            }
+            if (end <= start) {
+                showError("La date de fin doit être postérieure à la date de début.");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "⏳ Création en cours…";
+            try {
+                const data = await apiRequest("/creation/event", {
+                    method: "POST",
+                    body: {
+                        title: form.elements.title.value.trim(),
+                        description: form.elements.description.value.trim(),
+                        location: form.elements.location.value.trim(),
+                        startAt: start.toISOString(),
+                        endAt: end.toISOString()
+                    }
+                });
+                successBox.replaceChildren();
+                const message = document.createElement("span");
+                message.textContent = "✅ " + (data.message || "Événement créé.");
+                successBox.appendChild(message);
+                if (data.eventUrl) {
+                    successBox.appendChild(document.createTextNode(" "));
+                    const link = document.createElement("a");
+                    link.href = data.eventUrl;
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.textContent = "Ouvrir l’événement Discord";
+                    successBox.appendChild(link);
+                }
+                successBox.hidden = false;
+                form.elements.title.value = "";
+                form.elements.description.value = "";
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "📅 Créer l’événement";
+            }
+        });
+
+        init();
+    </script>
+</body>
+</html>
